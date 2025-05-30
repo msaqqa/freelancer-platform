@@ -2,21 +2,16 @@
 
 import { createContext, useContext, useEffect, useState } from 'react';
 import { I18N_LANGUAGES } from '@/i18n/config';
-import i18n from '@/i18n/i18n';
+import initI18 from '@/i18n/initI18';
 import { DirectionProvider as RadixDirectionProvider } from '@radix-ui/react-direction';
 import i18next from 'i18next';
+import Cookies from 'js-cookie';
 import { I18nextProvider } from 'react-i18next';
 
 const LanguageContext = createContext(undefined);
 
-function I18nProvider({ children }) {
-  const [languageCode, setLanguageCode] = useState(() => {
-    if (typeof window !== 'undefined') {
-      // Only access localStorage in the browser
-      return localStorage.getItem('language') || 'en';
-    }
-    return 'en'; // Default language if running on the server
-  });
+function I18nProvider({ lang, children }) {
+  const [languageCode, setLanguageCode] = useState(lang);
 
   // Find the current language configuration based on the language code
   const language =
@@ -24,17 +19,12 @@ function I18nProvider({ children }) {
     I18N_LANGUAGES[0];
 
   useEffect(() => {
-    i18next.changeLanguage(localStorage.getItem('language'));
-  }, []);
-
-  useEffect(() => {
     if (typeof window !== 'undefined') {
-      // Only access localStorage in the browser
-      localStorage.setItem('language', languageCode);
+      // Only access cookies in the browser
+      Cookies.set('language', languageCode);
     }
     if (language?.direction) {
       document.documentElement.setAttribute('dir', language.direction);
-      document.cookie = `language=${languageCode}; path=/;`;
     }
   }, [languageCode, language]);
 
@@ -42,9 +32,11 @@ function I18nProvider({ children }) {
     setLanguageCode(code);
     i18next.changeLanguage(code);
     if (typeof window !== 'undefined') {
-      localStorage.setItem('language', code);
+      Cookies.set('language', code);
     }
   };
+
+  const i18n = initI18(languageCode);
 
   return (
     <LanguageContext.Provider

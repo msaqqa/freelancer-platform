@@ -1,9 +1,9 @@
-import api from '../api';
+import { apiTaqat } from '../api';
 
 // signup a new user with credentials
 export const signupWithCredentials = async (userData) => {
   try {
-    const response = await api.post('/register', {
+    const response = await apiTaqat.post('/register', {
       ...userData,
       name: 'mahmoud',
     });
@@ -16,7 +16,7 @@ export const signupWithCredentials = async (userData) => {
 // signin the user with credentials
 export const signinWithCredentials = async (credentials) => {
   try {
-    const response = await api.post('/login', credentials);
+    const response = await apiTaqat.post('/login', credentials);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -26,7 +26,7 @@ export const signinWithCredentials = async (credentials) => {
 // get the google Oauth URL from the api
 export const getGoogleOAuthUrl = async () => {
   try {
-    const res = await api.get('/api/uauth/google/url');
+    const res = await apiTaqat.get('/api/uauth/google/url');
     return res.data.url;
   } catch (error) {
     throw error.response?.data || error;
@@ -42,7 +42,7 @@ export const resetPassword = async ({ email, otp, newPassword }) => {
       newPassword,
     };
 
-    const response = await api.post('/api/uauth/reset-password', payload);
+    const response = await apiTaqat.post('/api/uauth/reset-password', payload);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -52,7 +52,7 @@ export const resetPassword = async ({ email, otp, newPassword }) => {
 // verify the OTP sent to the user email
 export const verifyEmailOtp = async ({ email, otpCode }) => {
   try {
-    const response = await api.post('/verify-otp', {
+    const response = await apiTaqat.post('/verify-otp', {
       email,
       otp_code: otpCode,
     });
@@ -65,7 +65,7 @@ export const verifyEmailOtp = async ({ email, otpCode }) => {
 // resend OTP code to the user email
 export const resendEmailOtp = async (email) => {
   try {
-    const response = await api.post('/resend-otp', {
+    const response = await apiTaqat.post('/resend-otp', {
       email,
     });
     return response.data;
@@ -74,10 +74,10 @@ export const resendEmailOtp = async (email) => {
   }
 };
 
-// get the user profile from the api
-export async function getUserProfile() {
+// get the user data from the api
+export async function getAuthUserData() {
   try {
-    const response = await api.get('/profile');
+    const response = await apiTaqat.get('/profile');
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -87,7 +87,7 @@ export async function getUserProfile() {
 // change the user language preference via the API
 export async function changeLang(languageCode) {
   try {
-    const response = await api.post('/lang', {
+    const response = await apiTaqat.post('/lang', {
       language: languageCode,
     });
     return response.data;
@@ -96,10 +96,10 @@ export async function changeLang(languageCode) {
   }
 }
 
-// signout the user with credentials
-export const signouutWithCredentials = async (credentials) => {
+// signout the user
+export const signoutUser = async (credentials) => {
   try {
-    const response = await api.post('/logout', credentials);
+    const response = await apiTaqat.post('/logout', credentials);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

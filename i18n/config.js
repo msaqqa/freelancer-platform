@@ -1,4 +1,8 @@
 // src/config/languages.ts
+import authAr from '../public/locales/ar/auth.json';
+import commonAr from '../public/locales/ar/common.json';
+import authEn from '../public/locales/en/auth.json';
+import commonEn from '../public/locales/en/common.json';
 
 export const I18N_LANGUAGES = [
   {
@@ -37,3 +41,14 @@ export const I18N_LANGUAGES = [
     flag: '/media/flags/china.svg',
   },
 ];
+
+export const I18N_RESOURCES = {
+  en: {
+    auth: authEn,
+    common: commonEn,
+  },
+  ar: {
+    auth: authAr,
+    common: commonAr,
+  },
+};

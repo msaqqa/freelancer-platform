@@ -14,11 +14,11 @@ function useSignup() {
   const [showRecaptcha, setShowRecaptcha] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(getSignupSchema()),
+    resolver: zodResolver(getSignupSchema(t)),
     defaultValues: {
       email: '',
       password: '',
-      password_confirmation: '',
+      passwordConfirmation: '',
       accept: false,
     },
   });

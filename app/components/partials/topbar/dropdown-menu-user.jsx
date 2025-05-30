@@ -13,9 +13,9 @@ import {
   UserCircle,
   Users,
 } from 'lucide-react';
-import { signOut, useSession } from 'next-auth/react';
 import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { useAuth } from '@/hooks/auth/useAuth';
 import { useLanguage } from '@/providers/i18n-provider';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -34,7 +34,7 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 export function DropdownMenuUser({ trigger }) {
-  const { data: session } = useSession();
+  const { data: session, signout } = useAuth();
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
 
@@ -56,7 +56,7 @@ export function DropdownMenuUser({ trigger }) {
             <img
               className="w-9 h-9 rounded-full border border-border"
               src={toAbsoluteUrl(
-                session?.user.avatar || '/media/avatars/300-2.png',
+                session?.user?.avatar || '/media/avatars/300-2.png',
               )}
               alt="User avatar"
             />
@@ -66,13 +66,13 @@ export function DropdownMenuUser({ trigger }) {
                 href="/account/home/get-started"
                 className="text-sm text-mono hover:text-primary font-semibold"
               >
-                {session?.user.name || ''}
+                {session?.user?.name || ''}
               </Link>
               <Link
                 href="mailto:c.fisher@gmail.com"
                 className="text-xs text-muted-foreground hover:text-primary"
               >
-                {session?.user.email || ''}
+                {session?.user?.email || ''}
               </Link>
             </div>
           </div>
@@ -247,7 +247,7 @@ export function DropdownMenuUser({ trigger }) {
             variant="outline"
             size="sm"
             className="w-full"
-            onClick={() => signOut()}
+            onClick={() => signout()}
           >
             Logout
           </Button>

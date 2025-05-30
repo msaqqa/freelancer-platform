@@ -2,24 +2,24 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useSession } from 'next-auth/react';
+import { useAuth } from '@/hooks/auth/useAuth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { Demo1Layout } from '../components/layouts/demo1/layout';
 
 export default function ProtectedLayout({ children }) {
-  const { data: session, status } = useSession();
-
+  const { data: session, isLoading, isError } = useAuth();
   const router = useRouter();
 
   useEffect(() => {
-    if (status === 'unauthenticated') {
+    if (isLoading) return;
+    if (!session || isError) {
       router.push('/signin');
     }
-  }, [status, router]);
+  }, [session, isError, router]);
 
-  if (status === 'loading') {
+  if (isLoading) {
     return <ScreenLoader />;
   }
 
-  return session ? <Demo1Layout>{children}</Demo1Layout> : null;
+  return session && <Demo1Layout>{children}</Demo1Layout>;
 }

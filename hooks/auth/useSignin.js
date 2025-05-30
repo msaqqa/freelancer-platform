@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQuery } from '@tanstack/react-query';
+import Cookies from 'js-cookie';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
@@ -13,7 +14,7 @@ function useSignin() {
   const [passwordVisible, setPasswordVisible] = useState(false);
 
   const form = useForm({
-    resolver: zodResolver(getSigninSchema()),
+    resolver: zodResolver(getSigninSchema(t)),
     defaultValues: {
       email: '',
       password: '',
@@ -27,9 +28,13 @@ function useSignin() {
 
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
-    onSuccess: (data) => {
-      // store token
-      localStorage.setItem('token', data.token);
+    onSuccess: ({ data }) => {
+      // store token in the cookies
+      if (form.getValues('rememberMe')) {
+        Cookies.set('token', data.token, { expires: 30 }); // 30 days
+      } else {
+        Cookies.set('token', data.token); // 1 session
+      }
       // redirect to main dashboard
       router.push('/');
     },
@@ -51,11 +56,15 @@ function useSignin() {
   const handleGoogleSignin2 = useQuery({
     queryKey: ['googleOAuth'],
     queryFn: getGoogleOAuthUrl,
+    enabled: false,
+    refetchOnWindowFocus: false,
     onSuccess: (data) => {
       console.log('data', data);
       window.location.href = googleUrl;
     },
   });
+
+  const { refetch: GoogleSignin } = handleGoogleSignin2;
 
   return {
     t,
@@ -66,7 +75,7 @@ function useSignin() {
     isProcessing: mutation.isPending,
     onSubmit,
     handleGoogleSignin,
-    handleGoogleSignin2,
+    GoogleSignin,
   };
 }
 

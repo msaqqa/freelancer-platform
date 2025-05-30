@@ -1,21 +1,21 @@
 import { z } from 'zod';
 
-export const getPasswordSchema = (minLength = 8) => {
+export const getPasswordSchema = (t, minLength = 8) => {
   return z
     .string()
     .min(minLength, {
-      message: `Password must be at least ${minLength} characters long.`,
+      message: t('passwordMinLength', { min: minLength }),
     })
     .regex(/[A-Z]/, {
-      message: 'Password must contain at least one uppercase letter.',
+      message: t('passwordUppercase'),
     })
     .regex(/[a-z]/, {
-      message: 'Password must contain at least one lowercase letter.',
+      message: t('passwordLowercase'),
     })
     .regex(/\d/, {
-      message: 'Password must contain at least one number.',
+      message: t('passwordNumber'),
     })
     .regex(/[!@#$%^&*(),.?":{}|<>]/, {
-      message: 'Password must contain at least one special character.',
+      message: t('passwordSpecialChar'),
     });
 };

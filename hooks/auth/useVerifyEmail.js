@@ -55,14 +55,13 @@ function useVerifyEmail() {
   };
 
   const errors = verifyOtpMutation.error || resendOtpMutation.error;
-  const isProcessing =
-    verifyOtpMutation.isPending || resendOtpMutation.isPending;
 
   return {
     t,
     form,
     errors,
-    isProcessing,
+    isProcessing: verifyOtpMutation.isPending,
+    isResendOtProcessing: resendOtpMutation.isPending,
     onSubmit,
     handleResetOtp,
   };

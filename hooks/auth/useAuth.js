@@ -1,46 +1,35 @@
+import { useRouter } from 'next/navigation';
 import { useQuery } from '@tanstack/react-query';
-import { getUserProfile } from '@/services/auth/auth';
+import Cookies from 'js-cookie';
+import { getAuthUserData, signoutUser } from '@/services/auth/auth';
 
 export function useAuth() {
-  const {
-    data: user,
-    isLoading,
-    isError,
-  } = useQuery({
+  const router = useRouter();
+  const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['auth'],
-    queryFn: getUserProfile,
+    queryFn: getAuthUserData,
     onError: (error) => {
       console.error('error', error);
       throw error?.response?.data?.message || error.message;
     },
     retry: false,
-    staleTime: 1000 * 60 * 30,
+    staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!localStorage.getItem('token'),
+    enabled: !!Cookies.get('token'),
   });
 
+  const signout = async () => {
+    await signoutUser();
+    Cookies.remove('token');
+    router.push('/signin');
+  };
+
   return {
-    user,
+    data: data?.data || null,
     isLoading,
     isError,
+    refetch,
+    signout,
   };
 }
-
-// how to use in any page
-//  const { data, isLoading, isError } = useAuth();
-// if (isError) {
-//     router.push('/login');
-//     return null;
-//   }
-
-//   if (isLoading) {
-//     return <p>جار التحقق من الجلسة...</p>;
-//   }
-
-//  const { data: user, isLoading, isError } = useAuth();
-//   useEffect(() => {
-//     if (!isLoading && (!user || isError)) {
-//       router.replace('/login');
-//     }
-//   }, [user, isLoading, isError]);

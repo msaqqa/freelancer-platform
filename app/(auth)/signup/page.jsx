@@ -157,7 +157,7 @@ export default function Page() {
 
           <FormField
             control={form.control}
-            name="password_confirmation"
+            name="passwordConfirmation"
             render={({ field }) => (
               <FormItem>
                 <FormLabel>{t('confirmPassword')}</FormLabel>

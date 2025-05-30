@@ -4,11 +4,11 @@ import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { useSession } from 'next-auth/react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { apiFetch } from '@/lib/api';
 import { getInitials } from '@/lib/helpers';
+import { useAuth } from '@/hooks/auth/useAuth';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Button } from '@/components/ui/button';
@@ -36,7 +36,7 @@ import { useAccount } from './account-context';
 
 export default function AccountDetails() {
   const queryClient = useQueryClient();
-  const { data: session, update: updateSession } = useSession();
+  const { data: session, refetch: updateSession } = useAuth();
   const { user } = useAccount();
 
   const [avatarExistingPreview, setAvatarExistingPreview] = useState(null);

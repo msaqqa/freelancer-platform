@@ -17,8 +17,15 @@ import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 
 export default function Page() {
-  const { t, form, errors, isProcessing, onSubmit, handleResetOtp } =
-    useVerifyEmail();
+  const {
+    t,
+    form,
+    errors,
+    isProcessing,
+    isResendOtProcessing,
+    onSubmit,
+    handleResetOtp,
+  } = useVerifyEmail();
   const error = errors?.message;
   return (
     <Suspense>
@@ -57,12 +64,17 @@ export default function Page() {
                     <Input placeholder={t('codeHolder')} {...field} />
                   </FormControl>
                   <FormMessage />
-                  <span
-                    onClick={handleResetOtp}
-                    className="text-xs font-semibold text-foreground hover:text-primary cursor-pointer"
-                  >
-                    {t('resetOtp')}
-                  </span>
+                  <div className="flex items-center gap-2">
+                    {isResendOtProcessing ? (
+                      <Spinner className="animate-spin" />
+                    ) : null}{' '}
+                    <span
+                      onClick={isResendOtProcessing ? null : handleResetOtp}
+                      className="text-xs font-semibold text-foreground hover:text-primary cursor-pointer"
+                    >
+                      {t('resendOtp')}
+                    </span>
+                  </div>
                 </FormItem>
               )}
             />

@@ -1,27 +1,23 @@
 import axios from 'axios';
+import Cookies from 'js-cookie';
 
-const api = axios.create({
-  baseURL: 'http://dev.taqatportal.com/api',
+export const apiTaqat = axios.create({
+  baseURL: 'https://dev.taqatportal.com/api',
   headers: {
     'Content-Type': 'application/json',
   },
 });
 
-// to add the token if it exists
-api.interceptors.request.use(
+// add a token if it exists
+apiTaqat.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
-    document.cookie = `token=${token}; path=/`;
-
+    const token = Cookies.get('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
-
     return config;
   },
   (error) => {
     return Promise.reject(error);
   },
 );
-
-export default api;

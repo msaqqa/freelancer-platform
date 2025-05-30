@@ -1,23 +1,23 @@
 import { z } from 'zod';
 import { getPasswordSchema } from './password-schema';
 
-export const getSignupSchema = () => {
+export const getSignupSchema = (t) => {
   return z
     .object({
       email: z
         .string()
-        .email({ message: 'Please enter a valid email address.' })
-        .min(1, { message: 'Email is required.' }),
-      password: getPasswordSchema(), // Uses the updated password schema with direct messages
-      password_confirmation: z.string().min(1, {
-        message: 'Password confirmation is required.',
+        .email({ message: t('emailInvalid') })
+        .min(1, { message: t('emailRequired') }),
+      password: getPasswordSchema(t),
+      passwordConfirmation: z.string().min(1, {
+        message: t('passwordConfirmationRequired'),
       }),
       accept: z.boolean().refine((val) => val === true, {
-        message: 'You must accept the terms and conditions.',
+        message: t('acceptRequired'),
       }),
     })
-    .refine((data) => data.password === data.password_confirmation, {
-      message: 'Passwords do not match.',
-      path: ['password_confirmation'],
+    .refine((data) => data.password === data.passwordConfirmation, {
+      message: t('passwordsMismatch'),
+      path: ['passwordConfirmation'],
     });
 };
