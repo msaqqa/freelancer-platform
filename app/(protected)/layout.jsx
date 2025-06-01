@@ -8,7 +8,7 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 export default function ProtectedLayout({ children }) {
   const { data: session, isLoading, isError } = useAuth();
   const router = useRouter();
-  const userType = session?.user?.role || '';
+  const userType = session?.user?.role || 'freelancer';
 
   useEffect(() => {
     if (isLoading) return;

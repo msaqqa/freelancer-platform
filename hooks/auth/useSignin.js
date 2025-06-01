@@ -36,7 +36,7 @@ function useSignin() {
         Cookies.set('token', data?.data?.token); // 1 session
       }
       // redirect to main dashboard
-      router.push('/');
+      router.push('/freelancer');
     },
     onError: (error) => {
       console.error('error', error);
