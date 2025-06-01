@@ -85,6 +85,7 @@ export const resendEmailOtp = async (email) => {
 
 // get the user data from the api
 export async function getAuthUserData() {
+  console.log('test');
   try {
     const response = await apiTaqat.get('/profile');
     return response.data;

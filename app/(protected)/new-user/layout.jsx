@@ -8,12 +8,12 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 function NewUserlayout({ children }) {
   const { data: session, isLoading, isError } = useAuth();
 
-  // useEffect(() => {
-  //   if (isLoading) return;
-  //   if (!session || isError) {
-  //     redirect('/signup');
-  //   }
-  // }, [session, isError]);
+  useEffect(() => {
+    if (isLoading) return;
+    if (!session || isError) {
+      redirect('/signup');
+    }
+  }, [session, isError]);
 
   if (isLoading) {
     return <ScreenLoader />;

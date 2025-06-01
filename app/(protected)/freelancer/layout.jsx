@@ -10,16 +10,16 @@ export default function ProtectedLayout({ children }) {
   const { data: session, isLoading, isError } = useAuth();
   const router = useRouter();
 
-  // useEffect(() => {
-  //   if (isLoading) return;
-  //   if (!session || isError) {
-  //     router.push('/signin');
-  //   }
-  // }, [session, isError, router]);
+  useEffect(() => {
+    if (isLoading) return;
+    if (!session || isError) {
+      router.push('/signin');
+    }
+  }, [session, isError, router]);
 
   if (isLoading) {
     return <ScreenLoader />;
   }
 
-  return <Demo1Layout>{children}</Demo1Layout>;
+  return session && <Demo1Layout>{children}</Demo1Layout>;
 }

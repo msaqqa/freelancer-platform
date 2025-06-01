@@ -28,7 +28,7 @@ function useSignin() {
 
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
-    onSuccess: ({ data }) => {
+    onSuccess: (data) => {
       // store token in the cookies
       if (form.getValues('rememberMe')) {
         Cookies.set('token', data?.data?.token, { expires: 30 }); // 30 days

@@ -19,11 +19,11 @@ export default function ProtectedLayout({ children }) {
     }
 
     if (userType === 'client') {
-      router.replace('/client');
+      router.push('/client');
     } else if (userType === 'freelancer') {
-      router.replace('/freelancer');
+      router.push('/freelancer');
     } else {
-      router.replace('/new-user/required-data');
+      router.push('/new-user/required-data');
     }
   }, [isLoading, userType, router]);
 
