@@ -5,18 +5,20 @@ import { getAuthUserData, signoutUser } from '@/services/auth/auth';
 
 export function useAuth() {
   const router = useRouter();
+  const token = Cookies.get('token');
+  const hasToken = typeof token === 'string' && token.trim() !== '';
   const { data, isLoading, isError, refetch } = useQuery({
     queryKey: ['auth'],
     queryFn: getAuthUserData,
-    onError: (error) => {
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
-    },
+    enabled: hasToken,
     retry: false,
     staleTime: 1000 * 60 * 5,
     refetchOnWindowFocus: false,
     refetchOnMount: false,
-    enabled: !!Cookies.get('token'),
+    onError: (error) => {
+      console.error('error', error);
+      throw error?.response?.data?.message || error.message;
+    },
   });
 
   const signout = async () => {

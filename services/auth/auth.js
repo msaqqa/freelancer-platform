@@ -33,16 +33,25 @@ export const getGoogleOAuthUrl = async () => {
   }
 };
 
-// reset user password using email, OTP
-export const resetPassword = async ({ email, otp, newPassword }) => {
+// user forget password using email, OTP
+export const forgetPassword = async (email) => {
   try {
-    const payload = {
-      email,
-      otp,
-      newPassword,
-    };
+    const response = await apiTaqat.post('/forget-password', email);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
 
-    const response = await apiTaqat.post('/api/uauth/reset-password', payload);
+// user change password
+export const resetPassword = async (payload) => {
+  console.log('payload', payload);
+  try {
+    const response = await apiTaqat.post('/reset-password', {
+      ...payload,
+      password: payload?.newPassword,
+      password_confirmation: payload?.confirmPassword,
+    });
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

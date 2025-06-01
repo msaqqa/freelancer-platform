@@ -109,10 +109,10 @@ export default function Page() {
               <div className="flex justify-between items-center gap-2.5">
                 <FormLabel>{t('password')}</FormLabel>
                 <Link
-                  href="/reset-password"
+                  href="/forget-password"
                   className="text-sm font-semibold text-foreground hover:text-primary"
                 >
-                  {t('forgotPassword')}
+                  {t('forgetPassword')}
                 </Link>
               </div>
               <div className="relative">

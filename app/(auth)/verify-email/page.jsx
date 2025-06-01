@@ -69,8 +69,14 @@ export default function Page() {
                       <Spinner className="animate-spin" />
                     ) : null}{' '}
                     <span
-                      onClick={isResendOtProcessing ? null : handleResetOtp}
-                      className="text-xs font-semibold text-foreground hover:text-primary cursor-pointer"
+                      onClick={
+                        isResendOtProcessing ? undefined : handleResetOtp
+                      }
+                      className={`text-xs font-semibold text-foreground hover:text-primary cursor-pointer ${
+                        isResendOtProcessing
+                          ? 'pointer-events-none cursor-not-allowed opacity-50'
+                          : ''
+                      }`}
                     >
                       {t('resendOtp')}
                     </span>
@@ -79,7 +85,11 @@ export default function Page() {
               )}
             />
 
-            <Button type="submit" disabled={isProcessing} className="w-full">
+            <Button
+              type="submit"
+              disabled={isProcessing || isResendOtProcessing}
+              className="w-full"
+            >
               {isProcessing ? <Spinner className="animate-spin" /> : null}
               {t('submit')}
             </Button>

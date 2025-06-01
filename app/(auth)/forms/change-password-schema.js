@@ -1,10 +1,10 @@
 import { z } from 'zod';
 import { getPasswordSchema } from './password-schema';
 
-export const getChangePasswordSchema = () => {
+export const getChangePasswordSchema = (t) => {
   return z
     .object({
-      newPassword: getPasswordSchema(),
+      newPassword: getPasswordSchema(t),
       confirmPassword: z.string(),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {

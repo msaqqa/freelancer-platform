@@ -32,15 +32,11 @@ function useSignup() {
 
   const handleVerifiedSubmit = async () => {
     const values = form.getValues();
-    console.log('values', values);
     mutation.mutate(values);
   };
 
   const mutation = useMutation({
     mutationFn: signupWithCredentials,
-    onSuccess: (data) => {
-      console.log('data', data);
-    },
     onError: (error) => {
       console.error('error', error);
       throw error?.response?.data?.message || error.message;

@@ -31,9 +31,9 @@ function useSignin() {
     onSuccess: ({ data }) => {
       // store token in the cookies
       if (form.getValues('rememberMe')) {
-        Cookies.set('token', data.token, { expires: 30 }); // 30 days
+        Cookies.set('token', data?.data?.token, { expires: 30 }); // 30 days
       } else {
-        Cookies.set('token', data.token); // 1 session
+        Cookies.set('token', data?.data?.token); // 1 session
       }
       // redirect to main dashboard
       router.push('/');
