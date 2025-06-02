@@ -35,7 +35,7 @@ export function BrandedLayout({ children }) {
             </Link>
 
             <div className="flex flex-col gap-3">
-              <h3 className="text-2xl font-semibold text-gray-900">
+              <h3 className="text-2xl font-semibold text-gray-900 dark:text-white">
                 {t('brandedTitle')}
               </h3>
               <div className="text-base font-medium text-gray-600">

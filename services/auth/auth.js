@@ -33,6 +33,23 @@ export const getGoogleOAuthUrl = async () => {
   }
 };
 
+export const handleGoogleCallback = () => {
+  try {
+    const urlParams = new URLSearchParams(window.location.search);
+    let token = urlParams.get('token');
+    if (!token && window.location.hash) {
+      const hashParams = new URLSearchParams(window.location.hash.substring(1));
+      token = hashParams.get('token');
+    }
+    if (token) {
+      Cookies.set('token', token, { expires: 7, path: '/' });
+      console.log('Token saved:', token);
+    }
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 // user forget password using email, OTP
 export const forgetPassword = async (email) => {
   try {

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getGoogleOAuthUrl, signupWithCredentials } from '@/services/auth/auth';
@@ -47,22 +47,9 @@ function useSignup() {
     },
   });
 
-  const handleGoogleSignup = useQuery({
-    queryKey: ['googleOAuth'],
-    queryFn: getGoogleOAuthUrl,
-    enabled: false,
-    refetchOnWindowFocus: false,
-    onSuccess: () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      if (token) {
-        Cookies.set('token', token);
-        router.push('/freelancer');
-      }
-    },
-  });
-
-  const { refetch: GoogleSignin } = handleGoogleSignup;
+  const handleGoogleSignin = () => {
+    getGoogleOAuthUrl();
+  };
 
   return {
     t,
@@ -78,7 +65,7 @@ function useSignup() {
     success: mutation.isSuccess,
     handleSubmit,
     handleVerifiedSubmit,
-    GoogleSignin,
+    handleGoogleSignin,
     onSubmit,
   };
 }

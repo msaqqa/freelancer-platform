@@ -28,7 +28,7 @@ export default function Page() {
     errors,
     isProcessing,
     onSubmit,
-    GoogleSignin,
+    handleGoogleSignin,
   } = useSignin();
   const error = errors?.message;
   return (
@@ -56,11 +56,7 @@ export default function Page() {
         </Alert>
 
         <div className="flex flex-col gap-3.5">
-          <Button
-            variant="outline"
-            type="button"
-            onClick={() => GoogleSignin()}
-          >
+          <Button variant="outline" type="button" onClick={handleGoogleSignin}>
             <Icons.googleColorful className="size-5! opacity-100!" />{' '}
             {t('SigninGoogle')}
           </Button>

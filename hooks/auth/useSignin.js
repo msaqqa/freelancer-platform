@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
@@ -44,22 +44,9 @@ function useSignin() {
     },
   });
 
-  const handleGoogleSignin = useQuery({
-    queryKey: ['googleOAuth'],
-    queryFn: getGoogleOAuthUrl,
-    enabled: false,
-    refetchOnWindowFocus: false,
-    onSuccess: () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const token = urlParams.get('token');
-      if (token) {
-        Cookies.set('token', token);
-        router.push('/freelancer');
-      }
-    },
-  });
-
-  const { refetch: GoogleSignin } = handleGoogleSignin;
+  const handleGoogleSignin = () => {
+    getGoogleOAuthUrl();
+  };
 
   return {
     t,
@@ -69,7 +56,7 @@ function useSignin() {
     errors: mutation.error,
     isProcessing: mutation.isPending,
     onSubmit,
-    GoogleSignin,
+    handleGoogleSignin,
   };
 }
 
