@@ -1,15 +1,22 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
 const ScrollspyMenu = ({ items, setActiveSection, activeSection }) => {
+  const router = useRouter('');
   const buildAnchor = (item, index, indent = false) => {
     const isActive = activeSection === item.target;
     return (
       <div
         key={index}
         data-scrollspy-anchor={item.target}
-        onClick={() => setActiveSection(item.target)}
+        onClick={() => {
+          setActiveSection(item.target);
+          item.target === 'account_type'
+            ? router.push('/new-user/account-type')
+            : null;
+        }}
         className={cn(
           'cursor-pointer flex items-center rounded-lg ps-2.5 pe-2.5 py-1.5 border border-transparent text-accent-foreground hover:text-primary',
           isActive && 'bg-accent text-primary font-medium',

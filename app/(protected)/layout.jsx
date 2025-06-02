@@ -23,7 +23,7 @@ export default function ProtectedLayout({ children }) {
     } else if (userType === 'freelancer') {
       router.push('/freelancer');
     } else {
-      router.push('/new-user/required-data');
+      router.push('/new-user/account-type');
     }
   }, [isLoading, userType, router]);
 

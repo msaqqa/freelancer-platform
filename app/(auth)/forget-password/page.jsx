@@ -29,6 +29,7 @@ export default function Page() {
     success,
     handleSubmit,
     handleVerifiedSubmit,
+    onSubmit,
   } = useForgetPassword();
   const email = form.getValues('email');
 
@@ -48,7 +49,10 @@ export default function Page() {
   return (
     <Suspense>
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="block w-full space-y-5">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="block w-full space-y-5"
+        >
           <div className="text-center space-y-1 pb-3">
             <h1 className="text-2xl font-semibold tracking-tight">
               {t('forgetPassword')}
@@ -93,7 +97,7 @@ export default function Page() {
             )}
           />
 
-          <div className="flex flex-col gap-2.5">
+          {/* <div className="flex flex-col gap-2.5">
             <RecaptchaPopover
               open={showRecaptcha}
               onOpenChange={(open) => {
@@ -111,6 +115,15 @@ export default function Page() {
                 </Button>
               }
             />
+          </div> */}
+
+          <div className="flex flex-col gap-2.5">
+            <Button type="submit" disabled={isProcessing}>
+              {isProcessing ? (
+                <Spinner className="size-4 animate-spin" />
+              ) : null}
+              {t('submit')}
+            </Button>
           </div>
 
           <div className="space-y-3">

@@ -23,6 +23,10 @@ function useSignup() {
     },
   });
 
+  const onSubmit = (values) => {
+    mutation.mutate(values);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const result = await form.trigger();
@@ -67,6 +71,7 @@ function useSignup() {
     handleSubmit,
     handleVerifiedSubmit,
     handleGoogleSignin,
+    onSubmit,
   };
 }
 

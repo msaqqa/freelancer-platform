@@ -6,6 +6,7 @@ import { useMutation } from '@tanstack/react-query';
 import { format } from 'date-fns';
 import { CalendarDays } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 import { selecttUserType } from '@/services/required-data';
 import { Button } from '@/components/ui/button';
@@ -36,10 +37,11 @@ import {
 import { Switch } from '@/components/ui/switch';
 
 const PersonalDetails = () => {
-  const [date, setDate] = useState(new Date(1984, 0, 20));
-  const [nameInput, setNameInput] = useState('Jason Tatum');
+  const [date, setDate] = useState();
+  const [nameInput, setNameInput] = useState('');
   const [country, setCountry] = useState('1');
   const [city, setCity] = useState('');
+  const { t } = useTranslation('requiredData');
 
   const form = useForm({
     // resolver: zodResolver(getSigninSchema(t)),
@@ -70,7 +72,7 @@ const PersonalDetails = () => {
   return (
     <Card className="pb-2.5">
       <CardHeader id="personal_details">
-        <CardTitle>Personal Details</CardTitle>
+        <CardTitle>{t('')}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-5">
         {/* <Form {...form}>
@@ -96,7 +98,7 @@ const PersonalDetails = () => {
           <Label className="flex w-full max-w-56">Photo</Label>
           <div className="flex items-center justify-between flex-wrap grow gap-2.5">
             <span className="text-sm text-secondary-foreground">
-              150x150px JPEG, PNG Image
+              150x150px JPEG, PNG
             </span>
             <AvatarInput />
           </div>
@@ -104,7 +106,7 @@ const PersonalDetails = () => {
         <div className="w-full">
           <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <Label className="flex w-full items-center gap-1 max-w-56">
-              Name
+              {t('name')}
             </Label>
             <Input
               type="text"
@@ -116,7 +118,7 @@ const PersonalDetails = () => {
         <div className="w-full">
           <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <Label className="flex w-full items-center gap-1 max-w-56">
-              Birth Date
+              {t('birthDate')}
             </Label>
             <Popover>
               <PopoverTrigger asChild>
@@ -130,7 +132,11 @@ const PersonalDetails = () => {
                   )}
                 >
                   <CalendarDays className="-ms-0.5" />
-                  {date ? format(date, 'LLL dd, y') : <span>Pick a date</span>}
+                  {date ? (
+                    format(date, 'LLL dd, y')
+                  ) : (
+                    <span>{t('dateHolder')}</span>
+                  )}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0" align="start">
@@ -147,28 +153,27 @@ const PersonalDetails = () => {
           </div>
         </div>
         <div className="flex items-center flex-wrap gap-2.5">
-          <Label className="flex w-full max-w-56">Gender</Label>
+          <Label className="flex w-full max-w-56">{t('gender')}</Label>
           <div className="grow">
             <Select defaultValue="1">
               <SelectTrigger>
                 <SelectValue placeholder="Select Gender" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="m">Male</SelectItem>
-                <SelectItem value="f">Female</SelectItem>
+                <SelectItem value="m">{t('male')}</SelectItem>
+                <SelectItem value="f">{t('female')}</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
         <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-          <Label className="flex w-full max-w-56">Country</Label>
+          <Label className="flex w-full max-w-56">{t('country')}</Label>
           <div className="grow">
             <Select value={country} onValueChange={setCountry}>
               <SelectTrigger>
                 <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="1">Spain</SelectItem>
                 <SelectItem value="2">Option 2</SelectItem>
                 <SelectItem value="3">Option 3</SelectItem>
               </SelectContent>
@@ -176,7 +181,7 @@ const PersonalDetails = () => {
           </div>
         </div>
         <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-          <Label className="flex w-full max-w-56">City</Label>
+          <Label className="flex w-full max-w-56">{t('city')}</Label>
           <Input
             id="city"
             type="text"
@@ -186,7 +191,7 @@ const PersonalDetails = () => {
           />
         </div>
         <div className="flex justify-end pt-2.5">
-          <Button>Save Changes</Button>
+          <Button>{t('saveBtn')}</Button>
         </div>
       </CardContent>
     </Card>

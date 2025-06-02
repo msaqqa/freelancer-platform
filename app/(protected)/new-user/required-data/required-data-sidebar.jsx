@@ -1,19 +1,21 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import { ScrollspyMenu } from './scrollspy-menu';
 
-export function AccountSettingsSidebar({ setActiveSection, activeSection }) {
+export function RequiredDataSidebar({ setActiveSection, activeSection }) {
+  const { t } = useTranslation('requiredData');
   const items = [
     {
-      title: 'Account Type',
+      title: t('sidebarAccounType'),
       target: 'account_type',
     },
     {
-      title: 'Personal Details',
+      title: t('sidebarPersonalDetails'),
       target: 'personal_details',
     },
     {
-      title: 'Professional Details',
+      title: t('sidebarProfessionalDetails'),
       target: 'professional_details',
     },
   ];

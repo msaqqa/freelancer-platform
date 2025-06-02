@@ -1,0 +1,33 @@
+{
+    "sidebarAccounType": "Account Type",
+    "sidebarPersonalDetails": "Personal Details",
+    "sidebarProfessionalDetails": "Professional Details",
+    
+    "accountTypeTitle": "Welcome To Taqat",
+    "accountTypeDesc": "Your Portal To Endless Business Opportunities.",
+    "accountTypeClient": "I Want To Hire New Talent.",
+    "accountTypeFreelancer": "I Want To Find New Job Opportunities.",
+    "saveBtn": "Save Changes",
+
+    "PersonalDetailsTitle": "Personal Details",
+    "photo": "Photo",
+    "name": "Name",
+    "birthDate": "Birth Date",
+    "dateHolder": "Pick a date",
+    "gender": "Gender",
+    "male": "Male",
+    "female": "Female",
+    "country": "Country",
+    "city": "City",
+
+    "ProfessionalTitle": "ProfessionalDetails",
+    "workField": "Work Field",
+    "workFieldHolder": "Enter Work Field",
+    "description": "Description ( bio )",
+    "descriptionHolder": "Enter Description ",
+    "language": "Language",
+    "english": "English",
+    "arabic": "Arabic",
+    "availability": "Availability",
+    "availabilityHolder": "Availabe to hire"
+}

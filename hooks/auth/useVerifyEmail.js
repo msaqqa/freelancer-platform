@@ -38,7 +38,7 @@ function useVerifyEmail() {
       // store token
       Cookies.set('token', data?.data?.token);
       // redirect to main dashboard
-      router.push('/new-user/required-data');
+      router.push('/new-user/account-type');
     },
     onError: (error) => {
       setErrors(error);

@@ -6,12 +6,8 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
 import { useSettings } from '@/providers/settings-provider';
 import { Scrollspy } from '@/components/ui/scrollspy';
-import { AccountSettingsSidebar } from './account-basic-sidebar';
-import {
-  AccoountType,
-  PersonalDetails,
-  ProfessionalDetails,
-} from './components';
+import { PersonalDetails, ProfessionalDetails } from './components';
+import { RequiredDataSidebar } from './required-data-sidebar';
 
 const stickySidebarClasses = {
   'demo1-layout': 'top-[calc(var(--header-height)+1rem)]',
@@ -27,11 +23,10 @@ const stickySidebarClasses = {
 };
 
 export function AccountSettingsSidebarContent() {
-  const userType = 'freelancer';
   const isMobile = useIsMobile();
   const { settings } = useSettings();
   const [sidebarSticky, setSidebarSticky] = useState(false);
-  const [activeSection, setActiveSection] = useState('account_type');
+  const [activeSection, setActiveSection] = useState('personal_details');
 
   // Initialize ref for parentEl
   const parentRef = useRef(document); // Default to document
@@ -67,7 +62,7 @@ export function AccountSettingsSidebarContent() {
             )}
           >
             <Scrollspy offset={100} targetRef={parentRef}>
-              <AccountSettingsSidebar
+              <RequiredDataSidebar
                 setActiveSection={setActiveSection}
                 activeSection={activeSection}
               />
@@ -76,12 +71,8 @@ export function AccountSettingsSidebarContent() {
         </div>
       )}
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
-        {activeSection === 'account_type' && <AccoountType />}
-        {activeSection === 'personal_details' && userType === 'freelancer' && (
-          <PersonalDetails />
-        )}
-        {activeSection === 'professional_details' &&
-          userType === 'freelancer' && <ProfessionalDetails />}
+        {activeSection === 'personal_details' && <PersonalDetails />}
+        {activeSection === 'professional_details' && <ProfessionalDetails />}
       </div>
     </div>
   );

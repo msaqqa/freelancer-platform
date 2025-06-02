@@ -36,6 +36,7 @@ export default function Page() {
     handleSubmit,
     handleVerifiedSubmit,
     handleGoogleSignin,
+    onSubmit,
   } = useSignup();
 
   const error = errors?.message;
@@ -51,7 +52,7 @@ export default function Page() {
           {t('siginupAlertSuccess')}{' '}
           <Link
             href={{
-              pathname: '/verify-email/',
+              pathname: '/verify-email',
               query: { email },
             }}
             className="text-primary hover:text-primary-darker"
@@ -67,7 +68,10 @@ export default function Page() {
   return (
     <Suspense>
       <Form {...form}>
-        <form onSubmit={handleSubmit} className="block w-full space-y-5">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="block w-full space-y-5"
+        >
           <div className="space-y-1.5 pb-3">
             <h1 className="text-2xl font-semibold tracking-tight text-center">
               {t('signup')}
@@ -232,7 +236,7 @@ export default function Page() {
             />
           </div>
 
-          <div className="flex flex-col gap-2.5">
+          {/* <div className="flex flex-col gap-2.5">
             <RecaptchaPopover
               open={showRecaptcha}
               onOpenChange={(open) => {
@@ -250,10 +254,19 @@ export default function Page() {
                 </Button>
               }
             />
+          </div> */}
+
+          <div className="flex flex-col gap-2.5">
+            <Button type="submit" disabled={isProcessing}>
+              {isProcessing ? (
+                <Spinner className="size-4 animate-spin" />
+              ) : null}
+              {t('signup')}
+            </Button>
           </div>
 
           <div className="text-sm text-muted-foreground text-center">
-            {t('haveAccount')}{' '}
+            {t('haveAccount')}
             <Link
               href="/signin"
               className="text-sm text-sm font-semibold text-foreground hover:text-primary"
