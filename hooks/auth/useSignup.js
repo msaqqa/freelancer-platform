@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { signupWithCredentials } from '@/services/auth/auth';
+import { getAuthUserData, signupWithCredentials } from '@/services/auth/auth';
 import { getSignupSchema } from '@/app/(auth)/forms/signup-schema';
 
 function useSignup() {
@@ -47,14 +47,22 @@ function useSignup() {
     },
   });
 
-  const handleGoogleSignin = async () => {
-    try {
-      const googleUrl = await getGoogleOAuthUrl();
-      window.location.href = googleUrl;
-    } catch (err) {
-      console.error('Failed to get Google login URL', err);
-    }
-  };
+  const handleGoogleSignup = useQuery({
+    queryKey: ['googleOAuth'],
+    queryFn: getAuthUserData,
+    enabled: false,
+    refetchOnWindowFocus: false,
+    onSuccess: () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        Cookies.set('token', token);
+        router.push('/freelancer');
+      }
+    },
+  });
+
+  const { refetch: GoogleSignin } = handleGoogleSignup;
 
   return {
     t,
@@ -70,7 +78,7 @@ function useSignup() {
     success: mutation.isSuccess,
     handleSubmit,
     handleVerifiedSubmit,
-    handleGoogleSignin,
+    GoogleSignin,
     onSubmit,
   };
 }

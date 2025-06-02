@@ -44,27 +44,22 @@ function useSignin() {
     },
   });
 
-  const handleGoogleSignin = async () => {
-    try {
-      const googleUrl = await getGoogleOAuthUrl();
-      window.location.href = googleUrl;
-    } catch (err) {
-      console.error('Failed to get Google login URL', err);
-    }
-  };
-
-  const handleGoogleSignin2 = useQuery({
+  const handleGoogleSignin = useQuery({
     queryKey: ['googleOAuth'],
     queryFn: getGoogleOAuthUrl,
     enabled: false,
     refetchOnWindowFocus: false,
-    onSuccess: (data) => {
-      console.log('data', data);
-      window.location.href = googleUrl;
+    onSuccess: () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get('token');
+      if (token) {
+        Cookies.set('token', token);
+        router.push('/freelancer');
+      }
     },
   });
 
-  const { refetch: GoogleSignin } = handleGoogleSignin2;
+  const { refetch: GoogleSignin } = handleGoogleSignin;
 
   return {
     t,
@@ -74,7 +69,6 @@ function useSignin() {
     errors: mutation.error,
     isProcessing: mutation.isPending,
     onSubmit,
-    handleGoogleSignin,
     GoogleSignin,
   };
 }

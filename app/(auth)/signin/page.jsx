@@ -28,7 +28,7 @@ export default function Page() {
     errors,
     isProcessing,
     onSubmit,
-    handleGoogleSignin,
+    GoogleSignin,
   } = useSignin();
   const error = errors?.message;
   return (
@@ -59,8 +59,7 @@ export default function Page() {
           <Button
             variant="outline"
             type="button"
-            // onClick={() => signIn('google', { callbackUrl: '/' })}
-            onClick={() => handleGoogleSignin()}
+            onClick={() => GoogleSignin()}
           >
             <Icons.googleColorful className="size-5! opacity-100!" />{' '}
             {t('SigninGoogle')}

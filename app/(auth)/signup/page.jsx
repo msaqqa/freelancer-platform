@@ -35,7 +35,7 @@ export default function Page() {
     success,
     handleSubmit,
     handleVerifiedSubmit,
-    handleGoogleSignin,
+    GoogleSignin,
     onSubmit,
   } = useSignup();
 
@@ -83,7 +83,7 @@ export default function Page() {
               variant="outline"
               type="button"
               // onClick={() => signIn('google', { callbackUrl: '/' })}
-              onClick={() => handleGoogleSignin()}
+              onClick={() => GoogleSignin()}
             >
               <Icons.googleColorful className="size-4!" /> {t('SignupGoogle')}
             </Button>

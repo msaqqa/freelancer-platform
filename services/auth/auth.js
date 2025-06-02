@@ -23,16 +23,6 @@ export const signinWithCredentials = async (credentials) => {
   }
 };
 
-// get the google Oauth URL from the api
-export const getGoogleOAuthUrl = async () => {
-  try {
-    const res = await apiTaqat.get('/api/uauth/google/url');
-    return res.data.url;
-  } catch (error) {
-    throw error.response?.data || error;
-  }
-};
-
 // user forget password using email, OTP
 export const forgetPassword = async (email) => {
   try {
@@ -85,10 +75,9 @@ export const resendEmailOtp = async (email) => {
 
 // get the user data from the api
 export async function getAuthUserData() {
-  console.log('test');
   try {
-    const response = await apiTaqat.get('/profile');
-    return response.data;
+    const googleUrl = 'dev.taqatportal.com/api/auth/google';
+    window.location.href = googleUrl;
   } catch (error) {
     throw error.response?.data || error;
   }
