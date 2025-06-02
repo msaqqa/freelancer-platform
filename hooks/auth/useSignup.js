@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { getAuthUserData, signupWithCredentials } from '@/services/auth/auth';
+import { getGoogleOAuthUrl, signupWithCredentials } from '@/services/auth/auth';
 import { getSignupSchema } from '@/app/(auth)/forms/signup-schema';
 
 function useSignup() {
@@ -49,7 +49,7 @@ function useSignup() {
 
   const handleGoogleSignup = useQuery({
     queryKey: ['googleOAuth'],
-    queryFn: getAuthUserData,
+    queryFn: getGoogleOAuthUrl,
     enabled: false,
     refetchOnWindowFocus: false,
     onSuccess: () => {
