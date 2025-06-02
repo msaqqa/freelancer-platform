@@ -26,7 +26,7 @@ export const signinWithCredentials = async (credentials) => {
 // get the google Oauth URL from the api
 export const getGoogleOAuthUrl = async () => {
   try {
-    const googleUrl = 'dev.taqatportal.com/api/auth/google';
+    const googleUrl = 'http://dev.taqatportal.com/api/auth/google';
     window.location.href = googleUrl;
   } catch (error) {
     throw error.response?.data || error;
