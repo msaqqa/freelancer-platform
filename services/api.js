@@ -4,7 +4,8 @@ import Cookies from 'js-cookie';
 export const apiTaqat = axios.create({
   baseURL: 'https://dev.taqatportal.com/api',
   headers: {
-    'Content-Type': 'application/json',
+    // 'Content-Type': 'application/json',
+    'Content-Type': 'multipart/form-data',
   },
 });
 
@@ -12,8 +13,12 @@ export const apiTaqat = axios.create({
 apiTaqat.interceptors.request.use(
   (config) => {
     const token = Cookies.get('token');
+    const language = Cookies.get('language');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
+    }
+    if (language) {
+      config.headers['Accept-Language'] = language;
     }
     return config;
   },

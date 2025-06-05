@@ -1,28 +1,14 @@
-'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/userStore';
 import { useAuth } from '@/hooks/auth/useAuth';
-import { ScreenLoader } from '@/components/common/screen-loader';
 
-export default function ProtectedLayout({ children }) {
-  const setAccountType = useUserStore((state) => state.setAccountType);
+export const useProtectedRouting = () => {
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
   const type = user?.type || null;
   const requiredData = user?.save_date || null;
 
-  useEffect(() => {
-    if (isLoading) return;
-
-    if (!user || isError) {
-      router.push('/signin');
-      return;
-    }
-
-    setAccountType(type);
-
+  const redirectToUserPage = () => {
     if (type === 'client' && requiredData) {
       router.push('/client');
     } else if (type === 'freelancer' && requiredData) {
@@ -32,12 +18,17 @@ export default function ProtectedLayout({ children }) {
     } else {
       router.push('/new-user/account-type');
     }
-  }, [isLoading, type, requiredData, router]);
+  };
 
-  if (isLoading) {
-    return <ScreenLoader />;
-  }
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user || isError) {
+      router.push('/signin');
+      return;
+    }
 
-  return user && children;
-  // return children;
-}
+    redirectToUserPage();
+  }, [isLoading, user, isError, router]);
+
+  return { isLoading, user, redirectToUserPage };
+};

@@ -23,36 +23,44 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
 
-const ProfessionalDetails = () => {
-  const [workField, setWorkField] = useState('');
-  const [language, setLanguage] = useState('en');
+const ClientPersonalDetails = () => {
+  const [nameInput, setNameInput] = useState('');
   const [description, setDescription] = useState('');
+  const [country, setCountry] = useState('1');
+  const [website, setWebsite] = useState('');
   const { t } = useTranslation('requiredData');
 
   return (
     <Card className="pb-2.5">
-      <CardHeader id="professional_details">
-        <CardTitle>{t('ProfessionalTitle')}</CardTitle>
+      <CardHeader id="personal_details">
+        <CardTitle>{t('personalDtails')}</CardTitle>
       </CardHeader>
       <CardContent className="grid gap-5">
+        <div className="flex items-center flex-wrap gap-2.5">
+          <Label className="flex w-full max-w-56">Photo</Label>
+          <div className="flex items-center justify-between flex-wrap grow gap-2.5">
+            <span className="text-sm text-secondary-foreground">
+              150x150px JPEG, PNG
+            </span>
+            <AvatarInput />
+          </div>
+        </div>
         <div className="w-full">
           <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
             <Label className="flex w-full items-center gap-1 max-w-56">
-              {t('workField')}
+              {t('name')}
             </Label>
             <Input
               type="text"
-              placeholder={t('description')}
-              value={workField}
-              onChange={(e) => setWorkField(e.target.value)}
+              defaultValue={nameInput}
+              onChange={(e) => setNameInput(e.target.value)}
             />
           </div>
         </div>
         <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-          <Label className="flex w-full max-w-56">{t('workFieldHolder')}</Label>
+          <Label className="flex w-full max-w-56">{t('description')}</Label>
           <Textarea
             placeholder={t('descriptionHolder')}
             className="text-sm text-secondary-foreground font-normal"
@@ -61,27 +69,31 @@ const ProfessionalDetails = () => {
             onChange={(e) => setDescription(e.target.value)}
           />
         </div>
-        <div className="flex items-center flex-wrap gap-2.5">
-          <Label className="flex w-full max-w-56">{t('language')}</Label>
+        <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+          <Label className="flex w-full max-w-56">{t('country')}</Label>
           <div className="grow">
-            <Select value={language} onValueChange={setLanguage}>
+            <Select value={country} onValueChange={setCountry}>
               <SelectTrigger>
-                <SelectValue placeholder="Select Language" />
+                <SelectValue placeholder="Select" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="en">{t('english')}</SelectItem>
-                <SelectItem value="ar">{t('arabic')}</SelectItem>
+                <SelectItem value="2">Option 2</SelectItem>
+                <SelectItem value="3">Option 3</SelectItem>
               </SelectContent>
             </Select>
           </div>
         </div>
-        <div className="flex items-center gap-7.5">
-          <Label className="flex w-full max-w-56">{t('availability')}</Label>
-
-          <Label htmlFor="auto-update" className="text-foreground text-sm">
-            {t('availabilityHolder')}
-          </Label>
-          <Switch defaultChecked size="sm" />
+        <div className="w-full">
+          <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+            <Label className="flex w-full items-center gap-1 max-w-56">
+              Website
+            </Label>
+            <Input
+              type="text"
+              placeholder="Enter Website (optional)"
+              onChange={(e) => setWebsite(e.target.value)}
+            />
+          </div>
         </div>
         <div className="flex justify-end pt-2.5">
           <Button>{t('saveBtn')}</Button>
@@ -91,4 +103,4 @@ const ProfessionalDetails = () => {
   );
 };
 
-export { ProfessionalDetails };
+export { ClientPersonalDetails };

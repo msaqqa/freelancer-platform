@@ -12,6 +12,7 @@ function useSignin() {
   const router = useRouter();
   const { t } = useTranslation('auth');
   const [passwordVisible, setPasswordVisible] = useState(false);
+  const [isVerified, setIsVerified] = useState(true);
 
   const form = useForm({
     resolver: zodResolver(getSigninSchema(t)),
@@ -23,6 +24,7 @@ function useSignin() {
   });
 
   const onSubmit = (values) => {
+    setIsVerified(true);
     mutation.mutate(values);
   };
 
@@ -36,9 +38,22 @@ function useSignin() {
         Cookies.set('token', data?.data?.token); // 1 session
       }
       // redirect to main dashboard
-      router.push('/freelancer');
+      const type = data?.data?.type || null;
+      const requiredData = data?.data?.save_date || null;
+      if (type === 'client' && requiredData) {
+        router.push('/client');
+      } else if (type === 'freelancer' && requiredData) {
+        router.push('/freelancer');
+      } else if (type && !requiredData) {
+        router.push('/new-user/required-data');
+      } else {
+        router.push('/new-user/account-type');
+      }
     },
     onError: (error) => {
+      if (error?.data?.is_verified) {
+        setIsVerified(false);
+      }
       console.error('error', error);
       throw error?.response?.data?.message || error.message;
     },
@@ -57,6 +72,7 @@ function useSignin() {
     isProcessing: mutation.isPending,
     onSubmit,
     handleGoogleSignin,
+    isVerified,
   };
 }
 

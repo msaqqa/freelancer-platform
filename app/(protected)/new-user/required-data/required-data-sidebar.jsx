@@ -3,9 +3,37 @@
 import { useTranslation } from 'react-i18next';
 import { ScrollspyMenu } from './scrollspy-menu';
 
-export function RequiredDataSidebar({ setActiveSection, activeSection }) {
+export function RequiredDataSidebar({
+  accountType,
+  clientType,
+  activeSection,
+  setActiveSection,
+  handleClickBtn,
+}) {
   const { t } = useTranslation('requiredData');
-  const items = [
+  const clientItems = [
+    {
+      title: t('sidebarAccounType'),
+      target: 'account_type',
+    },
+    {
+      title: 'Personal Details',
+      target: 'personal_details',
+    },
+    {
+      title: 'Company Details',
+      target: 'company_details',
+    },
+    // clientType === 'personal' && {
+    //   title: 'Personal Details',
+    //   target: 'personal_details',
+    // },
+    // clientType === 'company' && {
+    //   title: 'Company Details',
+    //   target: 'company_details',
+    // },
+  ];
+  const freelancerItems = [
     {
       title: t('sidebarAccounType'),
       target: 'account_type',
@@ -19,6 +47,7 @@ export function RequiredDataSidebar({ setActiveSection, activeSection }) {
       target: 'professional_details',
     },
   ];
+  const items = accountType === 'client' ? clientItems : freelancerItems;
 
   return (
     <ScrollspyMenu

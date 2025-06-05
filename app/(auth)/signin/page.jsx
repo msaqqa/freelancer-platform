@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import { RiErrorWarningFill } from '@remixicon/react';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import useSignin from '@/hooks/auth/useSignin';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -29,8 +28,11 @@ export default function Page() {
     isProcessing,
     onSubmit,
     handleGoogleSignin,
+    isVerified,
   } = useSignin();
+
   const error = errors?.message;
+  const email = form.getValues('email');
   return (
     <Form {...form}>
       <form
@@ -42,18 +44,6 @@ export default function Page() {
             {t('signin')}
           </h1>
         </div>
-
-        <Alert size="sm" close={false}>
-          <AlertIcon>
-            <RiErrorWarningFill className="text-primary" />
-          </AlertIcon>
-          <AlertTitle className="text-accent-foreground">
-            Use <span className="text-mono font-semibold">demo@taqat.com</span>{' '}
-            username and{' '}
-            <span className="text-mono font-semibold">Demo@123</span> for demo
-            access.
-          </AlertTitle>
-        </Alert>
 
         <div className="flex flex-col gap-3.5">
           <Button variant="outline" type="button" onClick={handleGoogleSignin}>
@@ -78,7 +68,18 @@ export default function Page() {
             <AlertIcon>
               <AlertCircle />
             </AlertIcon>
-            <AlertTitle>{error}</AlertTitle>
+            <AlertTitle>
+              {error}
+              <br />
+              {!isVerified && (
+                <Link
+                  href={`/verify-email?email=${encodeURIComponent(email)}`}
+                  className="text-accent hover:text-primary-darker underline"
+                >
+                  {t('verifyEmail')}
+                </Link>
+              )}
+            </AlertTitle>
           </Alert>
         )}
 

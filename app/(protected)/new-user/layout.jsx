@@ -19,7 +19,7 @@ function NewUserlayout({ children }) {
     return <ScreenLoader />;
   }
 
-  return session && children;
+  return children;
 }
 
 export default NewUserlayout;

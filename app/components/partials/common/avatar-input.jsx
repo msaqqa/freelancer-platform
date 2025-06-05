@@ -12,16 +12,21 @@ import {
 } from '@/components/ui/tooltip';
 import { ImageInput } from '@/components/image-input';
 
-export function AvatarInput() {
-  const [avatar, setAvatar] = useState([
-    { dataURL: toAbsoluteUrl(`/media/avatars/300-2.png`) },
-  ]);
+export function AvatarInput({ onChange }) {
+  const [avatar, setAvatar] = useState(null);
+
+  const handleImageUpload = (selectedAvatar) => {
+    setAvatar(selectedAvatar);
+    // Ensure the image is passed correctly to the form as File
+    if (selectedAvatar.length > 0) {
+      onChange(selectedAvatar[0].file); // Send only the `file` object
+    } else {
+      onChange(null); // Clear field value if no image is selected
+    }
+  };
 
   return (
-    <ImageInput
-      value={avatar}
-      onChange={(selectedAvatar) => setAvatar(selectedAvatar)}
-    >
+    <ImageInput value={avatar} onChange={handleImageUpload}>
       {({ onImageUpload }) => (
         <div
           className="size-16 relative cursor-pointer"
@@ -31,12 +36,13 @@ export function AvatarInput() {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Button
+                  type="button"
                   variant="outline"
                   mode="icon"
                   className="shadow-xs text-secondary-foreground/80 hover:text-foreground absolute z-1 size-5 -top-0.5 -end-0.5 rounded-full"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setAvatar([]);
+                    setAvatar(null);
                   }}
                 >
                   <X className="size-3.25!" />
@@ -51,7 +57,7 @@ export function AvatarInput() {
               backgroundImage: `url(${toAbsoluteUrl(`/media/avatars/blank.png`)})`,
             }}
           >
-            {avatar.length > 0 && <img src={avatar[0].dataURL} alt="avatar" />}
+            {avatar?.length > 0 && <img src={avatar[0].dataURL} alt="avatar" />}
             <div className="flex items-center justify-center cursor-pointer h-5 left-0 right-0 bottom-0 bg-black/25 absolute">
               <svg
                 xmlns="http://www.w3.org/2000/svg"

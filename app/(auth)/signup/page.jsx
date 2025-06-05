@@ -32,7 +32,6 @@ export default function Page() {
     setShowRecaptcha,
     errors,
     isProcessing,
-    success,
     handleSubmit,
     handleVerifiedSubmit,
     handleGoogleSignin,
@@ -40,30 +39,6 @@ export default function Page() {
   } = useSignup();
 
   const error = errors?.message;
-  const email = form.getValues('email');
-
-  if (success) {
-    return (
-      <Alert>
-        <AlertIcon>
-          <Check />
-        </AlertIcon>
-        <AlertTitle>
-          {t('siginupAlertSuccess')}{' '}
-          <Link
-            href={{
-              pathname: '/verify-email',
-              query: { email },
-            }}
-            className="text-primary hover:text-primary-darker"
-          >
-            {t('verifyEmail')}
-          </Link>
-          .
-        </AlertTitle>
-      </Alert>
-    );
-  }
 
   return (
     <Suspense>
@@ -82,7 +57,6 @@ export default function Page() {
             <Button
               variant="outline"
               type="button"
-              // onClick={() => signIn('google', { callbackUrl: '/' })}
               onClick={handleGoogleSignin}
             >
               <Icons.googleColorful className="size-4!" /> {t('SignupGoogle')}

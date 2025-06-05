@@ -9,9 +9,10 @@
     "accountTypeFreelancer": "I Want To Find New Job Opportunities.",
     "saveBtn": "Save Changes",
 
-    "PersonalDetailsTitle": "Personal Details",
+    "personalDetailsTitle": "Personal Details",
     "photo": "Photo",
     "name": "Name",
+    "nameHolder": "Enter your name",
     "birthDate": "Birth Date",
     "dateHolder": "Pick a date",
     "gender": "Gender",
@@ -20,14 +21,18 @@
     "country": "Country",
     "city": "City",
 
-    "ProfessionalTitle": "ProfessionalDetails",
-    "workField": "Work Field",
-    "workFieldHolder": "Enter Work Field",
+    "professionalTitle": "Professional Details",
+    "category": "Category",
+    "categoryHolder": "Select your category",
+    "subcategory": "Subcategory",
+    "subcategoryHolder": "Select your subcategory",
+    "skills": "Skills",
+    "skillsHolder": "Select your skills",
     "description": "Description ( bio )",
     "descriptionHolder": "Enter Description ",
-    "language": "Language",
-    "english": "English",
-    "arabic": "Arabic",
+    "hourlyRate": "Hourly Rate",
     "availability": "Availability",
-    "availabilityHolder": "Availabe to hire"
+    "availabilityHolder": "Availabe to hire",
+
+    "alertSuccess": "Data added successfully"
 }

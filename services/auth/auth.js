@@ -131,3 +131,13 @@ export const signoutUser = async (credentials) => {
     throw error.response?.data || error;
   }
 };
+
+// set the account type data
+export const submitAccountType = async (payload) => {
+  try {
+    const response = await apiTaqat.post('/account-type', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

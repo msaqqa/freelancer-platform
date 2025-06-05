@@ -11,14 +11,14 @@ const ScrollspyMenu = ({ items, setActiveSection, activeSection }) => {
       <div
         key={index}
         data-scrollspy-anchor={item.target}
-        onClick={() => {
-          setActiveSection(item.target);
-          item.target === 'account_type'
-            ? router.push('/new-user/account-type')
-            : null;
-        }}
+        // onClick={() => {
+        //   setActiveSection(item.target);
+        //   item.target === 'account_type'
+        //     ? router.push('/new-user/account-type')
+        //     : null;
+        // }}
         className={cn(
-          'cursor-pointer flex items-center rounded-lg ps-2.5 pe-2.5 py-1.5 border border-transparent text-accent-foreground hover:text-primary',
+          'flex items-center rounded-lg ps-2.5 pe-2.5 py-1.5 border border-transparent text-accent-foreground',
           isActive && 'bg-accent text-primary font-medium',
           indent ? 'gap-3.5' : 'gap-1.5',
         )}

@@ -12,7 +12,7 @@ export default function AuthCallbackPage() {
     const token = searchParams.get('token');
     if (token) {
       Cookies.set('token', token);
-      router.push('/freelancer');
+      router.push('/');
     } else {
       console.error('Token not found in URL');
     }
