@@ -4,7 +4,6 @@ import { Fragment } from 'react';
 import { HighlightedPosts } from '@/partials/common/highlighted-posts';
 import { ShieldCheck, ShieldOff, ShieldQuestion } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
-import { FeaturesHighlight } from '@/app/(protected)/freelancer/public-profile/profiles/creator/components/features-highlight';
 import {
   Authentification,
   GeneralSettings,
@@ -43,31 +42,6 @@ export function AccountOverviewContent() {
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 lg:gap-7.5">
       <div className="col-span-2">
         <div className="flex flex-col gap-5 lg:gap-7.5">
-          <FeaturesHighlight
-            image={
-              <Fragment>
-                <img
-                  src={toAbsoluteUrl('/media/illustrations/5.svg')}
-                  className="dark:hidden max-h-36"
-                  alt="image"
-                />
-
-                <img
-                  src={toAbsoluteUrl('/media/illustrations/5-dark.svg')}
-                  className="light:hidden max-h-36"
-                  alt="image"
-                />
-              </Fragment>
-            }
-            title={<>Essential Personal Security Tips for Enhanced Safety</>}
-            description="Transform your living space beautifully with our Restyle Your Space: Soft Goods Makeover Ideas tutorial"
-            more={{ title: 'Review Security Tips', url: '#' }}
-            features={[
-              ['Strong Passwords', 'Two-Factor Authentication'],
-              ['Budget-Friendly', 'Fresh Look'],
-            ]}
-          />
-
           <GeneralSettings />
           <Authentification />
           <QuickSettings />
