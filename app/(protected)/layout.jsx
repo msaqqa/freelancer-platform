@@ -2,8 +2,8 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/userStore';
-import { useAuth } from '@/hooks/auth/useAuth';
+import { useUserStore } from '@/stores/user-store';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
@@ -11,7 +11,7 @@ export default function ProtectedLayout({ children }) {
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
   const type = user?.type || null;
-  const requiredData = user?.save_date || null;
+  const requiredData = user?.save_data || null;
 
   useEffect(() => {
     if (isLoading) return;

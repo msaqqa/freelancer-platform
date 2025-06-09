@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { AlertCircle, ArrowLeft, Eye, EyeOff } from 'lucide-react';
-import useResetPassword from '@/hooks/auth/useResetPassword';
+import useResetPassword from '@/hooks/auth/use-reset-password';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {

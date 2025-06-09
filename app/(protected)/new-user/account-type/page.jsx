@@ -1,13 +1,11 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/userStore';
-import { RiCheckboxCircleFill } from '@remixicon/react';
-import { QueryClient, useMutation } from '@tanstack/react-query';
+import { useUserStore } from '@/stores/user-store';
+import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { submitAccountType } from '@/services/auth/auth';
-import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import TypeComponent from '../components/type-component';
 
 export default function AccountType() {
@@ -16,7 +14,6 @@ export default function AccountType() {
   const router = useRouter();
   const { t } = useTranslation('requiredData');
 
-  console.log('accountType', accountType);
   const handleChange = (value) => {
     setAccountType(value);
   };
@@ -26,13 +23,8 @@ export default function AccountType() {
     onSuccess: (data) => {
       toast.success(data.message);
       setTimeout(() => {
-        if (accountType === 1) {
-          router.push(`/new-user/client-type`);
-        }
-        if (accountType === 2) {
-          router.push(`/new-user/required-data`);
-        }
-      }, 1000);
+        router.push(`/new-user/required-data`);
+      }, 1500);
     },
     onError: (error) => {
       toast.error(error.message);
@@ -40,7 +32,8 @@ export default function AccountType() {
   });
 
   const handleSubmit = async () => {
-    mutation.mutate({ type: accountType });
+    const typeNum = accountType === 'client' ? 1 : 2;
+    mutation.mutate({ type: typeNum });
   };
 
   const isProcessing = mutation.isPending || false;
@@ -52,14 +45,14 @@ export default function AccountType() {
       lightImg: '/media/illustrations/36.svg',
       darkImg: '/media/illustrations/36-dark.svg',
       active: accountType === 1,
-      value: 1,
+      value: 'client',
     },
     {
       name: t('accountTypeFreelancer'),
       lightImg: '/media/illustrations/37.svg',
       darkImg: '/media/illustrations/37-dark.svg',
       active: accountType === 2,
-      value: 2,
+      value: 'freelancer',
     },
   ];
 

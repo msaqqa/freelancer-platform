@@ -16,7 +16,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import { RecaptchaPopover } from '@/components/common/recaptcha-popover';
-import useForgetPassword from '../../../hooks/auth/useForgotPassword';
+import useForgetPassword from '../../../hooks/auth/use-forgot-password';
 
 export default function Page() {
   const {

@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
-import useSignin from '@/hooks/auth/useSignin';
+import useSignin from '@/hooks/auth/use-signin';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';

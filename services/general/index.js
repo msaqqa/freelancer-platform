@@ -21,9 +21,9 @@ export async function getCategories() {
 }
 
 // get list of subcategories
-export async function getSubcategories() {
+export async function getSubcategories(categoryId) {
   try {
-    const response = await apiTaqat.get('/subcategories');
+    const response = await apiTaqat.get(`/subcategories/${categoryId}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -31,9 +31,9 @@ export async function getSubcategories() {
 }
 
 // Get list of skills
-export async function getSkills() {
+export async function getSkills(categoryId) {
   try {
-    const response = await apiTaqat.get('/skills');
+    const response = await apiTaqat.get(`/skills/${categoryId}`);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

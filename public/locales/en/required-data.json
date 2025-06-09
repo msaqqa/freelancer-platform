@@ -1,24 +1,27 @@
 {
-    "sidebarAccounType": "Account Type",
+    "sidebarFreelancerTitle": "Find New Job",
+    "sidebarClientTitle": "New Talent",
     "sidebarPersonalDetails": "Personal Details",
     "sidebarProfessionalDetails": "Professional Details",
     
     "accountTypeTitle": "Welcome To Taqat",
     "accountTypeDesc": "Your Portal To Endless Business Opportunities.",
-    "accountTypeClient": "I Want To Hire New Talent.",
-    "accountTypeFreelancer": "I Want To Find New Job Opportunities.",
+    "accountTypeClient": "I'm Looking For Talent.",
+    "accountTypeFreelancer": "I Want To Work.",
     "saveBtn": "Save Changes",
 
     "personalDetailsTitle": "Personal Details",
     "photo": "Photo",
-    "name": "Name",
+    "name": "Display Name",
     "nameHolder": "Enter your name",
     "birthDate": "Birth Date",
     "dateHolder": "Pick a date",
     "gender": "Gender",
+    "genderHolder": "Select gender",
     "male": "Male",
     "female": "Female",
     "country": "Country",
+    "countryHolder": "Select country",
     "city": "City",
 
     "professionalTitle": "Professional Details",
@@ -34,5 +37,19 @@
     "availability": "Availability",
     "availabilityHolder": "Availabe to hire",
 
-    "alertSuccess": "Data added successfully"
+    "alertSuccess": "Data saved successfully",
+    "loading": "Loading...",
+
+    "clientPersonalDetails": {
+        "personalDetailsTitle": "Personal Details",
+        "photo": "Photo",
+        "name": "Display Name",
+        "nameHolder": "Enter Display Name",
+        "bio": "Short Bio/Description",
+        "bioHolder": "Pitch your experience in a few sentences (optional)",
+        "country": "Location",
+        "countryHolder": "Select Country",
+        "website": "Website",
+        "websiteHolder": "Enter Website (optional)"
+    }
 }

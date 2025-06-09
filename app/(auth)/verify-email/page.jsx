@@ -2,7 +2,7 @@
 
 import { Suspense } from 'react';
 import { AlertCircle } from 'lucide-react';
-import useVerifyEmail from '@/hooks/auth/useVerifyEmail';
+import useVerifyEmail from '@/hooks/auth/use-verify-email';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {

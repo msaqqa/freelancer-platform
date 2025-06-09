@@ -1,5 +1,6 @@
 {
-    "sidebarAccounType": "نوع الحساب",
+    "sidebarFreelancerTitle": "ابحث عن وظيفة جديدة",
+    "sidebarClientTitle": "مواهب جديدة",
     "sidebarPersonalDetails": "التفاصيل الشخصية",
     "sidebarProfessionalDetails": "التفاصيل المهنية",
     
@@ -34,5 +35,20 @@
     "availability": "التوفر",
     "availabilityHolder": "متاح للتوظيف",
 
-    "alertSuccess": "تم إضافة البيانات بنجاح"
+    "alertSuccess": "تم حفظ البيانات بنجاح",
+    "loading": "جاري التحميل...",
+
+    "clientPersonalDetails": {
+    "personalDetailsTitle": "التفاصيل الشخصية",
+    "photo": "الصورة",
+    "name": "اسم العرض",
+    "nameHolder": "أدخل اسم العرض",
+    "bio": "نبذة قصيرة/وصف",
+    "bioHolder": "قدّم خبرتك في بضع جمل (اختياري)",
+    "country": "الموقع",
+    "countryHolder": "اختيار الدولة",
+    "website": "الموقع الإلكتروني",
+    "websiteHolder": "أدخل الموقع الإلكتروني (اختياري)"
+    }
+
 }

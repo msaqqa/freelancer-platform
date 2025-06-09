@@ -37,7 +37,7 @@ const PersonalDetails = ({ setActiveSection }) => {
     trigger,
   } = useFormContext();
 
-  const { data } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ['countries'],
     queryFn: getCountries,
   });
@@ -119,156 +119,149 @@ const PersonalDetails = ({ setActiveSection }) => {
         </div>
 
         {/* Birth Date */}
-        <div className="w-full">
-          <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-            <Label className="flex w-full items-center gap-1 max-w-56">
-              {t('birthDate')}
-            </Label>
-            <div className="flex flex-col flex-grow">
-              <Controller
-                control={control}
-                name="birthDate"
-                render={({ field }) => {
-                  const date = field.value;
-                  const onChange = field.onChange;
-                  return (
-                    <Popover>
-                      <PopoverTrigger asChild>
-                        <Button
-                          mode="input"
-                          variant="outline"
-                          id="date"
-                          onBlur={() => trigger('birthDate')}
-                          className={cn(
-                            'w-full data-[state=open]:border-primary',
-                            !date && 'text-muted-foreground',
-                            errors.birthDate &&
-                              'border-destructive focus:border-destructive ring-destructive',
-                          )}
-                        >
-                          <CalendarDays className="-ms-0.5" />
-                          {date ? (
-                            format(new Date(date), 'LLL dd, y')
-                          ) : (
-                            <span>{t('dateHolder')}</span>
-                          )}
-                        </Button>
-                      </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar
-                          data-invalid={errors.birthDate ? 'true' : 'false'}
-                          initialFocus
-                          mode="single"
-                          defaultMonth={date ? new Date(date) : undefined}
-                          selected={date ? new Date(date) : undefined}
-                          onSelect={(selectedDate) => {
-                            onChange(selectedDate?.toISOString() || null);
-                            trigger('birthDate');
-                          }}
-                          numberOfMonths={1}
-                          disabled={{ after: new Date() }}
-                        />
-                      </PopoverContent>
-                    </Popover>
-                  );
-                }}
-              />
-              {errors.birthDate && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.birthDate.message}
-                </p>
-              )}
-            </div>
+        <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+          <Label className="flex w-full items-center gap-1 max-w-56">
+            {t('birthDate')}
+          </Label>
+          <div className="flex flex-col flex-grow">
+            <Controller
+              control={control}
+              name="birthDate"
+              render={({ field }) => {
+                const date = field.value;
+                const onChange = field.onChange;
+                return (
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <Button
+                        mode="input"
+                        variant="outline"
+                        id="date"
+                        onBlur={() => trigger('birthDate')}
+                        className={cn(
+                          'w-full data-[state=open]:border-primary',
+                          !date && 'text-muted-foreground',
+                          errors.birthDate &&
+                            'border-destructive focus:border-destructive ring-destructive',
+                        )}
+                      >
+                        <CalendarDays className="-ms-0.5" />
+                        {date ? (
+                          format(new Date(date), 'LLL dd, y')
+                        ) : (
+                          <span>{t('dateHolder')}</span>
+                        )}
+                      </Button>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        data-invalid={errors.birthDate ? 'true' : 'false'}
+                        initialFocus
+                        mode="single"
+                        defaultMonth={date ? new Date(date) : undefined}
+                        selected={date ? new Date(date) : undefined}
+                        onSelect={(selectedDate) => {
+                          onChange(selectedDate?.toISOString() || null);
+                          trigger('birthDate');
+                        }}
+                        numberOfMonths={1}
+                        disabled={{ after: new Date() }}
+                      />
+                    </PopoverContent>
+                  </Popover>
+                );
+              }}
+            />
+            {errors.birthDate && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.birthDate.message}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Gender Select */}
-        <div className="w-full">
-          <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-            <Label className="flex w-full max-w-56">{t('gender')}</Label>
-            <div className="flex flex-col flex-grow">
-              <Controller
-                control={control}
-                name="gender"
-                defaultValue="male"
-                render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    onValueChange={(val) => {
-                      field.onChange(val);
+        <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+          <Label className="flex w-full max-w-56">{t('gender')}</Label>
+          <div className="flex flex-col flex-grow">
+            <Controller
+              control={control}
+              name="gender"
+              defaultValue="male"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    trigger('gender');
+                  }}
+                  onOpenChange={(isOpen) => {
+                    if (!isOpen) {
                       trigger('gender');
-                    }}
-                    onOpenChange={(isOpen) => {
-                      if (!isOpen) {
-                        trigger('gender');
-                      }
-                    }}
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    aria-invalid={errors.gender ? 'true' : 'false'}
+                    className={
+                      errors.gender
+                        ? 'border-destructive focus:border-destructive'
+                        : ''
+                    }
                   >
-                    <SelectTrigger
-                      aria-invalid={errors.gender ? 'true' : 'false'}
-                      className={
-                        errors.gender
-                          ? 'border-destructive focus:border-destructive'
-                          : ''
-                      }
-                    >
-                      <SelectValue
-                        placeholder={
-                          t('selectGenderPlaceholder') || 'Select Gender'
-                        }
-                      />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">{t('male')}</SelectItem>
-                      <SelectItem value="female">{t('female')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.gender && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.gender.message}
-                </p>
+                    <SelectValue placeholder={t('genderHolder')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="male">{t('male')}</SelectItem>
+                    <SelectItem value="female">{t('female')}</SelectItem>
+                  </SelectContent>
+                </Select>
               )}
-            </div>
+            />
+            {errors.gender && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.gender.message}
+              </p>
+            )}
           </div>
         </div>
 
         {/* Country Select */}
-        <div className="w-full">
-          <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-            <Label className="flex w-full max-w-56">{t('country')}</Label>
-            <div className="flex flex-col flex-grow">
-              <Controller
-                control={control}
-                name="country"
-                defaultValue="1"
-                render={({ field }) => (
-                  <Select
-                    value={field.value}
-                    onValueChange={(val) => {
-                      field.onChange(val);
+        <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+          <Label className="flex w-full max-w-56">{t('country')}</Label>
+          <div className="flex flex-col flex-grow">
+            <Controller
+              control={control}
+              name="country"
+              defaultValue="1"
+              render={({ field }) => (
+                <Select
+                  value={field.value}
+                  onValueChange={(val) => {
+                    field.onChange(val);
+                    trigger('country');
+                    handleCountryChange(val);
+                  }}
+                  onOpenChange={(isOpen) => {
+                    if (!isOpen) {
                       trigger('country');
-                      handleCountryChange(val);
-                    }}
-                    onOpenChange={(isOpen) => {
-                      if (!isOpen) {
-                        trigger('country');
-                      }
-                    }}
+                    }
+                  }}
+                >
+                  <SelectTrigger
+                    aria-invalid={errors.gender ? 'true' : 'false'}
+                    className={
+                      errors.gender
+                        ? 'border-destructive focus:border-destructive'
+                        : ''
+                    }
                   >
-                    <SelectTrigger
-                      aria-invalid={errors.gender ? 'true' : 'false'}
-                      className={
-                        errors.gender
-                          ? 'border-destructive focus:border-destructive'
-                          : ''
-                      }
-                    >
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {countries.map((country) => (
+                    <SelectValue placeholder={t('countryHolder')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {isLoading && <SelectItem>{t('loading')}</SelectItem>}
+                    {countries.length &&
+                      countries.map((country) => (
                         <SelectItem
                           key={country.id}
                           value={country.id.toString()}
@@ -276,56 +269,51 @@ const PersonalDetails = ({ setActiveSection }) => {
                           {country.name}
                         </SelectItem>
                       ))}
-                    </SelectContent>
-                  </Select>
-                )}
-              />
-              {errors.country && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.country.message}
-                </p>
+                  </SelectContent>
+                </Select>
               )}
-            </div>
+            />
+            {errors.country && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.country.message}
+              </p>
+            )}
           </div>
         </div>
 
-        {/* Phone Number Input */}
-        <div className="w-full">
-          <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-            <Label className="flex w-full max-w-56">{t('mobile')}</Label>
-            <div className="flex flex-col flex-grow">
-              <div
-                className={`flex items-center gap-2 border rounded-md ${errors.mobile ? 'border-destructive focus:border-destructive ring-destructive' : 'border-input'} `}
-              >
-                {/* Country Code and Flag inside the input */}
-                {selectedCountry && (
-                  <div className="flex items-center gap-1 px-3 h-8.5 bg-transparent">
-                    <span className="text-sm">
-                      {selectedCountry.number_code}
-                    </span>
-                    <img
-                      src={selectedCountry.flag}
-                      alt="Country Flag"
-                      className="w-6 h-4"
-                    />
-                  </div>
-                )}
-                {/* Phone Number Input */}
-                <Input
-                  type="text"
-                  aria-invalid={errors.mobile ? 'true' : 'false'}
-                  {...register('mobile', {
-                    required: 'Phone number is required',
-                  })}
-                  className="ps-0 border-0 focus-visible:outline-none focus-visible:ring-0"
-                />
-              </div>
-              {errors.mobile && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.mobile.message}
-                </p>
+        {/* Phone Number */}
+        <div className="flex items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+          <Label className="flex w-full max-w-56">{t('mobile')}</Label>
+          <div className="flex flex-col flex-grow">
+            <div
+              className={`flex items-center gap-2 border rounded-md ${errors.mobile ? 'border-destructive focus:border-destructive ring-destructive' : 'border-input'} `}
+            >
+              {/* Country Code and Flag inside the input */}
+              {selectedCountry && (
+                <div className="flex items-center gap-1 px-3 h-8.5 bg-transparent">
+                  <span className="text-sm">{selectedCountry.number_code}</span>
+                  <img
+                    src={selectedCountry.flag}
+                    alt="Country Flag"
+                    className="w-6 h-4"
+                  />
+                </div>
               )}
+              {/* Phone Number Input */}
+              <Input
+                type="text"
+                aria-invalid={errors.mobile ? 'true' : 'false'}
+                {...register('mobile', {
+                  required: 'Phone number is required',
+                })}
+                className="ps-0 border-0 focus-visible:outline-none focus-visible:ring-0"
+              />
             </div>
+            {errors.mobile && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.mobile.message}
+              </p>
+            )}
           </div>
         </div>
 

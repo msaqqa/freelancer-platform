@@ -34,7 +34,6 @@ export default function ProfileDefaultPage() {
         image={image}
         info={[
           { label: 'KeenThemes', icon: Luggage },
-          { label: 'SF, Bay Area', icon: MapPin },
           { email: 'jenny@kteam.com', icon: Mail },
         ]}
       />

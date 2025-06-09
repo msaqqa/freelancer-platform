@@ -5,37 +5,23 @@ import { ScrollspyMenu } from './scrollspy-menu';
 
 export function RequiredDataSidebar({
   accountType,
-  clientType,
   activeSection,
   setActiveSection,
-  handleClickBtn,
 }) {
   const { t } = useTranslation('requiredData');
   const clientItems = [
     {
-      title: t('sidebarAccounType'),
+      title: t('sidebarClientTitle'),
       target: 'account_type',
     },
     {
       title: 'Personal Details',
       target: 'personal_details',
     },
-    {
-      title: 'Company Details',
-      target: 'company_details',
-    },
-    // clientType === 'personal' && {
-    //   title: 'Personal Details',
-    //   target: 'personal_details',
-    // },
-    // clientType === 'company' && {
-    //   title: 'Company Details',
-    //   target: 'company_details',
-    // },
   ];
   const freelancerItems = [
     {
-      title: t('sidebarAccounType'),
+      title: t('sidebarFreelancerTitle'),
       target: 'account_type',
     },
     {

@@ -3,7 +3,7 @@
 import { Suspense } from 'react';
 import Link from 'next/link';
 import { AlertCircle, Check, Eye, EyeOff } from 'lucide-react';
-import useSignup from '@/hooks/auth/useSignup';
+import useSignup from '@/hooks/auth/use-signup';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
