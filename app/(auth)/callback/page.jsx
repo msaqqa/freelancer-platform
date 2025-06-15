@@ -31,8 +31,8 @@ export default function AuthCallbackPage() {
   };
 
   useEffect(() => {
-    handleCallback();
-  }, [router]);
-
-  return;
+    if (searchParams.get('token')) {
+      handleCallback();
+    }
+  }, [searchParams]);
 }
