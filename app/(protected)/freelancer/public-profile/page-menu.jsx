@@ -1,10 +1,10 @@
 'use client';
 
 import { NavbarMenu } from '@/partials/navbar/navbar-menu';
-import { MENU_SIDEBAR } from '@/config/menu.config';
+import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
 
 const PageMenu = () => {
-  const accountMenuConfig = MENU_SIDEBAR?.['2']?.children;
+  const accountMenuConfig = FREELANCER_MENU_SIDEBAR?.['2']?.children;
 
   if (accountMenuConfig) {
     return <NavbarMenu items={accountMenuConfig} />;

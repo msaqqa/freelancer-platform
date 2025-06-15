@@ -51,5 +51,36 @@
         "countryHolder": "Select Country",
         "website": "Website",
         "websiteHolder": "Enter Website (optional)"
+    },
+
+    "freelancerValidation": {
+        "nameRequired": "Name is required",
+        "nameLength": "Name cannot exceed 50 characters",
+        "photoRequired": "Photo file is required",
+        "photoSize": "Photo file must be smaller than 2MB",
+        "photoType": "Only JPG or PNG, formats are allowed",
+        "birthDateRequired": "Birth date is required",
+        "birthDateFormat": "Invalid date format",
+        "genderRequired": "Gender is required",
+        "countryRequired": "Country is required",
+        "mobileRequired": "Mobile number is required",
+        "mobileLength": "Phone number cannot be more than 15 digits",
+        "mobileDigits": "'Phone number must contain only digits'",
+        "categoryRequired": "Category is required",
+        "subcategoryRequired": "Subcategory is required",
+        "bioLength": "Bio character cannot be more than 4000 characters",
+        "hourlyRateRequired": "Hourly rate cannot be negative",
+        "hourlyRateDigits": "Hourly rate must be only digits"
+    },
+
+    "clientValidation": {
+    "nameRequired": "Name is required",
+    "nameLength": "Name cannot exceed 50 characters",
+    "photoRequired": "Photo file is required",
+    "photoSize": "Photo file must be smaller than 2MB",
+    "photoType": "Only JPG or PNG, formats are allowed",
+    "bioLength": "Bio character cannot be more than 4000 characters",
+    "countryRequired": "Country is required",
+    "websiteFormat": "Invalid URL format"
     }
 }

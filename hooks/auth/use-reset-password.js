@@ -24,9 +24,6 @@ function useResetPassword() {
 
   const form = useForm({
     resolver: zodResolver(getChangePasswordSchema(t)),
-    defaultValues: {
-      email: '',
-    },
   });
 
   const onSubmit = (values) => {

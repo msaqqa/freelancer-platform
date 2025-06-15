@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
@@ -13,6 +14,7 @@ function useSignin() {
   const { t } = useTranslation('auth');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isVerified, setIsVerified] = useState(true);
+  const { setUser } = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(getSigninSchema(t)),
@@ -21,6 +23,7 @@ function useSignin() {
       password: '',
       rememberMe: false,
     },
+    mode: 'onBlur',
   });
 
   const onSubmit = (values) => {
@@ -31,6 +34,7 @@ function useSignin() {
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data) => {
+      setUser(data?.data);
       // store token in the cookies
       if (form.getValues('rememberMe')) {
         Cookies.set('token', data?.data?.token, { expires: 30 }); // 30 days
@@ -59,8 +63,8 @@ function useSignin() {
     },
   });
 
-  const handleGoogleSignin = () => {
-    getGoogleOAuthUrl();
+  const handleGoogleSignin = async () => {
+    await getGoogleOAuthUrl();
   };
 
   return {

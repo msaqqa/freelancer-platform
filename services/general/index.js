@@ -39,3 +39,13 @@ export async function getSkills(categoryId) {
     throw error.response?.data || error;
   }
 }
+
+// get privacy policy content
+export async function getPrivacyPolicy() {
+  try {
+    const response = await apiTaqat.get('/policies');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}

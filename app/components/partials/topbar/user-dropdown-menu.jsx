@@ -17,6 +17,7 @@ import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { useLanguage } from '@/providers/i18n-provider';
+import { changeLang } from '@/services/auth/auth';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
@@ -38,7 +39,8 @@ export function UserDropdownMenu({ trigger }) {
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
 
-  const handleLanguage = (lang) => {
+  const handleLanguage = async (lang) => {
+    await changeLang(lang.code);
     changeLanguage(lang.code);
   };
 

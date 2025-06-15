@@ -5,8 +5,8 @@ import { AccountSettingsSidebarContent } from './content';
 
 export default function RequiredData() {
   return (
-    <div className="flex flex-col items-center" style={{ flexGrow: '1' }}>
-      <Container className="pt-13">
+    <div className="w-full h-screen min-h-fit flex justify-center py-8 lg:py-10">
+      <Container>
         <AccountSettingsSidebarContent />
       </Container>
     </div>

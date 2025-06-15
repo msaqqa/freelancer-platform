@@ -42,8 +42,7 @@ export const handleGoogleCallback = () => {
       token = hashParams.get('token');
     }
     if (token) {
-      Cookies.set('token', token, { expires: 7, path: '/' });
-      console.log('Token saved:', token);
+      Cookies.set('token', token);
     }
   } catch (error) {
     throw error.response?.data || error;

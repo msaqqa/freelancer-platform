@@ -25,6 +25,7 @@ function useVerifyEmail() {
     defaultValues: {
       otpCode: '',
     },
+    mode: 'onBlur',
   });
 
   const onSubmit = (values) => {

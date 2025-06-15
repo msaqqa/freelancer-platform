@@ -9,7 +9,7 @@ export const getSigninSchema = (t) => {
     password: z
       .string()
       .min(1, { message: t('passwordRequired') })
-      .min(6, { message: t('passwordMinLength', { min: 6 }) }),
+      .min(8, { message: t('passwordMinLength', { min: 8 }) }),
     rememberMe: z.boolean().optional(),
   });
 };

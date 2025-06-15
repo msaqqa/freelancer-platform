@@ -24,7 +24,7 @@ const stickySidebarClasses = {
 };
 
 export function AccountSettingsSidebarContent() {
-  const accountType = useUserStore((state) => state.accountType);
+  const { user } = useUserStore();
   const isMobile = useIsMobile();
   const { settings } = useSettings();
   const [sidebarSticky, setSidebarSticky] = useState(false);
@@ -65,7 +65,7 @@ export function AccountSettingsSidebarContent() {
           >
             <Scrollspy offset={100}>
               <RequiredDataSidebar
-                accountType={accountType}
+                accountType={user.type}
                 activeSection={activeSection}
                 setActiveSection={setActiveSection}
               />
@@ -74,13 +74,13 @@ export function AccountSettingsSidebarContent() {
         </div>
       )}
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
-        {accountType == 'freelancer' && (
+        {user.type == 'freelancer' && (
           <FreelancerRequiredData
             activeSection={activeSection}
             setActiveSection={setActiveSection}
           />
         )}
-        {accountType == 'client' && <ClientPersonalDetails />}
+        {user.type == 'client' && <ClientPersonalDetails />}
       </div>
     </div>
   );

@@ -3,9 +3,10 @@
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MENU_SIDEBAR } from '@/config/menu.config';
+import { useUserStore } from '@/stores/user-store';
+import { CLIENT_MENU_SIDEBAR } from '@/config/client-menu.config';
+import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
-import { useAuth } from '@/hooks/auth/use-auth';
 import {
   AccordionMenu,
   AccordionMenuGroup,
@@ -17,42 +18,11 @@ import {
 } from '@/components/ui/accordion-menu';
 import { Badge } from '@/components/ui/badge';
 
-// The prefix string to add to each path freelancer
-function prefixMenuPaths(menuItems, prefix) {
-  // تأكد من أن البريفكس يبدأ بشرطية "/"
-  if (!prefix.startsWith('/')) {
-    prefix = '/' + prefix;
-  }
-  return menuItems.map((item) => {
-    let newPath = item.path;
-
-    // نضيف البريفكس فقط إذا المسار موجود وليس "#" ولم يبدأ بالفعل بالبريفكس
-    if (newPath && newPath !== '#' && !newPath.startsWith(prefix)) {
-      // تأكد من عدم وجود شرطيتين متتاليتين عند الدمج
-      newPath =
-        prefix.endsWith('/') && newPath.startsWith('/')
-          ? prefix.slice(0, -1) + newPath
-          : prefix + newPath;
-    }
-
-    // معالجة الأطفال بشكل متكرر بنفس البريفكس
-    const newChildren = item.children
-      ? prefixMenuPaths(item.children, prefix)
-      : undefined;
-
-    return { ...item, path: newPath, children: newChildren };
-  });
-}
-
 export function SidebarMenu() {
+  const { user } = useUserStore();
+  const MENU_SIDEBAR =
+    user?.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
   const pathname = usePathname();
-  const { data: session, user } = useAuth();
-
-  // Determine user role prefix, default to empty string if no session or role
-  const userType = '/client';
-
-  // Apply prefix to menu paths
-  const menuWithPrefix = prefixMenuPaths(MENU_SIDEBAR, userType);
 
   // Memoize matchPath to prevent unnecessary re-renders
   const matchPath = useCallback(
@@ -238,7 +208,7 @@ export function SidebarMenu() {
         collapsible
         classNames={classNames}
       >
-        {buildMenu(menuWithPrefix)}
+        {buildMenu(MENU_SIDEBAR)}
       </AccordionMenu>
     </div>
   );

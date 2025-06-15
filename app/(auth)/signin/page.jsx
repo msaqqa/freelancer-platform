@@ -33,6 +33,7 @@ export default function Page() {
 
   const error = errors?.message;
   const email = form.getValues('email');
+
   return (
     <Form {...form}>
       <form

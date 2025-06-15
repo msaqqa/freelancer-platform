@@ -1,9 +1,14 @@
 'use client';
 
+import { useState } from 'react';
+import { SquarePen } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { SkillsDialog } from '../dialogs/skills-dialog';
 
-const Tags = ({ title, className }) => {
+const Skills = ({ title, className }) => {
+  const [openDialog, setOpenDialog] = useState(false);
   const items = [
     { label: 'Web Design' },
     { label: 'Code Review' },
@@ -27,6 +32,9 @@ const Tags = ({ title, className }) => {
     <Card className={className}>
       <CardHeader>
         <CardTitle>{title}</CardTitle>
+        <Button variant="ghost" mode="icon" onClick={() => setOpenDialog(true)}>
+          <SquarePen size={16} className="text-blue-500" />
+        </Button>
       </CardHeader>
       <CardContent>
         <div className="flex flex-wrap gap-2.5 mb-2">
@@ -35,8 +43,12 @@ const Tags = ({ title, className }) => {
           })}
         </div>
       </CardContent>
+      <SkillsDialog
+        open={openDialog}
+        closeDialog={() => setOpenDialog(false)}
+      />
     </Card>
   );
 };
 
-export { Tags };
+export { Skills };

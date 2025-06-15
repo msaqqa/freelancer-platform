@@ -7,37 +7,38 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
-  const setAccountType = useUserStore((state) => state.setAccountType);
-  const { data: user, isLoading, isError } = useAuth();
-  const router = useRouter();
-  const type = user?.type || null;
-  const requiredData = user?.save_data || null;
+  // const res = await redirectUserHandler();
 
-  useEffect(() => {
-    if (isLoading) return;
+  // const { setUser } = useUserStore();
+  // const { data: session, isLoading, isError } = useAuth();
+  // const router = useRouter();
+  // const type = session?.type || null;
+  // const requiredData = session?.save_data || null;
 
-    if (!user || isError) {
-      router.push('/signin');
-      return;
-    }
+  // useEffect(() => {
+  //   if (isLoading) return;
 
-    setAccountType(type);
+  //   if (!session || isError) {
+  //     router.push('/signin');
+  //     return;
+  //   }
 
-    if (type === 'client' && requiredData) {
-      router.push('/client');
-    } else if (type === 'freelancer' && requiredData) {
-      router.push('/freelancer');
-    } else if (type && !requiredData) {
-      router.push('/new-user/required-data');
-    } else {
-      router.push('/new-user/account-type');
-    }
-  }, [isLoading, type, requiredData, router]);
+  //   setUser({ ...session });
 
-  if (isLoading) {
-    return <ScreenLoader />;
-  }
+  //   if (type === 'client' && requiredData) {
+  //     router.push('/client');
+  //   } else if (type === 'freelancer' && requiredData) {
+  //     router.push('/freelancer');
+  //   } else if (type && !requiredData) {
+  //     router.push('/new-user/required-data');
+  //   } else {
+  //     router.push('/new-user/account-type');
+  //   }
+  // }, [isLoading, type, requiredData, router]);
 
-  return user && children;
-  // return children;
+  // if (isLoading) {
+  //   return <ScreenLoader />;
+  // }
+
+  return children;
 }

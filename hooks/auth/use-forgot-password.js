@@ -18,6 +18,7 @@ function useForgetPassword() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
+      mode: 'onBlur',
     },
   });
 

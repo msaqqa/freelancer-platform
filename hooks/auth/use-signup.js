@@ -23,6 +23,7 @@ function useSignup() {
       passwordConfirmation: '',
       accept: false,
     },
+    mode: 'onBlur',
   });
 
   const onSubmit = (values) => {

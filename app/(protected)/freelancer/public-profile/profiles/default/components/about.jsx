@@ -1,25 +1,36 @@
 'use client';
 
-import Link from 'next/link';
+import { useState } from 'react';
+import { ShieldCheck, SquarePen } from 'lucide-react';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
+import { AboutDialog } from '../dialogs/about-dialog';
 
 const About = () => {
+  const [openDialog, setOpenDialog] = useState(false);
+
   const tables = [
-    { status: 'Age:', info: '32' },
-    { status: 'City:', info: 'Amsterdam' },
-    { status: 'State:', info: 'North Holland' },
-    { status: 'Country:', info: 'Netherlands' },
-    { status: 'Postcode:', info: '1092 NL' },
-    { status: 'Phone:', info: '+31 6 1234 56 78' },
     {
-      status: 'Email:',
+      status: 'Ready To Work?:',
       info: (
-        <Link href="#" className="text-foreground hover:text-primary-active">
-          jenny@ktstudio.com
-        </Link>
+        <Badge variant="success" appearance="outline">
+          Available
+        </Badge>
       ),
     },
+    { status: 'Hourly rate:', info: '$20.0/hr' },
+    { status: 'Total Jobs:', info: '10' },
+    {
+      status: 'ID:',
+      info: (
+        <span className="flex items-center gap-px">
+          Verified <ShieldCheck size={16} />
+        </span>
+      ),
+    },
+    { status: 'Joined:', info: '02 Jun, 2025' },
   ];
 
   const renderTable = (table, index) => {
@@ -37,6 +48,9 @@ const About = () => {
     <Card>
       <CardHeader className="ps-8">
         <CardTitle>About</CardTitle>
+        <Button variant="ghost" mode="icon" onClick={() => setOpenDialog(true)}>
+          <SquarePen size={16} className="text-blue-500" />
+        </Button>
       </CardHeader>
       <CardContent>
         <Table>
@@ -47,6 +61,7 @@ const About = () => {
           </TableBody>
         </Table>
       </CardContent>
+      <AboutDialog open={openDialog} closeDialog={() => setOpenDialog(false)} />
     </Card>
   );
 };

@@ -49,6 +49,36 @@
     "countryHolder": "اختيار الدولة",
     "website": "الموقع الإلكتروني",
     "websiteHolder": "أدخل الموقع الإلكتروني (اختياري)"
-    }
+    },
 
+    "freelancerValidation": {
+    "nameRequired": "الاسم مطلوب",
+    "nameLength": "لا يمكن أن يتجاوز الاسم 50 حرفًا",
+    "photoRequired": "ملف الصورة مطلوب",
+    "photoSize": "يجب أن يكون حجم ملف الصورة أقل من 2 ميجابايت",
+    "photoType": "يسمح فقط بصيغ JPG أو PNG",
+    "birthDateRequired": "تاريخ الميلاد مطلوب",
+    "birthDateFormat": "صيغة التاريخ غير صحيحة",
+    "genderRequired": "الجنس مطلوب",
+    "countryRequired": "الدولة مطلوبة",
+    "mobileRequired": "رقم الهاتف المحمول مطلوب",
+    "mobileLength": "لا يمكن أن يتجاوز رقم الهاتف 15 رقمًا",
+    "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
+    "categoryRequired": "الفئة مطلوبة",
+    "subcategoryRequired": "الفئة الفرعية مطلوبة",
+    "bioLength": "لا يمكن أن يتجاوز وصفك 4000 حرفًا",
+    "hourlyRateRequired": "معدل الساعة لا يمكن أن يكون سالبًا",
+    "hourlyRateDigits": "معدل الساعة يجب أن يحتوي على أرقام فقط"
+    },
+
+    "clientValidation": {
+    "nameRequired": "الاسم مطلوب",
+    "nameLength": "لا يمكن أن يتجاوز الاسم 50 حرفًا",
+    "photoRequired": "ملف الصورة مطلوب",
+    "photoSize": "يجب أن يكون حجم ملف الصورة أقل من 2 ميجابايت",
+    "photoType": "يسمح فقط بصيغ JPG أو PNG",
+    "bioLength": "لا يمكن أن يتجاوز وصفك 4000 حرفًا",
+    "countryRequired": "الدولة مطلوبة",
+    "websiteFormat": "صيغة الرابط غير صحيحة"
+    }
 }

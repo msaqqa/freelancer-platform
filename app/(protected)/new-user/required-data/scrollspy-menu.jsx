@@ -1,10 +1,8 @@
 'use client';
 
-import { useRouter } from 'next/navigation';
 import { cn } from '@/lib/utils';
 
-const ScrollspyMenu = ({ items, setActiveSection, activeSection }) => {
-  const router = useRouter('');
+const ScrollspyMenu = ({ items, activeSection }) => {
   const buildAnchor = (item, index, indent = false) => {
     const isActive = activeSection === item.target;
     return (
@@ -60,7 +58,7 @@ const ScrollspyMenu = ({ items, setActiveSection, activeSection }) => {
   };
 
   return (
-    <div className="flex flex-col space-y-3 grow relative before:absolute before:start-[11px] before:top-0 before:bottom-0 before:border-s before:border-border text-sm">
+    <div className="flex flex-col space-y-7 grow relative before:absolute before:start-[11px] before:top-0 before:bottom-0 before:border-s before:border-border text-sm">
       {renderChildren(items)}
     </div>
   );

@@ -16,16 +16,14 @@ function NewUserlayout({ children }) {
     if (!user || isError) {
       router.push('/signin');
     }
-    if (type === 'client' && requiredData) {
-      router.push('/client');
-    } else if (type === 'freelancer' && requiredData) {
-      router.push('/freelancer');
-    } else if (type && !requiredData) {
+    if (type && !requiredData) {
       router.push('/new-user/required-data');
-    } else {
+    } else if (!type && !requiredData) {
       router.push('/new-user/account-type');
+    } else {
+      router.push('/404');
     }
-  }, [isLoading, user, type, requiredData]);
+  }, [isLoading, user, type, requiredData, router]);
 
   if (isLoading) {
     return <ScreenLoader />;

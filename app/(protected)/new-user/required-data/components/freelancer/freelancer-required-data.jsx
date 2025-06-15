@@ -7,6 +7,7 @@ import { useMutation } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { addRequiredDataFreelancer } from '@/services/freelancer/required-data';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { FreelancerRequiredDataSchema } from '../../forms/freelancer-required-data-schema';
@@ -15,41 +16,45 @@ import { ProfessionalDetails } from './professional-details';
 
 function FreelancerRequiredData({ activeSection, setActiveSection }) {
   const { t } = useTranslation('requiredData');
+  const fv = (key) => t(`freelancerValidation.${key}`);
   const router = useRouter();
+  const { refetch } = useAuth();
+
+  const freelancerDefaultData = {
+    photo: null,
+    name: '',
+    birthDate: '',
+    gender: 'male',
+    country: '1',
+    mobile: '',
+    category: '',
+    subcategory: '',
+    skills: [],
+    bio: '',
+    hourlyRate: '',
+    availability: true,
+  };
 
   const form = useForm({
-    resolver: zodResolver(FreelancerRequiredDataSchema),
+    resolver: zodResolver(FreelancerRequiredDataSchema(fv)),
+    defaultValues: freelancerDefaultData,
     mode: 'onTouched',
   });
 
-  // function convertToBinary(file) {
-  //   return new Promise((resolve, reject) => {
-  //     const reader = new FileReader();
-  //     reader.onload = () => {
-  //       resolve(reader.result);
-  //     };
-  //     reader.onerror = reject;
-  //     reader.readAsArrayBuffer(file);
-  //   });
-  // }
-  // const formData = new FormData();
-  // const promises = Object.keys(values).map(async (key) => {
-  //   if (key === 'photo' && values.photo instanceof File) {
-  //     const photoBinary = await convertToBinary(values.photo);
-  //     const photoBlob = new Blob([photoBinary]);
-  //     formData.append('photo', photoBlob, values.photo.name);
-  //   } else if (key !== 'photo') {
-  //     formData.append(key, values[key] && values[key]);
-  //   }
-  // });
-  // Wait for all promises to resolve
-  // await Promise.all(promises);
-  // Send the formData using the custom Axios instance
-
   const mutation = useMutation({
-    // apiFetch(formData)
-    mutationFn: addRequiredDataFreelancer,
-    onSuccess: (data) => {
+    mutationFn: async (values) => {
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        if (key === 'photo' && values.photo instanceof File) {
+          formData.append('photo', values.photo);
+        } else if (key !== 'photo') {
+          formData.append(key, values[key]);
+        }
+      });
+      const response = addRequiredDataFreelancer(formData);
+      return response;
+    },
+    onSuccess: async (data) => {
       // queryClient.invalidateQueries({ queryKey: ['account-profile'] });
       toast.custom(
         () => (
@@ -64,10 +69,11 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
           position: 'top-center',
         },
       );
+      await refetch();
       // redirect to freelancer main dashboard
       setTimeout(() => {
-        router.push('/freelancer');
-      }, 1500);
+        router.replace('/freelancer/public-profile/profiles/default');
+      }, 1000);
     },
     onError: (error) => {
       toast.custom(

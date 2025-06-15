@@ -33,8 +33,9 @@ export default function ProfileDefaultPage() {
         name="Jenny Klabber"
         image={image}
         info={[
-          { label: 'KeenThemes', icon: Luggage },
-          { email: 'jenny@kteam.com', icon: Mail },
+          { label: 'Full Stack Developer', icon: Luggage },
+          { label: 'Palestine', icon: MapPin },
+          { label: '5 Years Of Experience', icon: Mail },
         ]}
       />
 

@@ -5,7 +5,9 @@ import { usePathname } from 'next/navigation';
 import { MegaMenuSubAccount } from '@/partials/mega-menu/mega-menu-sub-account';
 import { MegaMenuSubNetwork } from '@/partials/mega-menu/mega-menu-sub-network';
 import { MegaMenuSubProfiles } from '@/partials/mega-menu/mega-menu-sub-profiles';
-import { MENU_MEGA } from '@/config/menu.config';
+import { useUserStore } from '@/stores/user-store';
+import { CLIENT_MENU_MEGA } from '@/config/client-menu.config';
+import { FREELANCER_MENU_MEGA } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import { useMenu } from '@/hooks/use-menu';
 import {
@@ -19,6 +21,9 @@ import {
 import { MegaMenuSubApps } from '@/app/components/partials/mega-menu/mega-menu-sub-apps';
 
 export function MegaMenu() {
+  const { user } = useUserStore();
+  const MENU_MEGA =
+    user?.type === 'client' ? CLIENT_MENU_MEGA : FREELANCER_MENU_MEGA;
   const pathname = usePathname();
   const { isActive, hasActiveChild } = useMenu(pathname);
   const homeItem = MENU_MEGA[0];

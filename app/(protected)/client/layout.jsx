@@ -9,25 +9,20 @@ import { Demo1Layout } from '../../components/layouts/demo1/layout';
 export default function ProtectedLayout({ children }) {
   const { data: user, isLoading, isError } = useAuth();
   const type = user?.type || null;
-  const requiredData = user?.save_data || null;
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
     if (!user || isError) {
       router.push('/signin');
+    } else if (user !== 'client') {
+      router.push('/404');
     }
-    if (type === 'freelancer' && requiredData) {
-      router.push('/freelancer');
-    }
-    if (type === 'freelancer' && !requiredData) {
-      router.push('/new-user/required-data');
-    }
-  }, [isLoading, type, requiredData, router]);
+  }, [isLoading, user, type, router]);
 
   if (isLoading) {
     return <ScreenLoader />;
   }
 
-  return user && <Demo1Layout>{children}</Demo1Layout>;
+  return type === 'client' && <Demo1Layout>{children}</Demo1Layout>;
 }

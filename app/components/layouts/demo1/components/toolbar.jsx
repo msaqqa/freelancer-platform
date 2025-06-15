@@ -3,8 +3,10 @@
 import { Fragment } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useUserStore } from '@/stores/user-store';
 import { ChevronRight } from 'lucide-react';
-import { MENU_SIDEBAR } from '@/config/menu.config';
+import { CLIENT_MENU_SIDEBAR } from '@/config/client-menu.config';
+import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import { useMenu } from '@/hooks/use-menu';
 
@@ -21,6 +23,9 @@ function ToolbarActions({ children }) {
 }
 
 function ToolbarBreadcrumbs() {
+  const { user } = useUserStore();
+  const MENU_SIDEBAR =
+    user.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
   const pathname = usePathname();
   const { getBreadcrumb, isActive } = useMenu(pathname);
   const items = getBreadcrumb(MENU_SIDEBAR);
@@ -69,6 +74,9 @@ function ToolbarBreadcrumbs() {
 }
 
 function ToolbarHeading({ title = '', description }) {
+  const { user } = useUserStore();
+  const MENU_SIDEBAR =
+    user.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
   const pathname = usePathname();
   const { getCurrentItem } = useMenu(pathname);
   const item = getCurrentItem(MENU_SIDEBAR);

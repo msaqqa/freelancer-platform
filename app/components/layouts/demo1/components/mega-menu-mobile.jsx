@@ -4,7 +4,9 @@
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MENU_MEGA_MOBILE } from '@/config/menu.config';
+import { useUserStore } from '@/stores/user-store';
+import { CLIENT_MENU_MEGA_MOBILE } from '@/config/client-menu.config';
+import { FREELANCER_MENU_MEGA_MOBILE } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import {
   AccordionMenu,
@@ -18,6 +20,11 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 export function MegaMenuMobile() {
+  const { user } = useUserStore();
+  const MENU_MEGA_MOBILE =
+    user?.type === 'client'
+      ? CLIENT_MENU_MEGA_MOBILE
+      : FREELANCER_MENU_MEGA_MOBILE;
   const pathname = usePathname();
 
   // Memoize matchPath to prevent unnecessary re-renders
