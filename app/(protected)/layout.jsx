@@ -8,33 +8,31 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
   // const res = await redirectUserHandler();
-  // const { setUser } = useUserStore();
+  const { setUser } = useUserStore();
 
-  const { data: session, isLoading, isError } = useAuth();
+  const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
-  const type = session?.type || null;
-  const requiredData = session?.save_data || null;
 
   useEffect(() => {
     if (isLoading) return;
 
-    if (!session || isError) {
+    if (!user || isError) {
       router.push('/signin');
       return;
     }
 
-    setUser({ ...session });
+    setUser({ ...user });
 
-    if (type === 'client' && requiredData) {
+    if (user?.type === 'client' && user?.save_data) {
       router.push('/client');
-    } else if (type === 'freelancer' && requiredData) {
+    } else if (user?.type === 'freelancer' && user?.save_data) {
       router.push('/freelancer');
-    } else if (type && !requiredData) {
+    } else if (user?.type && !user?.save_data) {
       router.push('/new-user/required-data');
     } else {
       router.push('/new-user/account-type');
     }
-  }, [isLoading, type, requiredData, router]);
+  }, [isLoading, user, router]);
 
   if (isLoading) {
     return <ScreenLoader />;
