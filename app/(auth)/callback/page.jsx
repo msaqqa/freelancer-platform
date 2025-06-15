@@ -12,15 +12,13 @@ export default function AuthCallbackPage() {
 
   const handleCallback = async () => {
     const token = searchParams.get('token');
+    const type = searchParams.get('user_type');
+    const requiredData = searchParams.get('save_data');
     let data;
     if (token) {
       Cookies.set('token', data?.data?.token);
-      data = await getAuthUserData();
+      setUser({ token, type, save_data: requiredData });
     }
-    const user = data?.data;
-    setUser({ ...user });
-    const type = user?.type || null;
-    const requiredData = user?.save_data || null;
 
     if (type === 'client' && requiredData) {
       router.push('/client');
