@@ -14,9 +14,8 @@ export default function AuthCallbackPage() {
     const token = searchParams.get('token');
     const type = searchParams.get('user_type');
     const requiredData = searchParams.get('save_data');
-    let data;
     if (token) {
-      Cookies.set('token', data?.data?.token);
+      Cookies.set('token', token);
       setUser({ token, type, save_data: requiredData });
     }
 

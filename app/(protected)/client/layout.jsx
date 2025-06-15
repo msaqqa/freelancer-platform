@@ -8,21 +8,20 @@ import { Demo1Layout } from '../../components/layouts/demo1/layout';
 
 export default function ProtectedLayout({ children }) {
   const { data: user, isLoading, isError } = useAuth();
-  const type = user?.type || null;
   const router = useRouter();
 
   useEffect(() => {
     if (isLoading) return;
     if (!user || isError) {
       router.push('/signin');
-    } else if (user !== 'client') {
+    } else if (user?.type !== 'client') {
       router.push('/404');
     }
-  }, [isLoading, user, type, router]);
+  }, [isLoading, user, router]);
 
   if (isLoading) {
     return <ScreenLoader />;
   }
 
-  return type === 'client' && <Demo1Layout>{children}</Demo1Layout>;
+  return user?.type === 'client' && <Demo1Layout>{children}</Demo1Layout>;
 }
