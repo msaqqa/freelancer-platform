@@ -18,7 +18,6 @@ export default function ProtectedLayout({ children }) {
 
     if (!user || isError) {
       router.push('/signin');
-      return;
     }
 
     setUser({ ...user });
