@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from 'react';
 import { useTheme } from 'next-themes';
 import Select from 'react-select';
 
@@ -15,6 +16,14 @@ const MultiSelect = ({
   ...props
 }) => {
   const { theme } = useTheme();
+  const [systemTheme, setSystemTheme] = useState('light');
+
+  useEffect(() => {
+    if (theme === 'system') {
+      const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+    }
+  }, [theme]);
 
   return (
     <Select
@@ -38,16 +47,18 @@ const MultiSelect = ({
           boxShadow: 'none',
           borderRadius: 'inherit',
           backgroundColor:
-            theme === 'dark' ? 'oklch(27.4% 0.006 286.033)' : 'oklch(1 0 0)',
+            systemTheme === 'dark'
+              ? 'oklch(14.1% 0.005 285.823)'
+              : 'oklch(1 0 0)',
           color:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? 'oklch(98.5% 0 0)'
               : 'oklch(27.4% 0.006 286.033)',
         }),
         placeholder: (base) => ({
           ...base,
           color:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? 'oklch(55.2% 0.016 285.938)'
               : 'oklch(70.5% 0.015 286.067)',
         }),
@@ -55,15 +66,15 @@ const MultiSelect = ({
           ...base,
           paddingLeft: '20px',
           backgroundColor: state.isFocused
-            ? theme === 'dark'
+            ? systemTheme === 'dark'
               ? 'oklch(21% 0.006 285.885)'
               : 'oklch(96.7% 0.003 264.542)'
-            : theme === 'dark'
+            : systemTheme === 'dark'
               ? 'oklch(14.1% 0.005 285.823)'
               : 'oklch(1 0 0)',
           ':active': {
             backgroundColor:
-              state.isFocused && theme === 'dark'
+              state.isFocused && systemTheme === 'dark'
                 ? 'oklch(21% 0.006 285.885)'
                 : 'oklch(96.7% 0.003 264.542)',
           },
@@ -71,36 +82,40 @@ const MultiSelect = ({
         multiValue: (base) => ({
           ...base,
           backgroundColor:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? 'oklch(21% 0.006 285.885)'
               : 'oklch(96.7% 0.003 264.542)',
         }),
         multiValueLabel: (base) => ({
           ...base,
           color:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? 'oklch(98.5% 0 0)'
               : 'oklch(27.4% 0.006 286.033)',
         }),
         menu: (base) => ({
           ...base,
           backgroundColor:
-            theme === 'dark' ? 'oklch(14.1% 0.005 285.823)' : 'oklch(1 0 0)',
+            systemTheme === 'dark'
+              ? 'oklch(14.1% 0.005 285.823)'
+              : 'oklch(1 0 0)',
           boxShadow: 'none',
           borderRadius: 'none',
         }),
         menuList: (base) => ({
           ...base,
           backgroundColor:
-            theme === 'dark' ? 'oklch(14.1% 0.005 285.823)' : 'oklch(1 0 0)',
+            systemTheme === 'dark'
+              ? 'oklch(14.1% 0.005 285.823)'
+              : 'oklch(1 0 0)',
           color:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? 'oklch(98.5% 0 0)'
               : 'oklch(27.4% 0.006 286.033)',
 
           padding: '5px',
           border:
-            theme === 'dark'
+            systemTheme === 'dark'
               ? '1px solid oklch(27.4% 0.006 286.033)'
               : '1px solid oklch(92% 0.004 286.32)',
           borderRadius: '6px',

@@ -30,7 +30,8 @@
   margin-top: 8px;
 }
 
-.react-datepicker__year-dropdown {
+.react-datepicker__year-dropdown,
+.react-datepicker__month-dropdown {
   color: oklch(27.4% 0.006 286.033);
 }
 
