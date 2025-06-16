@@ -265,7 +265,10 @@ const ClientPersonalDetails = () => {
                           {isLoading && <SelectItem>{t('loading')}</SelectItem>}
                           {countries.length &&
                             countries.map((country) => (
-                              <SelectItem key={country.id} value={country.id}>
+                              <SelectItem
+                                key={country.id}
+                                value={country.id.toString()}
+                              >
                                 {country.name}
                               </SelectItem>
                             ))}
