@@ -2,13 +2,11 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
   // const res = await redirectUserHandler();
-  const { setUser } = useUserStore();
 
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
@@ -19,8 +17,6 @@ export default function ProtectedLayout({ children }) {
     if (!user || isError) {
       router.push('/signin');
     }
-
-    setUser({ ...user });
 
     if (user?.type === 'client' && user?.save_data) {
       router.push('/client');

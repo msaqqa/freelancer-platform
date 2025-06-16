@@ -20,7 +20,6 @@ export function useAuth() {
     refetchOnWindowFocus: false,
     refetchOnMount: false,
     onSuccess: (data) => {
-      console.log('data', data);
       setUser(data?.data);
     },
     onError: (error) => {

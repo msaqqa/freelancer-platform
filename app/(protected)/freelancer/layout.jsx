@@ -24,4 +24,5 @@ export default function FreelancerLayout({ children }) {
   }
 
   return user?.type === 'freelancer' && <Demo1Layout>{children}</Demo1Layout>;
+  // return <Demo1Layout>{children}</Demo1Layout>;
 }

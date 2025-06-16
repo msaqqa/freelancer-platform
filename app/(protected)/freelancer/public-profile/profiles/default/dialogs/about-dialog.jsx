@@ -109,7 +109,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent close={false}>
-        <DialogHeader>
+        <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{about ? 'Edit About' : 'Add About'}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -117,6 +117,35 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
+            {/* Availability */}
+            <FormField
+              control={form.control}
+              name="availability"
+              render={({ field }) => (
+                <FormItem className="w-full flex flex-row justify-between items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                  <FormLabel className="flex w-full items-center gap-1 max-w-56">
+                    Ready To Work?
+                  </FormLabel>
+                  <FormControl>
+                    <div className="flex items-center gap-2">
+                      <FormLabel
+                        htmlFor="auto-update"
+                        className="text-foreground text-sm"
+                      >
+                        Available To Hire
+                      </FormLabel>
+                      <Switch
+                        checked={field.value}
+                        onCheckedChange={field.onChange}
+                        size="sm"
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage className="mt-1" />
+                </FormItem>
+              )}
+            />
+
             {/* hourly Rate */}
             <FormField
               control={form.control}
@@ -139,28 +168,6 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                       className="bg-background absolute right-0 top-1/2 transform -translate-1/2 text-sm text-muted-foreground h-[20px]"
                       alt=""
                     />
-                  </div>
-                  <FormMessage className="mt-1" />
-                </FormItem>
-              )}
-            />
-
-            {/* Availability */}
-            <FormField
-              control={form.control}
-              name="availability"
-              render={({ field }) => (
-                <FormItem className="">
-                  <div className="flex items-center gap-2">
-                    <FormLabel htmlFor="availability">availability</FormLabel>
-                    <FormControl>
-                      <Switch
-                        id="availability"
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        size="sm"
-                      />
-                    </FormControl>
                   </div>
                   <FormMessage className="mt-1" />
                 </FormItem>

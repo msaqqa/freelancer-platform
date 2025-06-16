@@ -7,3 +7,4 @@ export * from './verify-identity';
 export * from './verify-badge';
 export * from './summary';
 export * from './post-vedio';
+export * from './connections';

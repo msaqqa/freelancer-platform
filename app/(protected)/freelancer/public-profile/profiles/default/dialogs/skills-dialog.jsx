@@ -129,7 +129,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent close={false}>
-        <DialogHeader>
+        <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{skills ? 'Edit skills' : 'Add skills'}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
@@ -153,7 +153,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
                         getOptionLabel={(e) => e.name}
                         getOptionValue={(e) => e.id}
                         placeholder={'skillsHolder'}
-                        className="bg-background border border-input rounded-md shadow-xs shadow-black/5 transition-shadow text-sm text-foreground text-[0.8125rem]"
+                        className=" min-h-[44px] bg-background border border-input rounded-md shadow-xs shadow-black/5 transition-shadow text-sm text-foreground text-[0.8125rem]"
                       />
                     </FormControl>
                     <FormMessage className="mt-1" />

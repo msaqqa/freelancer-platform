@@ -61,7 +61,7 @@ const ClientPersonalDetails = () => {
   const form = useForm({
     resolver: zodResolver(ClientCompanyDataSchema(cv)),
     defaultValues: clientDefaultData,
-    mode: 'onTouched',
+    mode: 'onBlur',
   });
 
   const { control, handleSubmit, trigger } = form;

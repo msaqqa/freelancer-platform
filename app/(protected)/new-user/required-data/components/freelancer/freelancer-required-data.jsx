@@ -38,7 +38,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
   const form = useForm({
     resolver: zodResolver(FreelancerRequiredDataSchema(fv)),
     defaultValues: freelancerDefaultData,
-    mode: 'onTouched',
+    mode: 'onBlur',
   });
 
   const mutation = useMutation({

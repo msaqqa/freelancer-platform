@@ -1,7 +1,7 @@
 'use client';
 
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
@@ -12,13 +12,14 @@ import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import TypeComponent from './components/type-component';
 
 export default function AccountType() {
-  const { user, setUser } = useUserStore();
+  const [userState, setUserState] = useState('');
+
   const router = useRouter();
   const { t } = useTranslation('requiredData');
   const { refetch } = useAuth();
 
   const handleChange = (value) => {
-    setUser({ type: value });
+    setUserState(value);
   };
 
   const mutation = useMutation({
@@ -60,7 +61,7 @@ export default function AccountType() {
   });
 
   const handleSubmit = async () => {
-    const typeNum = user?.type === 'client' ? 1 : 2;
+    const typeNum = userState === 'client' ? 1 : 2;
     mutation.mutate({ type: typeNum });
   };
 
@@ -71,14 +72,14 @@ export default function AccountType() {
       name: t('accountTypeClient'),
       lightImg: '/media/illustrations/36.svg',
       darkImg: '/media/illustrations/36-dark.svg',
-      active: user?.type === 'client',
+      active: userState === 'client',
       value: 'client',
     },
     {
       name: t('accountTypeFreelancer'),
       lightImg: '/media/illustrations/37.svg',
       darkImg: '/media/illustrations/37-dark.svg',
-      active: user?.type === 'freelancer',
+      active: userState === 'freelancer',
       value: 'freelancer',
     },
   ];
