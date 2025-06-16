@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
@@ -15,6 +16,7 @@ function useVerifyEmail() {
   const emailParam = searchParams.get('email');
   const email = decodeURIComponent(emailParam);
   const [errors, setErrors] = useState(null);
+  const { setUser } = useUserStore();
 
   const formSchema = z.object({
     otpCode: z.string().regex(/^\d{6}$/, 'Should be exactly 6 digits long'),
@@ -36,6 +38,7 @@ function useVerifyEmail() {
   const verifyOtpMutation = useMutation({
     mutationFn: verifyEmailOtp,
     onSuccess: (data) => {
+      setUser(data?.data);
       // store token
       Cookies.set('token', data?.data?.token);
       // redirect to main dashboard
