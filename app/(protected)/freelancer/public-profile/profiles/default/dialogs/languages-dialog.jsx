@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { Trash2 } from 'lucide-react';
+import { Plus, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -263,13 +263,11 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
             ))}
 
             {/* Add button */}
-            <Button
-              type="button"
-              onClick={handleAddField}
-              className="bg-blue-500 text-white hover:bg-blue-600 mt-4"
-            >
+            <Button onClick={handleAddField}>
+              <Plus />
               Add New Language
             </Button>
+
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeDialog}>
                 Cancel

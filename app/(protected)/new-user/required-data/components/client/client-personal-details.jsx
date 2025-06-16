@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { AvatarInput } from '@/partials/common/avatar-input';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -37,11 +38,12 @@ import { ClientCompanyDataSchema } from '../../forms/client-company-data-schema'
 
 const ClientPersonalDetails = () => {
   const [bioChar, setBioCahr] = useState(0);
+  const { setUser } = useUserStore();
   const router = useRouter();
+  const { refetch } = useAuth();
   const { t } = useTranslation('requiredData');
   const cv = (key) => t(`clientValidation.${key}`);
   const cpd = (key) => t(`clientPersonalDetails.${key}`);
-  const { refetch } = useAuth();
 
   const handleBioChange = (e) => {
     const val = e.target.value;
@@ -86,6 +88,7 @@ const ClientPersonalDetails = () => {
       return response;
     },
     onSuccess: async (data) => {
+      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -103,7 +106,7 @@ const ClientPersonalDetails = () => {
       // redirect to client main dashboard
       setTimeout(() => {
         router.replace('/client');
-      }, 1500);
+      }, 1000);
     },
     onError: (error) => {
       toast.custom(

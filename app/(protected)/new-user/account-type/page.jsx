@@ -2,21 +2,21 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user-store';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useAuth } from '@/hooks/auth/use-auth';
 import { submitAccountType } from '@/services/auth/auth';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import TypeComponent from './components/type-component';
 
 export default function AccountType() {
   const [userState, setUserState] = useState('');
+  const { setUser } = useUserStore();
 
   const router = useRouter();
   const { t } = useTranslation('requiredData');
-  const { refetch } = useAuth();
 
   const handleChange = (value) => {
     setUserState(value);
@@ -25,6 +25,7 @@ export default function AccountType() {
   const mutation = useMutation({
     mutationFn: submitAccountType,
     onSuccess: async (data) => {
+      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -38,7 +39,6 @@ export default function AccountType() {
           position: 'top-center',
         },
       );
-      await refetch();
       setTimeout(() => {
         router.replace(`/new-user/required-data`);
       }, 1000);

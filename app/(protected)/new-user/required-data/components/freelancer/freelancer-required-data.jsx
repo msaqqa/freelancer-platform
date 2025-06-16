@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
@@ -15,10 +16,11 @@ import { PersonalDetails } from './personal-details';
 import { ProfessionalDetails } from './professional-details';
 
 function FreelancerRequiredData({ activeSection, setActiveSection }) {
+  const { setUser } = useUserStore();
+  const { refetch } = useAuth();
   const { t } = useTranslation('requiredData');
   const fv = (key) => t(`freelancerValidation.${key}`);
   const router = useRouter();
-  const { refetch } = useAuth();
 
   const freelancerDefaultData = {
     photo: null,
@@ -56,6 +58,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
     },
     onSuccess: async (data) => {
       // queryClient.invalidateQueries({ queryKey: ['account-profile'] });
+      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
