@@ -12,7 +12,7 @@ import { Connections } from '../components';
 export const VerifyBadgeDialog = ({ open, closeDialog }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent close={false}>
+      <DialogContent>
         <DialogClose />
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>Get verified badge</DialogTitle>

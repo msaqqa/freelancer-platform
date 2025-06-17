@@ -1,12 +1,12 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
+import { toAbsoluteUrl } from '@/lib/helpers';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -19,45 +19,31 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input, InputWrapper } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
-import MultiSelect from '@/components/common/multi-select';
+import { Switch } from '@/components/ui/switch';
+import { Textarea } from '@/components/ui/textarea';
 
-export const SkillsDialog = ({ open, closeDialog, skills }) => {
-  const skillOptions = [
-    {
-      id: 1,
-      name: 'test 1',
-    },
-    {
-      id: 2,
-      name: 'test 2',
-    },
-    {
-      id: 3,
-      name: 'test 3',
-    },
-    {
-      id: 4,
-      name: 'test 4',
-    },
-    {
-      id: 5,
-      name: 'test 5',
-    },
-  ];
-
+export const SammaryDialog = ({ open, closeDialog, sammary }) => {
+  const [bioChar, setBioCahr] = useState(0);
   const queryClient = useQueryClient();
+
+  const handleBioChange = (e) => {
+    const val = e.target.value;
+    const charLength = val.length;
+    setBioCahr(charLength);
+  };
 
   // Form initialization
   const form = useForm({
     resolver: zodResolver(),
-    defaultValues: { name: '', description: '' },
+    defaultValues: { hourlyRate: '', availability: '' },
     mode: 'onSubmit',
   });
 
@@ -65,21 +51,22 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
   useEffect(() => {
     if (open) {
       form.reset({
-        name: skills?.name || '',
-        description: skills?.description ?? '',
+        hourlyRate: sammary?.hourlyRate || '',
+        availability: sammary?.availability || '',
       });
     }
-  }, [form, open, skills]);
+  }, [form, open, sammary]);
 
-  const editFreelancerSkills = () => {};
-  // Mutation for creating/updating skills
+  const editFreelancersammary = () => {};
+
+  // Mutation for creating/updating sammary
   const mutation = useMutation({
-    mutationFn: editFreelancerSkills,
+    mutationFn: editFreelancersammary,
     onSuccess: () => {
-      const isEdit = !!skills?.id;
+      const isEdit = !!sammary?.id;
       const message = isEdit
-        ? 'skills updated successfully'
-        : 'skills added successfully';
+        ? 'sammary updated successfully'
+        : 'sammary added successfully';
 
       toast.custom(
         () => (
@@ -96,7 +83,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
         },
       );
 
-      queryClient.invalidateQueries({ queryKey: ['user-skillss'] });
+      queryClient.invalidateQueries({ queryKey: ['user-sammarys'] });
       closeDialog();
     },
     onError: (error) => {
@@ -130,34 +117,61 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
-          <DialogTitle>{skills ? 'Edit skills' : 'Add skills'}</DialogTitle>
+          <DialogTitle>{sammary ? 'Edit sammary' : 'Add sammary'}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(handleSubmit)}
             className="space-y-6"
           >
-            {/* Skills Select */}
+            {/* Summary */}
             <FormField
               control={form.control}
-              name="skills"
+              name="hourlyRate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{'skills'}</FormLabel>
-                  <div className="flex flex-col flex-grow">
+                  <FormLabel>Summary</FormLabel>
+                  <div className="relative">
                     <FormControl>
-                      <MultiSelect
-                        options={skillOptions}
-                        value={field.value}
-                        onChange={field.onChange}
-                        getOptionLabel={(e) => e.name}
-                        getOptionValue={(e) => e.id}
-                        placeholder={'skillsHolder'}
-                        className=" min-h-[100px]"
+                      <Textarea
+                        type="text"
+                        id="Summary"
+                        placeholder="Pitch your experience in a few sentences"
+                        className="focus-visible:ring-0"
+                        rows={5}
+                        {...field}
                       />
                     </FormControl>
-                    <FormMessage className="mt-1" />
+                    <span className="absolute right-3 bottom-3 text-sm text-muted-foreground/80">
+                      {bioChar}/4000
+                    </span>
                   </div>
+                  <FormMessage className="mt-1" />
+                </FormItem>
+              )}
+            />
+
+            {/* YouTube */}
+            <FormField
+              control={form.control}
+              name="socialYoutube"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Video Introduction</FormLabel>
+                  <FormDescription>
+                    Upload a short video to introduce yourself and stand out.
+                  </FormDescription>
+                  <FormControl>
+                    <InputWrapper>
+                      <img
+                        src={toAbsoluteUrl(`/media/brand-logos/youTube.svg`)}
+                        className="size-6 shrink-0"
+                        alt="image"
+                      />
+                      <Input placeholder="Enter YouTube URL" {...field} />
+                    </InputWrapper>
+                  </FormControl>
+                  <FormMessage />
                 </FormItem>
               )}
             />

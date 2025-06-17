@@ -1,18 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { Facebook, Plus, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
+import { toAbsoluteUrl } from '@/lib/helpers';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -24,12 +24,19 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input, InputWrapper } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import { SocialSchema } from '../forms/social-schema';
 
 export const SocialsDialog = ({ open, closeDialog, socials }) => {
   const queryClient = useQueryClient();
+  const [socialFields, setSocailFields] = useState([
+    { id: 0, title: '', link: '' },
+  ]);
+
+  useEffect(() => {
+    setSocailFields([{ id: 0, title: '', link: '' }]);
+  }, [open]);
 
   // Form initialization
   const form = useForm({
@@ -39,9 +46,25 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
       socialTwitter: '',
       socialLinkedIn: '',
       socialYoutube: '',
+      socialFields: [{ id: 0, title: '', link: '' }],
     },
     mode: 'onSubmit',
   });
+
+  const handleAddField = () => {
+    const newField = { id: socialFields.length };
+    setSocailFields([...socialFields, newField]);
+
+    form.setValue('socialFields', [...socialFields, newField]);
+  };
+
+  const handleRemoveField = (id) => {
+    if (id !== 0) {
+      const updatedFields = socialFields.filter((field) => field.id !== id);
+      setSocailFields(updatedFields);
+      form.setValue('socialFields', updatedFields);
+    }
+  };
 
   // Reset form values when dialog is opened
   useEffect(() => {
@@ -108,12 +131,13 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    mutation.mutate(values);
+    console.log('values', values);
+    // mutation.mutate(values);
   };
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent close={false}>
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>{socials ? 'Edit Socials' : 'Add Socials'}</DialogTitle>
         </DialogHeader>
@@ -130,7 +154,15 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 <FormItem>
                   <FormLabel>Facebook</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Facebook URL" {...field} />
+                    <InputWrapper>
+                      {/* <Facebook size={16} className="text-green-500" /> */}
+                      <img
+                        src={toAbsoluteUrl(`/media/brand-logos/facebook.svg`)}
+                        className="size-6 shrink-0"
+                        alt="image"
+                      />
+                      <Input placeholder="Enter Facebook URL" {...field} />
+                    </InputWrapper>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,7 +177,14 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 <FormItem>
                   <FormLabel>Twitter</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter Twitter URL" {...field} />
+                    <InputWrapper>
+                      <img
+                        src={toAbsoluteUrl(`/media/brand-logos/twitter.svg`)}
+                        className="size-6 shrink-0"
+                        alt="image"
+                      />
+                      <Input placeholder="Enter Twitter URL" {...field} />
+                    </InputWrapper>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -160,7 +199,14 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 <FormItem>
                   <FormLabel>LinkedIn</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter LinkedIn URL" {...field} />
+                    <InputWrapper>
+                      <img
+                        src={toAbsoluteUrl(`/media/brand-logos/linkedIn.svg`)}
+                        className="size-6 shrink-0"
+                        alt="image"
+                      />
+                      <Input placeholder="Enter LinkedIn URL" {...field} />
+                    </InputWrapper>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -175,12 +221,93 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 <FormItem>
                   <FormLabel>YouTube</FormLabel>
                   <FormControl>
-                    <Input placeholder="Enter YouTube URL" {...field} />
+                    <InputWrapper>
+                      <img
+                        src={toAbsoluteUrl(`/media/brand-logos/youTube.svg`)}
+                        className="size-6 shrink-0"
+                        alt="image"
+                      />
+                      <Input placeholder="Enter YouTube URL" {...field} />
+                    </InputWrapper>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
+
+            {/* Render social fields */}
+            {socialFields.map((field, index) => (
+              <div key={field.id} className="flex items-end mb-4">
+                <div className="flex items-center gap-2.5 w-[90%]">
+                  {/* Title */}
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name={`socialFields[${index}].title`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Title</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="e.g. Portfolio Website"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Link */}
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name={`socialFields[${index}].link`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Link</FormLabel>
+                          <FormControl>
+                            <InputWrapper>
+                              <Input
+                                placeholder="Paste the full URL (e.g. https://...)"
+                                {...field}
+                              />
+                            </InputWrapper>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+                </div>
+
+                {/* Remove button for fields after the first one */}
+                {index !== 0 && (
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    className="w-[8%] ms-[2%]"
+                    onClick={() => handleRemoveField(field.id)}
+                  >
+                    <Trash2 />
+                  </Button>
+                )}
+              </div>
+            ))}
+
+            {/* Add button */}
+            <Button
+              type="button"
+              variant="dim"
+              className="text-blue-500 hover:text-blue-600"
+              onClick={handleAddField}
+            >
+              <span className="p-px border border-blue-500 group-hover:border-blue-600">
+                <Plus size={16} />
+              </span>
+              Add Link
+            </Button>
 
             {/* Action Buttons */}
             <div className="flex space-x-4 justify-end">
@@ -192,7 +319,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 disabled={!form.formState.isDirty || isLoading}
               >
                 {isLoading && <Spinner className="animate-spin" />}
-                Save Settings
+                Save
               </Button>
             </div>
           </form>

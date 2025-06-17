@@ -108,7 +108,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent close={false}>
+      <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{about ? 'Edit About' : 'Add About'}</DialogTitle>
         </DialogHeader>
@@ -183,7 +183,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                 disabled={isLoading || !form.formState.isDirty}
               >
                 {isLoading && <Spinner className="animate-spin" />}
-                Save Settings
+                Save
               </Button>
             </DialogFooter>
           </form>

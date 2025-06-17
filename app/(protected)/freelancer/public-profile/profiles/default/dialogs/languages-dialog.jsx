@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -39,6 +39,10 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   const [languageFields, setLanguageFields] = useState([
     { id: 0, language: '', level: '' },
   ]);
+
+  useEffect(() => {
+    setLanguageFields([{ id: 0, language: '', level: '' }]);
+  }, [open]);
 
   const form = useForm({
     defaultValues: {
@@ -130,7 +134,8 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    mutation.mutate(values);
+    console.log('values', values);
+    // mutation.mutate(values);
   };
 
   const languagesData = [
@@ -158,7 +163,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent close={false}>
+      <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>
             {languages ? 'Edit languages' : 'Add languages'}
@@ -171,89 +176,93 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
           >
             {/* Render language fields */}
             {languageFields.map((field, index) => (
-              <div key={field.id} className="flex items-end gap-2.5 mb-4">
-                {/* Language */}
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name={`languageFields[${index}].language`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Language</FormLabel>
-                        <FormControl>
-                          <Select
-                            value={field.value}
-                            onValueChange={(value) => field.onChange(value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select language" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {languagesData.map((language) => (
-                                  <SelectItem
-                                    key={language.code}
-                                    value={language.code}
-                                  >
-                                    <span className="flex w-full items-center justify-between gap-2.5">
-                                      <img
-                                        src={language.flag}
-                                        alt={`${language.name} flag`}
-                                        className="w-6 h-6 rounded-full"
-                                      />
-                                      <span className="grow">
-                                        {language.name}
+              <div key={field.id} className="flex items-end mb-4">
+                <div className="flex items-center gap-2.5 w-[90%]">
+                  {/* Language */}
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name={`languageFields[${index}].language`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Language</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value}
+                              onValueChange={(value) => field.onChange(value)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select language" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {languagesData.map((language) => (
+                                    <SelectItem
+                                      key={language.code}
+                                      value={language.code}
+                                    >
+                                      <span className="flex w-full items-center justify-between gap-2.5">
+                                        <img
+                                          src={language.flag}
+                                          alt={`${language.name} flag`}
+                                          className="w-6 h-6 rounded-full"
+                                        />
+                                        <span className="grow">
+                                          {language.name}
+                                        </span>
                                       </span>
-                                    </span>
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </div>
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                {/* Level */}
-                <div className="flex-1">
-                  <FormField
-                    control={form.control}
-                    name={`languageFields[${index}].level`}
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Level</FormLabel>
-                        <FormControl>
-                          <Select
-                            value={field.value}
-                            onValueChange={(value) => field.onChange(value)}
-                          >
-                            <SelectTrigger>
-                              <SelectValue placeholder="Select Level" />
-                            </SelectTrigger>
-                            <SelectContent>
-                              <SelectGroup>
-                                {languagesLevel.map((level) => (
-                                  <SelectItem key={level.id} value={level.id}>
-                                    {level.name}
-                                  </SelectItem>
-                                ))}
-                              </SelectGroup>
-                            </SelectContent>
-                          </Select>
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  {/* Level */}
+                  <div className="flex-1">
+                    <FormField
+                      control={form.control}
+                      name={`languageFields[${index}].level`}
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Level</FormLabel>
+                          <FormControl>
+                            <Select
+                              value={field.value}
+                              onValueChange={(value) => field.onChange(value)}
+                            >
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select Level" />
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectGroup>
+                                  {languagesLevel.map((level) => (
+                                    <SelectItem key={level.id} value={level.id}>
+                                      {level.name}
+                                    </SelectItem>
+                                  ))}
+                                </SelectGroup>
+                              </SelectContent>
+                            </Select>
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
 
                 {/* Remove button for fields after the first one */}
                 {index !== 0 && (
                   <Button
+                    type="button"
                     variant="ghost"
+                    className="w-[8%] ms-[2%]"
                     onClick={() => handleRemoveField(field.id)}
                   >
                     <Trash2 />
@@ -263,8 +272,15 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
             ))}
 
             {/* Add button */}
-            <Button onClick={handleAddField}>
-              <Plus />
+            <Button
+              className="text-blue-500 hover:text-blue-600"
+              type="button"
+              variant="dim"
+              onClick={handleAddField}
+            >
+              <span className="p-px border border-blue-300">
+                <Plus size={16} />
+              </span>
               Add New Language
             </Button>
 
@@ -277,7 +293,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                 disabled={isLoading || !form.formState.isDirty}
               >
                 {isLoading && <Spinner className="animate-spin" />}
-                Save Settings
+                Save
               </Button>
             </DialogFooter>
           </form>

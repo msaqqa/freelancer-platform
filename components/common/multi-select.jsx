@@ -35,8 +35,11 @@ const MultiSelect = ({
       getOptionValue={getOptionValue}
       placeholder={placeholder}
       isLoading={isLoading}
-      className="bg-background border border-input rounded-md text-sm h-8.5 text-foreground text-[0.8125rem]"
+      className={`bg-background border border-input rounded-md text-sm min-h-8.5 text-foreground text-[0.8125rem] ${className}`}
       styles={{
+        indicatorContainer: (base) => ({
+          display: none,
+        }),
         control: (base) => ({
           ...base,
           height: '100%',

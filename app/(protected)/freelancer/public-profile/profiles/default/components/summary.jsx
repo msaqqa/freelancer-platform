@@ -1,17 +1,22 @@
 'use client';
 
+import { useState } from 'react';
+import { SquarePen } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
-import { Card } from '@/components/ui/card';
-import { Heading } from '../post';
+import { Button } from '@/components/ui/button';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { SammaryDialog } from '../dialogs/sammary-dialog';
 
 const Summary = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   return (
     <Card>
-      <Heading
-        author="Jenny Klabber"
-        avatar={{ image: '300-1.png', imageClass: 'rounded-full size-[50px]' }}
-        date="Yesterday at  5:06 PM"
-      />
+      <CardHeader className="border-b-0">
+        <CardTitle>Summary</CardTitle>
+        <Button variant="ghost" mode="icon" onClick={() => setOpenDialog(true)}>
+          <SquarePen size={16} className="text-blue-500" />
+        </Button>
+      </CardHeader>
 
       <div className="grid gap-5 mb-5 px-7.5">
         <p className="text-sm text-foreground leading-5.5">
@@ -50,6 +55,10 @@ const Summary = () => {
           </div>
         </div>
       </div>
+      <SammaryDialog
+        open={openDialog}
+        closeDialog={() => setOpenDialog(false)}
+      />
     </Card>
   );
 };

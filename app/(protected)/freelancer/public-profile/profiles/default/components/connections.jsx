@@ -47,7 +47,7 @@ const Connections = () => {
         }`}
         variant={item.connected ? 'primary' : 'outline'}
       >
-        {item.connected ? <Check size={18} /> : <Plus size={18} />}
+        {item.connected ? <Check size={16} /> : <Plus size={16} />}
       </div>
       <div className="flex flex-col gap-1">
         <div className="text-sm font-semibold">{item.name}</div>
