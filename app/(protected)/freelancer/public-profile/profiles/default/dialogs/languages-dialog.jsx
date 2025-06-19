@@ -7,6 +7,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { z } from 'zod';
+import { saveFreelancerLanguages } from '@/services/freelancer/profile';
 import { getLanguageLevels, getLanguages } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -51,6 +52,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
     queryFn: getLanguageLevels,
   });
   const levelOptions = levelData?.data ?? [];
+  console.log('levelOptions', levelOptions);
 
   // Zod validation schema for the form
   const LanguagesSchema = z.object({
@@ -91,25 +93,23 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   };
 
   // Mutation for creating/updating languages
-  const editFreelancerLanguages = () => {};
   const mutation = useMutation({
-    mutationFn: editFreelancerLanguages,
-    onSuccess: () => {
+    mutationFn: saveFreelancerLanguages,
+    onSuccess: (data) => {
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
+            <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
         {
           position: 'top-center',
         },
       );
-
-      queryClient.invalidateQueries({ queryKey: ['user-languagess'] });
+      queryClient.invalidateQueries({ queryKey: ['freelancer-languagess'] });
       closeDialog();
     },
     onError: (error) => {
@@ -133,8 +133,9 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   const isLoading = mutation.status === 'pending';
 
   const handleSubmit = (values) => {
-    console.log('values', values);
-    // mutation.mutate(values);
+    const updateValues = { languages: values.languageFields };
+    console.log('updateValues', updateValues);
+    mutation.mutate(updateValues);
   };
 
   return (
@@ -175,7 +176,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                                   {languagesOptions.map((language) => (
                                     <SelectItem
                                       key={language.id}
-                                      value={language.id}
+                                      value={language.id.toString()}
                                     >
                                       {language?.name?.en}
                                     </SelectItem>
@@ -211,7 +212,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                                   {levelOptions.map((level) => (
                                     <SelectItem
                                       key={level.key}
-                                      value={level.label}
+                                      value={level.key.toString()}
                                     >
                                       {level.label}
                                     </SelectItem>

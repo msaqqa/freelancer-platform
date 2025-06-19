@@ -11,7 +11,6 @@ export const EmptyState = ({
   openDialog,
   button = true,
 }) => {
-  console.log('button', button);
   return (
     <div className="grid place-items-center gap-4">
       <div className="flex justify-center items-center">

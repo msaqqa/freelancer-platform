@@ -124,8 +124,11 @@ export const SammaryDialog = ({ open, closeDialog, sammary }) => {
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{sammary ? 'Edit sammary' : 'Add sammary'}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="block pe-3 -me-3">
-          <div className="w-full">
+        <ScrollArea
+          className="block pe-3 -me-3"
+          viewportClassName="!block !min-w-0"
+        >
+          <div className="min-w-fit w-full">
             <Form {...form}>
               <form
                 onSubmit={form.handleSubmit(handleSubmit)}

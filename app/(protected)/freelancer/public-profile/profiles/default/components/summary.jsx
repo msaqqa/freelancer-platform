@@ -11,6 +11,21 @@ import { EmptyState } from './empty-state';
 const Summary = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const summary = null;
+
+  const items = [];
+
+  const renderItem = (item, index) => {
+    return (
+      <div
+        key={index}
+        className="bg-cover bg-no-repeat min-h-[340px] min-w-[250px] rounded-xl"
+        style={{
+          backgroundImage: `url(${toAbsoluteUrl(item)})`,
+        }}
+      ></div>
+    );
+  };
+
   return (
     <Card>
       <CardHeader className="border-b-0">
@@ -29,7 +44,6 @@ const Summary = () => {
       <div className="grid gap-5 mb-5 px-7.5">
         {summary ? (
           <>
-            {' '}
             <p className="text-sm text-foreground leading-5.5">
               Now that I’m done thoroughly mangling that vague metaphor, let’s
               get down to business. You know you need to start blogging to grow
@@ -37,34 +51,13 @@ const Summary = () => {
               how to write a great blog post in five simple steps that people
               will actually want to read. Ready? Let’s get started.
             </p>
-            <div className="grid grid-cols-2 gap-2.5 xl:gap-7.5">
-              <div>
-                <div
-                  className="bg-cover bg-no-repeat min-h-[340px] w-full rounded-xl"
-                  style={{
-                    backgroundImage: `url(${toAbsoluteUrl(`/media/images/600x600//21.jpg`)})`,
-                  }}
-                ></div>
+            {items.length > 0 && (
+              <div className="flex gap-2.5 xl:gap-7.5 kt-scrollable-x overflow-x-auto pb-2">
+                {items.map((item, index) => {
+                  return renderItem(item, index);
+                })}
               </div>
-              <div className="grid grid-rows-2 gap-2.5 xl:gap-7.5">
-                <div>
-                  <div
-                    className="bg-cover bg-no-repeat rounded-xl h-full w-full"
-                    style={{
-                      backgroundImage: `url(${toAbsoluteUrl(`/media/images/600x400/19.jpg`)})`,
-                    }}
-                  ></div>
-                </div>
-                <div>
-                  <div
-                    className="bg-cover bg-no-repeat rounded-xl h-full w-full"
-                    style={{
-                      backgroundImage: `url(${toAbsoluteUrl(`/media/images/600x400/20.jpg`)})`,
-                    }}
-                  ></div>
-                </div>
-              </div>
-            </div>
+            )}
           </>
         ) : (
           <EmptyState

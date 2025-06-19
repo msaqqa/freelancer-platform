@@ -74,14 +74,14 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
   // Mutation for creating/updating skills
   const mutation = useMutation({
     mutationFn: saveFreelancerSkills,
-    onSuccess: () => {
+    onSuccess: (data) => {
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
+            <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
         {
@@ -116,8 +116,10 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    console.log('values', values);
-    // mutation.mutate(values);
+    const newSkills = values.skills.map((item) => item.id);
+    const updateValues = { skills: newSkills };
+    console.log('values', updateValues);
+    mutation.mutate(updateValues);
   };
 
   return (
