@@ -49,6 +49,9 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
       Object.keys(values).forEach((key) => {
         if (key === 'photo' && values.photo instanceof File) {
           formData.append('photo', values.photo);
+        }
+        if (key === 'skills') {
+          formData.append('skills', JSON.stringify(values.skills));
         } else if (key !== 'photo') {
           formData.append(key, values[key]);
         }
@@ -96,7 +99,6 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
   });
 
   const onSubmit = async (values) => {
-    console.log('values', values);
     const updataData = {
       ...values,
       birth_date: values?.birthDate,
@@ -107,6 +109,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
       hourly_rate: values?.hourlyRate,
       available_hire: 1,
     };
+    console.log('updataData', updataData);
     mutation.mutate(updataData);
   };
 
