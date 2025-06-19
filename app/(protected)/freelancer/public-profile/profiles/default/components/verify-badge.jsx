@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import { Progress } from '@/components/ui/progress';
+import { CircularProgress, Progress } from '@/components/ui/progress';
 import { VerifyBadgeDialog } from '../dialogs/verify-badge-dialog';
 
 export function StepperProgress({ currentStep, totalSteps }) {
@@ -50,14 +50,7 @@ const VerifyBadge = () => {
     <Card className="shadow-none p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-7">
         <div className="flex flex-col md:flex-row items-center gap-5">
-          <div className="relative size-[100px] shrink-0">
-            <StepperProgress currentStep={3} totalSteps={5} />
-            {/* <Progress
-              value={70}
-              indicatorClassName={'bg-green-500'}
-              className="h-[8px]"
-            /> */}
-          </div>
+          <CircularProgress value={75} size={100} strokeWidth={8} />
           <div className="flex flex-col gap-1.5 max-w-[300px]">
             <h2 className="text-xl font-semibold text-mono">
               Get verified badge

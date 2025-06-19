@@ -11,14 +11,15 @@ import { Dribbble, SquarePen } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { SocialsDialog } from '../dialogs/socials-dialog';
+import { EmptyState } from './empty-state';
 
 const Socials = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const items = [
-    { logo: Dribbble, info: 'jennynft' },
-    { logo: RiFacebookCircleLine, info: 'nftmania' },
-    { logo: RiTwitterXLine, info: 'jennynft' },
-    { logo: RiYoutubeLine, info: 'jennyklabber' },
+    // { logo: Dribbble, info: 'jennynft' },
+    // { logo: RiFacebookCircleLine, info: 'nftmania' },
+    // { logo: RiTwitterXLine, info: 'jennynft' },
+    // { logo: RiYoutubeLine, info: 'jennyklabber' },
   ];
 
   const renderItems = (item, index) => {
@@ -39,16 +40,31 @@ const Socials = () => {
     <Card>
       <CardHeader>
         <CardTitle>Socials</CardTitle>
-        <Button variant="ghost" mode="icon" onClick={() => setOpenDialog(true)}>
-          <SquarePen size={16} className="text-blue-500" />
-        </Button>
+        {items.length > 0 && (
+          <Button
+            variant="ghost"
+            mode="icon"
+            onClick={() => setOpenDialog(true)}
+          >
+            <SquarePen size={16} className="text-blue-500" />
+          </Button>
+        )}
       </CardHeader>
       <CardContent>
-        <div className="grid gap-y-5">
-          {items.map((item, index) => {
-            return renderItems(item, index);
-          })}
-        </div>
+        {items.length ? (
+          <div className="grid gap-y-5">
+            {items.map((item, index) => {
+              return renderItems(item, index);
+            })}
+          </div>
+        ) : (
+          <EmptyState
+            title="Socials"
+            description="Let clients reach you through your social profiles."
+            icon="/media/icons/socials-icon.svg"
+            openDialog={() => setOpenDialog(true)}
+          />
+        )}
       </CardContent>
       <SocialsDialog
         open={openDialog}

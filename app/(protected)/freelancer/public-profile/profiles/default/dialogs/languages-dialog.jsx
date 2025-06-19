@@ -1,12 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Plus, Trash2 } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
+import { getLanguageLevels, getLanguages } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -36,62 +37,64 @@ import { Spinner } from '@/components/ui/spinners';
 
 export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   const queryClient = useQueryClient();
-  const [languageFields, setLanguageFields] = useState([
-    { id: 0, language: '', level: '' },
-  ]);
 
-  useEffect(() => {
-    setLanguageFields([{ id: 0, language: '', level: '' }]);
-  }, [open]);
+  // get languages data from api
+  const { data: langData, isLoading: langLoading } = useQuery({
+    queryKey: ['languages'],
+    queryFn: getLanguages,
+  });
+  const languagesOptions = langData?.data ?? [];
 
-  const form = useForm({
-    defaultValues: {
-      languageFields: [{ id: 0, language: '', level: '' }],
-    },
+  // get languages level data from api
+  const { data: levelData, isLoading: levelLoading } = useQuery({
+    queryKey: ['languagesLevels'],
+    queryFn: getLanguageLevels,
+  });
+  const levelOptions = levelData?.data ?? [];
+
+  // Zod validation schema for the form
+  const LanguagesSchema = z.object({
+    languageFields: z
+      .array(
+        z.object({
+          language_id: z.string().min(1, {
+            message: 'Language is required',
+          }),
+          level: z.string().min(1, { message: 'Level is required' }),
+        }),
+      )
+      .min(1, { message: 'At least one language is required' }),
   });
 
+  // Form initialization with React Hook Form
+  const form = useForm({
+    resolver: zodResolver(LanguagesSchema),
+    defaultValues: {
+      languageFields: [{ language_id: '', level: '' }],
+    },
+    mode: 'onSubmit',
+  });
+
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'languageFields',
+  });
+
+  // Handle adding new language fields
   const handleAddField = () => {
-    const newField = { id: languageFields.length };
-    setLanguageFields([...languageFields, newField]);
-
-    form.setValue('languageFields', [...languageFields, newField]);
+    append({ language_id: '', level: '' });
   };
 
-  const handleRemoveField = (id) => {
-    if (id !== 0) {
-      const updatedFields = languageFields.filter((field) => field.id !== id);
-      setLanguageFields(updatedFields);
-      form.setValue('languageFields', updatedFields);
-    }
+  // Handle removing language fields
+  const handleRemoveField = (index) => {
+    remove(index);
   };
 
-  // Form initialization
-  // const form = useForm({
-  //   resolver: zodResolver(),
-  //   defaultValues: { language: '', level: '' },
-  //   mode: 'onSubmit',
-  // });
-
-  // Reset form values when dialog is opened
-  // useEffect(() => {
-  //   if (open) {
-  //     form.reset({
-  //       language: languages?.language || '',
-  //       level: languages?.level ?? '',
-  //     });
-  //   }
-  // }, [form, open, languages]);
-
-  const editFreelancerLanguages = () => {};
   // Mutation for creating/updating languages
+  const editFreelancerLanguages = () => {};
   const mutation = useMutation({
     mutationFn: editFreelancerLanguages,
     onSuccess: () => {
-      const isEdit = !!languages?.id;
-      const message = isEdit
-        ? 'languages updated successfully'
-        : 'languages added successfully';
-
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -101,7 +104,6 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
@@ -121,7 +123,6 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
@@ -129,37 +130,12 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
     },
   });
 
-  // Derive the loading state from the mutation status
   const isLoading = mutation.status === 'pending';
 
-  // Handle form submission
   const handleSubmit = (values) => {
     console.log('values', values);
     // mutation.mutate(values);
   };
-
-  const languagesData = [
-    {
-      code: 'en',
-      name: 'English',
-      shortName: 'EN',
-      direction: 'ltr',
-      flag: '/media/flags/united-states.svg',
-    },
-    {
-      code: 'ar',
-      name: 'Arabic',
-      shortName: 'AR',
-      direction: 'rtl',
-      flag: '/media/flags/saudi-arabia.svg',
-    },
-  ];
-
-  const languagesLevel = [
-    { id: '1', name: 'Fluent' },
-    { id: '2', name: 'Intermediate' },
-    { id: '3', name: 'Native' },
-  ];
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
@@ -175,42 +151,33 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
             className="space-y-6"
           >
             {/* Render language fields */}
-            {languageFields.map((field, index) => (
+            {fields.map((field, index) => (
               <div key={field.id} className="flex items-end mb-4">
-                <div className="flex items-center gap-2.5 w-[90%]">
+                <div className="flex items-baseline gap-2.5 w-[90%]">
                   {/* Language */}
                   <div className="flex-1">
                     <FormField
                       control={form.control}
-                      name={`languageFields[${index}].language`}
+                      name={`languageFields[${index}].language_id`}
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Language</FormLabel>
                           <FormControl>
                             <Select
                               value={field.value}
-                              onValueChange={(value) => field.onChange(value)}
+                              onValueChange={field.onChange}
                             >
                               <SelectTrigger>
                                 <SelectValue placeholder="Select language" />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  {languagesData.map((language) => (
+                                  {languagesOptions.map((language) => (
                                     <SelectItem
-                                      key={language.code}
-                                      value={language.code}
+                                      key={language.id}
+                                      value={language.id}
                                     >
-                                      <span className="flex w-full items-center justify-between gap-2.5">
-                                        <img
-                                          src={language.flag}
-                                          alt={`${language.name} flag`}
-                                          className="w-6 h-6 rounded-full"
-                                        />
-                                        <span className="grow">
-                                          {language.name}
-                                        </span>
-                                      </span>
+                                      {language?.name?.en}
                                     </SelectItem>
                                   ))}
                                 </SelectGroup>
@@ -234,16 +201,19 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                           <FormControl>
                             <Select
                               value={field.value}
-                              onValueChange={(value) => field.onChange(value)}
+                              onValueChange={field.onChange}
                             >
                               <SelectTrigger>
                                 <SelectValue placeholder="Select Level" />
                               </SelectTrigger>
                               <SelectContent>
                                 <SelectGroup>
-                                  {languagesLevel.map((level) => (
-                                    <SelectItem key={level.id} value={level.id}>
-                                      {level.name}
+                                  {levelOptions.map((level) => (
+                                    <SelectItem
+                                      key={level.key}
+                                      value={level.label}
+                                    >
+                                      {level.label}
                                     </SelectItem>
                                   ))}
                                 </SelectGroup>
@@ -263,7 +233,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                     type="button"
                     variant="ghost"
                     className="w-[8%] ms-[2%]"
-                    onClick={() => handleRemoveField(field.id)}
+                    onClick={() => handleRemoveField(index)}
                   >
                     <Trash2 />
                   </Button>
@@ -278,7 +248,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
               variant="dim"
               onClick={handleAddField}
             >
-              <span className="p-px border border-blue-300">
+              <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
                 <Plus size={16} />
               </span>
               Add New Language

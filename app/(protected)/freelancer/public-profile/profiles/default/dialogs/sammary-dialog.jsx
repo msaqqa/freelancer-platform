@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
@@ -26,9 +26,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input, InputWrapper } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
-import { Switch } from '@/components/ui/switch';
 import { Textarea } from '@/components/ui/textarea';
+import { GalleryInput } from '@/app/components/partials/common/gallery-input';
 
 export const SammaryDialog = ({ open, closeDialog, sammary }) => {
   const [bioChar, setBioCahr] = useState(0);
@@ -42,20 +43,20 @@ export const SammaryDialog = ({ open, closeDialog, sammary }) => {
 
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(),
-    defaultValues: { hourlyRate: '', availability: '' },
+    // resolver: zodResolver(),
+    defaultValues: { summary: '', video: '', gallery: null },
     mode: 'onSubmit',
   });
 
   // Reset form values when dialog is opened
-  useEffect(() => {
-    if (open) {
-      form.reset({
-        hourlyRate: sammary?.hourlyRate || '',
-        availability: sammary?.availability || '',
-      });
-    }
-  }, [form, open, sammary]);
+  // useEffect(() => {
+  //   if (open) {
+  //     form.reset({
+  //       hourlyRate: sammary?.hourlyRate || '',
+  //       availability: sammary?.availability || '',
+  //     });
+  //   }
+  // }, [form, open, sammary]);
 
   const editFreelancersammary = () => {};
 
@@ -110,86 +111,122 @@ export const SammaryDialog = ({ open, closeDialog, sammary }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    mutation.mutate(values);
+    console.log('values', values);
+    // mutation.mutate(values);
   };
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent>
+      <DialogContent
+        variant="fullscreen"
+        className="w-full max-w-[600px] mx-auto"
+      >
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{sammary ? 'Edit sammary' : 'Add sammary'}</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
-          >
-            {/* Summary */}
-            <FormField
-              control={form.control}
-              name="hourlyRate"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Summary</FormLabel>
-                  <div className="relative">
-                    <FormControl>
-                      <Textarea
-                        type="text"
-                        id="Summary"
-                        placeholder="Pitch your experience in a few sentences"
-                        className="focus-visible:ring-0"
-                        rows={5}
-                        {...field}
-                      />
-                    </FormControl>
-                    <span className="absolute right-3 bottom-3 text-sm text-muted-foreground/80">
-                      {bioChar}/4000
-                    </span>
-                  </div>
-                  <FormMessage className="mt-1" />
-                </FormItem>
-              )}
-            />
-
-            {/* YouTube */}
-            <FormField
-              control={form.control}
-              name="socialYoutube"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Video Introduction</FormLabel>
-                  <FormDescription>
-                    Upload a short video to introduce yourself and stand out.
-                  </FormDescription>
-                  <FormControl>
-                    <InputWrapper>
-                      <img
-                        src={toAbsoluteUrl(`/media/brand-logos/youTube.svg`)}
-                        className="size-6 shrink-0"
-                        alt="image"
-                      />
-                      <Input placeholder="Enter YouTube URL" {...field} />
-                    </InputWrapper>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <DialogFooter>
-              <Button type="button" variant="outline" onClick={closeDialog}>
-                Cancel
-              </Button>
-              <Button
-                type="submit"
-                disabled={isLoading || !form.formState.isDirty}
+        <ScrollArea className="block pe-3 -me-3">
+          <div className="w-full">
+            <Form {...form}>
+              <form
+                onSubmit={form.handleSubmit(handleSubmit)}
+                className="space-y-6"
               >
-                {isLoading && <Spinner className="animate-spin" />}
-                Save
-              </Button>
-            </DialogFooter>
-          </form>
-        </Form>
+                {/* Summary */}
+                <FormField
+                  control={form.control}
+                  name="summary"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Summary</FormLabel>
+                      <div className="relative">
+                        <FormControl>
+                          <Textarea
+                            type="text"
+                            id="summary"
+                            placeholder="Pitch your experience in a few sentences"
+                            className="focus-visible:ring-0"
+                            rows={5}
+                            {...field}
+                          />
+                        </FormControl>
+                        <span className="absolute right-3 bottom-3 text-sm text-muted-foreground/80">
+                          {bioChar}/4000
+                        </span>
+                      </div>
+                      <FormMessage className="mt-1" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* Gallery */}
+                <FormField
+                  control={form.control}
+                  name="gallery"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Photo Gallery</FormLabel>
+                      <FormDescription>
+                        Upload up to 6 images that reflect your work and
+                        activity.
+                      </FormDescription>
+                      <FormControl>
+                        <GalleryInput
+                          multiple={true}
+                          {...field}
+                          onChange={(val) => {
+                            field.onChange(val);
+                          }}
+                        />
+                      </FormControl>
+                      <FormMessage className="mt-1" />
+                    </FormItem>
+                  )}
+                />
+
+                {/* YouTube */}
+                <FormField
+                  control={form.control}
+                  name="video"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Video Introduction</FormLabel>
+                      <FormDescription>
+                        Upload a short video to introduce yourself and stand
+                        out.
+                      </FormDescription>
+                      <FormControl>
+                        <InputWrapper>
+                          <img
+                            src={toAbsoluteUrl(
+                              `/media/brand-logos/youTube.svg`,
+                            )}
+                            className="size-6 shrink-0"
+                            alt="image"
+                          />
+                          <Input placeholder="Enter YouTube URL" {...field} />
+                        </InputWrapper>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <DialogFooter>
+                  <Button type="button" variant="outline" onClick={closeDialog}>
+                    Cancel
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !form.formState.isDirty}
+                  >
+                    {isLoading && <Spinner className="animate-spin" />}
+                    Save
+                  </Button>
+                </DialogFooter>
+              </form>
+            </Form>
+          </div>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

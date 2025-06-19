@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
+import { IdentityVerificationDialog } from '../dialogs/identity-verification-dialog';
 
 const VerifyIdentity = () => {
+  const [openDialog, setOpenDialog] = useState(false);
   return (
     <Card className="shadow-none p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-7">
@@ -26,9 +28,15 @@ const VerifyIdentity = () => {
           </div>
         </div>
         <div className="grid justify-end min-w-20">
-          <Button variant="mono">Start Verification</Button>
+          <Button variant="mono" onClick={() => setOpenDialog(true)}>
+            Start Verification
+          </Button>
         </div>
       </div>
+      <IdentityVerificationDialog
+        open={openDialog}
+        closeDialog={() => setOpenDialog(false)}
+      />
     </Card>
   );
 };

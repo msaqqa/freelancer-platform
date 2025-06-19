@@ -1,13 +1,18 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { saveFreelancerAbout } from '@/services/freelancer/profile';
+import {
+  getCategories,
+  getCountries,
+  getSubcategories,
+} from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -26,41 +31,79 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
 import { Switch } from '@/components/ui/switch';
-import { Textarea } from '@/components/ui/textarea';
+import { FreelancerAboutSchema } from '../forms/about-schema';
 
 export const AboutDialog = ({ open, closeDialog, about }) => {
+  const [categoryId, setCategoryId] = useState(null);
   const queryClient = useQueryClient();
+
+  // get categoriesData data from api
+  const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
+    queryKey: ['categories'],
+    queryFn: getCategories,
+  });
+  const categories = categoriesData?.data ?? [];
+
+  // get subcategoriesData data from api
+  const { data: subcategoriesData, isLoading: subcategoriesLoading } = useQuery(
+    {
+      queryKey: ['subcategories', categoryId],
+      queryFn: () => getSubcategories(categoryId),
+      enabled: !!categoryId,
+    },
+  );
+  const subcategories = subcategoriesData?.data ?? [];
+
+  // get countries data from api
+  const { data, isLoading: countriesLoading } = useQuery({
+    queryKey: ['countries'],
+    queryFn: getCountries,
+  });
+  const countries = data?.data ?? [];
+
+  const handleCategoryChange = (val) => {
+    setCategoryId(val);
+    form.setValue('subcategory', null);
+    form.trigger('category');
+  };
 
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(),
-    defaultValues: { hourlyRate: '', availability: '' },
-    mode: 'onSubmit',
+    resolver: zodResolver(FreelancerAboutSchema()),
+    defaultValues: {
+      hourlyRate: '',
+      availability: '',
+      category: '',
+      subcategory: '',
+      experience: '',
+      country: '',
+    },
+    mode: 'onBlur',
   });
 
   // Reset form values when dialog is opened
-  useEffect(() => {
-    if (open) {
-      form.reset({
-        hourlyRate: about?.hourlyRate || '',
-        availability: about?.availability || '',
-      });
-    }
-  }, [form, open, about]);
-
-  const editFreelancerAbout = () => {};
+  // useEffect(() => {
+  //   if (open) {
+  //     form.reset({
+  //       hourlyRate: about?.hourlyRate || '',
+  //       availability: about?.availability || '',
+  //     });
+  //   }
+  // }, [form, open, about]);
 
   // Mutation for creating/updating about
   const mutation = useMutation({
-    mutationFn: editFreelancerAbout,
+    mutationFn: saveFreelancerAbout,
     onSuccess: () => {
-      const isEdit = !!about?.id;
-      const message = isEdit
-        ? 'about updated successfully'
-        : 'about added successfully';
-
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -70,7 +113,6 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
@@ -103,7 +145,8 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    mutation.mutate(values);
+    console.log('values', values);
+    // mutation.mutate(values);
   };
 
   return (
@@ -141,7 +184,6 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                       />
                     </div>
                   </FormControl>
-                  <FormMessage className="mt-1" />
                 </FormItem>
               )}
             />
@@ -169,7 +211,159 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                       alt=""
                     />
                   </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Industry Select */}
+            <FormField
+              control={form.control}
+              name="category"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Industry</FormLabel>
+                  <FormControl>
+                    <Select
+                      value={field.value}
+                      onValueChange={(val) => {
+                        field.onChange(val);
+                        handleCategoryChange(val);
+                      }}
+                      onOpenChange={(isOpen) => {
+                        if (!isOpen) {
+                          form.trigger('category');
+                        }
+                      }}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Design" />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {categoriesLoading && (
+                          <SelectItem>loading...</SelectItem>
+                        )}
+                        {categories.map((cat) => (
+                          <SelectItem key={cat.id} value={cat.id.toString()}>
+                            {cat.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
                   <FormMessage className="mt-1" />
+                </FormItem>
+              )}
+            />
+
+            {/* Subcategory Select */}
+            <FormField
+              control={form.control}
+              name="subcategory"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Specialty</FormLabel>
+                  <div className="flex flex-col flex-grow">
+                    <FormControl>
+                      <Select
+                        value={field.value}
+                        onValueChange={(val) => {
+                          field.onChange(val);
+                          form.trigger('subcategory');
+                        }}
+                        onOpenChange={(isOpen) => {
+                          if (!isOpen) {
+                            form.trigger('subcategory');
+                          }
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Graphic Design" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {subcategoriesLoading && (
+                            <SelectItem>loading...</SelectItem>
+                          )}
+                          {subcategories.map((subcat) => (
+                            <SelectItem
+                              key={subcat.id}
+                              value={subcat.id.toString()}
+                            >
+                              {subcat.name}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </div>
+                </FormItem>
+              )}
+            />
+
+            {/* Work Experience */}
+            <FormField
+              control={form.control}
+              name="experience"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Work Experience</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      id="experience"
+                      placeholder="0"
+                      className="focus-visible:ring-0"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* Country Select */}
+            <FormField
+              control={form.control}
+              name="country"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>country</FormLabel>
+                  <div className="flex flex-col flex-grow">
+                    <FormControl>
+                      <Select
+                        value={field?.value}
+                        onValueChange={(val) => {
+                          field.onChange(val);
+                          form.trigger('country');
+                        }}
+                        onOpenChange={(isOpen) => {
+                          if (!isOpen) {
+                            form.trigger('country');
+                          }
+                        }}
+                      >
+                        <SelectTrigger>
+                          <SelectValue placeholder="Palestine" />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {countriesLoading && (
+                            <SelectItem>loading...</SelectItem>
+                          )}
+                          {countries.length &&
+                            countries.map((country) => (
+                              <SelectItem
+                                key={country.id}
+                                value={country.id.toString()}
+                              >
+                                {country.name}
+                              </SelectItem>
+                            ))}
+                        </SelectContent>
+                      </Select>
+                    </FormControl>
+                    <FormMessage />
+                  </div>
                 </FormItem>
               )}
             />

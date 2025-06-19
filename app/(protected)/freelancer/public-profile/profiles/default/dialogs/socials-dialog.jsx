@@ -1,13 +1,13 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Facebook, Plus, Trash2 } from 'lucide-react';
-import { useForm } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { toAbsoluteUrl } from '@/lib/helpers';
+import { z } from 'zod';
+import { getSocials } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,70 +24,83 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input, InputWrapper } from '@/components/ui/input';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
-import { SocialSchema } from '../forms/social-schema';
+
+// Zod validation schema for the form
+const SocialsSchema = z.object({
+  socials: z
+    .array(
+      z.object({
+        link: z.string().min(1, {
+          message: 'Link is required',
+        }),
+      }),
+    )
+    .min(1, { message: 'At least one language is required' }),
+  otherSocialFields: z
+    .array(
+      z.object({
+        title: z.string().min(1, {
+          message: 'Title is required',
+        }),
+        link: z.string().min(1, { message: 'Link is required' }),
+      }),
+    )
+    .optional(),
+});
 
 export const SocialsDialog = ({ open, closeDialog, socials }) => {
   const queryClient = useQueryClient();
-  const [socialFields, setSocailFields] = useState([
-    { id: 0, title: '', link: '' },
-  ]);
 
-  useEffect(() => {
-    setSocailFields([{ id: 0, title: '', link: '' }]);
-  }, [open]);
+  // get socials data from API
+  const { data: socialsData, isLoading: socialsLoading } = useQuery({
+    queryKey: ['socials'],
+    queryFn: getSocials,
+  });
+  const socialsDataFields = socialsData?.data ?? [
+    {
+      id: 1,
+      name: 'Instagram',
+      icon: 'fa-brands fa-instagram',
+    },
+    {
+      id: 2,
+      name: 'Facebook',
+      icon: 'fa-brands fa-facebook',
+    },
+    {
+      id: 3,
+      name: 'Twitter',
+      icon: 'fa-brands fa-twitter',
+    },
+  ];
 
-  // Form initialization
+  // Form initialization with React Hook Form
   const form = useForm({
-    resolver: zodResolver(SocialSchema),
+    // resolver: zodResolver(SocialsSchema),
     defaultValues: {
-      socialFacebook: '',
-      socialTwitter: '',
-      socialLinkedIn: '',
-      socialYoutube: '',
-      socialFields: [{ id: 0, title: '', link: '' }],
+      socials: [],
+      otherSocialFields: [{ title: '', link: '' }],
     },
     mode: 'onSubmit',
   });
 
-  const handleAddField = () => {
-    const newField = { id: socialFields.length };
-    setSocailFields([...socialFields, newField]);
-
-    form.setValue('socialFields', [...socialFields, newField]);
-  };
-
-  const handleRemoveField = (id) => {
-    if (id !== 0) {
-      const updatedFields = socialFields.filter((field) => field.id !== id);
-      setSocailFields(updatedFields);
-      form.setValue('socialFields', updatedFields);
-    }
-  };
-
-  // Reset form values when dialog is opened
-  useEffect(() => {
-    if (open) {
-      form.reset({
-        socialFacebook: socials?.socialFacebook || '',
-        socialTwitter: socials?.socialTwitter || '',
-        socialLinkedIn: socials?.socialLinkedIn || '',
-        socialYoutube: socials?.socialYoutube || '',
-      });
-    }
-  }, [form, open, socials]);
-
-  const editFreelancerSocials = () => {};
+  const { fields, append, remove } = useFieldArray({
+    control: form.control,
+    name: 'otherSocialFields',
+  });
 
   // Mutation for creating/updating socials
+  const editFreelancerSocials = () => {};
   const mutation = useMutation({
     mutationFn: editFreelancerSocials,
     onSuccess: () => {
       const isEdit = !!socials?.id;
       const message = isEdit
-        ? 'socials updated successfully'
-        : 'socials added successfully';
+        ? 'Socials updated successfully'
+        : 'Socials added successfully';
 
       toast.custom(
         () => (
@@ -98,13 +111,12 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
       );
 
-      queryClient.invalidateQueries({ queryKey: ['user-socialss'] });
+      queryClient.invalidateQueries({ queryKey: ['user-socials'] });
       closeDialog();
     },
     onError: (error) => {
@@ -118,7 +130,6 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
@@ -126,204 +137,155 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
     },
   });
 
-  // Derive the loading state from the mutation status
   const isLoading = mutation.status === 'pending';
 
-  // Handle form submission
   const handleSubmit = (values) => {
     console.log('values', values);
     // mutation.mutate(values);
   };
 
+  const handleAddField = () => {
+    append({ title: '', link: '' });
+  };
+
+  const handleRemoveField = (index) => {
+    remove(index);
+  };
+
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent>
+      <DialogContent
+        variant="fullscreen"
+        className="w-full max-w-[600px] mx-auto"
+      >
         <DialogHeader>
           <DialogTitle>{socials ? 'Edit Socials' : 'Add Socials'}</DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(handleSubmit)}
-            className="space-y-6"
-          >
-            {/* Facebook */}
-            <FormField
-              control={form.control}
-              name="socialFacebook"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Facebook</FormLabel>
-                  <FormControl>
-                    <InputWrapper>
-                      {/* <Facebook size={16} className="text-green-500" /> */}
-                      <img
-                        src={toAbsoluteUrl(`/media/brand-logos/facebook.svg`)}
-                        className="size-6 shrink-0"
-                        alt="image"
+        <ScrollArea className="grow pe-3 -me-3">
+          <Form {...form}>
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-6"
+            >
+              {/* Render fixed social fields from API */}
+              {socialsDataFields?.map((item) => {
+                return (
+                  <FormField
+                    key={item.id}
+                    control={form.control}
+                    name={`socials[${item.id}].link`}
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{item.name}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={`Enter ${item.name} URL`}
+                            value={field.value}
+                            onChange={(e) => {
+                              // const prevsocial = form.getValues('socialFields');
+                              field.onChange(e);
+                              form.setValue(`socials[${item.id}]`, {
+                                social_id: item.id,
+                                link: e.target.value,
+                              });
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                );
+              })}
+
+              {/* Render dynamic social fields */}
+              {fields.map((field, index) => (
+                <div key={field.id} className="flex items-end mb-4">
+                  <div className="flex items-center gap-2.5 w-[90%]">
+                    {/* Title */}
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name={`otherSocialFields[${index}].title`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Title</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder="e.g. Portfolio Website"
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
                       />
-                      <Input placeholder="Enter Facebook URL" {...field} />
-                    </InputWrapper>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+                    </div>
 
-            {/* Twitter */}
-            <FormField
-              control={form.control}
-              name="socialTwitter"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Twitter</FormLabel>
-                  <FormControl>
-                    <InputWrapper>
-                      <img
-                        src={toAbsoluteUrl(`/media/brand-logos/twitter.svg`)}
-                        className="size-6 shrink-0"
-                        alt="image"
-                      />
-                      <Input placeholder="Enter Twitter URL" {...field} />
-                    </InputWrapper>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* LinkedIn */}
-            <FormField
-              control={form.control}
-              name="socialLinkedIn"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>LinkedIn</FormLabel>
-                  <FormControl>
-                    <InputWrapper>
-                      <img
-                        src={toAbsoluteUrl(`/media/brand-logos/linkedIn.svg`)}
-                        className="size-6 shrink-0"
-                        alt="image"
-                      />
-                      <Input placeholder="Enter LinkedIn URL" {...field} />
-                    </InputWrapper>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* YouTube */}
-            <FormField
-              control={form.control}
-              name="socialYoutube"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>YouTube</FormLabel>
-                  <FormControl>
-                    <InputWrapper>
-                      <img
-                        src={toAbsoluteUrl(`/media/brand-logos/youTube.svg`)}
-                        className="size-6 shrink-0"
-                        alt="image"
-                      />
-                      <Input placeholder="Enter YouTube URL" {...field} />
-                    </InputWrapper>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* Render social fields */}
-            {socialFields.map((field, index) => (
-              <div key={field.id} className="flex items-end mb-4">
-                <div className="flex items-center gap-2.5 w-[90%]">
-                  {/* Title */}
-                  <div className="flex-1">
-                    <FormField
-                      control={form.control}
-                      name={`socialFields[${index}].title`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Title</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="e.g. Portfolio Website"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-
-                  {/* Link */}
-                  <div className="flex-1">
-                    <FormField
-                      control={form.control}
-                      name={`socialFields[${index}].link`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>Link</FormLabel>
-                          <FormControl>
-                            <InputWrapper>
+                    {/* Link */}
+                    <div className="flex-1">
+                      <FormField
+                        control={form.control}
+                        name={`otherSocialFields[${index}].link`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>Link</FormLabel>
+                            <FormControl>
                               <Input
                                 placeholder="Paste the full URL (e.g. https://...)"
                                 {...field}
                               />
-                            </InputWrapper>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                    </div>
                   </div>
+
+                  {/* Remove button for fields after the first one */}
+                  {index !== 0 && (
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      className="w-[8%] ms-[2%]"
+                      onClick={() => handleRemoveField(index)}
+                    >
+                      <Trash2 />
+                    </Button>
+                  )}
                 </div>
+              ))}
 
-                {/* Remove button for fields after the first one */}
-                {index !== 0 && (
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    className="w-[8%] ms-[2%]"
-                    onClick={() => handleRemoveField(field.id)}
-                  >
-                    <Trash2 />
-                  </Button>
-                )}
-              </div>
-            ))}
-
-            {/* Add button */}
-            <Button
-              type="button"
-              variant="dim"
-              className="text-blue-500 hover:text-blue-600"
-              onClick={handleAddField}
-            >
-              <span className="p-px border border-blue-500 group-hover:border-blue-600">
-                <Plus size={16} />
-              </span>
-              Add Link
-            </Button>
-
-            {/* Action Buttons */}
-            <div className="flex space-x-4 justify-end">
-              <Button type="reset" variant="outline" onClick={closeDialog}>
-                Cancel
-              </Button>
+              {/* Add button */}
               <Button
-                type="submit"
-                disabled={!form.formState.isDirty || isLoading}
+                type="button"
+                variant="inverse"
+                className="text-blue-500 hover:text-blue-600"
+                onClick={handleAddField}
               >
-                {isLoading && <Spinner className="animate-spin" />}
-                Save
+                <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
+                  <Plus size={16} />
+                </span>
+                Add Link
               </Button>
-            </div>
-          </form>
-        </Form>
+
+              {/* Action Buttons */}
+              <div className="flex space-x-4 justify-end">
+                <Button type="reset" variant="outline" onClick={closeDialog}>
+                  Cancel
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={!form.formState.isDirty || isLoading}
+                >
+                  {isLoading && <Spinner className="animate-spin" />}
+                  Save
+                </Button>
+              </div>
+            </form>
+          </Form>
+        </ScrollArea>
       </DialogContent>
     </Dialog>
   );

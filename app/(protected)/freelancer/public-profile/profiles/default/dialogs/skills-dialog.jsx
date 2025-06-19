@@ -3,10 +3,12 @@
 import { useEffect } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
+import { z } from 'zod';
+import { saveFreelancerSkills } from '@/services/freelancer/profile';
+import { getSkills } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -24,63 +26,55 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
 
 export const SkillsDialog = ({ open, closeDialog, skills }) => {
-  const skillOptions = [
-    {
-      id: 1,
-      name: 'test 1',
-    },
-    {
-      id: 2,
-      name: 'test 2',
-    },
-    {
-      id: 3,
-      name: 'test 3',
-    },
-    {
-      id: 4,
-      name: 'test 4',
-    },
-    {
-      id: 5,
-      name: 'test 5',
-    },
-  ];
+  // const queryClient = useQueryClient();
 
-  const queryClient = useQueryClient();
+  // get skills data from api
+  const { data: skillsData, isLoading: skillsLoading } = useQuery({
+    queryKey: ['skills'],
+    queryFn: getSkills,
+  });
+  const skillsSelect = skillsData?.data ?? [];
+
+  const skillOptions = skillsSelect.map((skill) => ({
+    id: skill.id,
+    name: skill.name,
+  }));
+
+  const SkillsSchema = z.object({
+    skills: z
+      .array(
+        z.object({
+          id: z.number(),
+          name: z.string(),
+        }),
+      )
+      .optional(),
+  });
 
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(),
-    defaultValues: { name: '', description: '' },
+    resolver: zodResolver(SkillsSchema),
     mode: 'onSubmit',
   });
 
   // Reset form values when dialog is opened
-  useEffect(() => {
-    if (open) {
-      form.reset({
-        name: skills?.name || '',
-        description: skills?.description ?? '',
-      });
-    }
-  }, [form, open, skills]);
+  // useEffect(() => {
+  //   if (open) {
+  //     form.reset({
+  //       name: skills?.name || '',
+  //       description: skills?.description ?? '',
+  //     });
+  //   }
+  // }, [form, open, skills]);
 
-  const editFreelancerSkills = () => {};
   // Mutation for creating/updating skills
   const mutation = useMutation({
-    mutationFn: editFreelancerSkills,
+    mutationFn: saveFreelancerSkills,
     onSuccess: () => {
-      const isEdit = !!skills?.id;
-      const message = isEdit
-        ? 'skills updated successfully'
-        : 'skills added successfully';
-
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -90,13 +84,12 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
             <AlertTitle>{message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
       );
 
-      queryClient.invalidateQueries({ queryKey: ['user-skillss'] });
+      // queryClient.invalidateQueries({ queryKey: ['user-skillss'] });
       closeDialog();
     },
     onError: (error) => {
@@ -123,7 +116,8 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
-    mutation.mutate(values);
+    console.log('values', values);
+    // mutation.mutate(values);
   };
 
   return (

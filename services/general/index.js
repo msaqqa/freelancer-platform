@@ -32,8 +32,10 @@ export async function getSubcategories(categoryId) {
 
 // Get list of skills
 export async function getSkills(categoryId) {
+  const url =
+    typeof categoryId === 'number' ? `/skills/${categoryId}` : '/skills';
   try {
-    const response = await apiTaqat.get(`/skills/${categoryId}`);
+    const response = await apiTaqat.get(url);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -44,6 +46,36 @@ export async function getSkills(categoryId) {
 export async function getPrivacyPolicy() {
   try {
     const response = await apiTaqat.get('/policies');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// Get list of socials
+export async function getSocials() {
+  try {
+    const response = await apiTaqat.get('/social');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// get the list of languages
+export async function getLanguages() {
+  try {
+    const response = await apiTaqat.get('/languages');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// get the list of language levels
+export async function getLanguageLevels() {
+  try {
+    const response = await apiTaqat.get('/languages_levels');
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
