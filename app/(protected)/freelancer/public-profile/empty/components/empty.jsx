@@ -1,19 +1,19 @@
 'use client';
 
 import { Fragment } from 'react';
-import Link from 'next/link';
+import { Plus } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 
-const Empty = () => {
+const Empty = ({ image, title, decription, openDialog, button = true }) => {
   return (
     <Fragment>
       <Card className="p-8 lg:p-12">
         <CardContent>
           <div className="grid justify-center py-5">
             <img
-              src={toAbsoluteUrl('/media/illustrations/11.svg')}
+              src={toAbsoluteUrl(image)}
               className="dark:hidden max-h-[170px]"
               alt="image"
             />
@@ -24,27 +24,29 @@ const Empty = () => {
               alt="image"
             />
           </div>
-          <div className="text-lg font-medium text-mono text-center">
-            Upload Item to Get Started
+          {/* <div className="text-lg font-medium text-mono text-center">
+            {title}
+          </div> */}
+          <div className="text-sm text-secondary-foreground text-center gap-1 mb-5">
+            {decription}
           </div>
-          <div className="text-sm text-secondary-foreground text-center gap-1">
-            Begin by crafting your inaugural list in minutes.&nbsp;
-            <Link
-              href="/account/billing/plans"
-              className="text-sm font-medium link"
-            >
-              Get Started!
-            </Link>
-          </div>
+          {button && (
+            <div className="flex justify-center">
+              <Button
+                className="text-blue-500 hover:text-blue-600"
+                type="button"
+                variant="dim"
+                onClick={openDialog}
+              >
+                <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
+                  <Plus size={16} />
+                </span>
+                Add New {title}
+              </Button>
+            </div>
+          )}
         </CardContent>
       </Card>
-      <div className="flex grow justify-center pt-5 lg:pt-7.5">
-        <Button mode="link" underlined="dashed" asChild>
-          <Link href="/public-profile/profiles/default">
-            Check ready Templates
-          </Link>
-        </Button>
-      </div>
     </Fragment>
   );
 };

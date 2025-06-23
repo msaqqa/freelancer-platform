@@ -16,15 +16,14 @@ export function useAuth() {
     queryFn: getAuthUserData,
     enabled: hasToken,
     retry: false,
-    staleTime: 1000 * 60 * 5,
-    refetchOnWindowFocus: false,
-    refetchOnMount: false,
+    staleTime: 0,
+    // refetchOnWindowFocus: false,
+    // refetchOnMount: false,
     onSuccess: (data) => {
       console.log('data-auth', data);
       setUser(data?.data);
     },
     onError: (error) => {
-      console.error('error', error);
       throw error?.response?.data?.message || error.message;
     },
   });

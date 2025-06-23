@@ -39,3 +39,56 @@ export const saveFreelancerSocials = async (payload) => {
     throw error.response?.data || error;
   }
 };
+
+// Save data for the "Send OTP" section
+export const sendOtp = async (payload) => {
+  try {
+    const response = await apiTaqat.post('/freelancer/send-otp', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Save data for the "Verify OTP" section
+export const verifyOtp = async (payload) => {
+  try {
+    const response = await apiTaqat.post('/freelancer/verify-otp', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Save data for the "Update Identity" section
+export const updateIdentity = async (payload) => {
+  try {
+    const response = await apiTaqat.post(
+      '/freelancer/update-identity',
+      payload,
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Function to get freelancer summary using GET request
+export const getFreelancerSummary = async () => {
+  try {
+    const response = await axios.get('/freelancer/summary');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Function to post freelancer summary data using POST request
+export const postFreelancerSummary = async (data) => {
+  try {
+    const response = await axios.post('/freelancer/summary', data);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

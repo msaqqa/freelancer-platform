@@ -57,15 +57,18 @@ export const FREELANCER_MENU_SIDEBAR = [
     children: [
       {
         title: 'Profile',
-        path: '/freelancer/public-profile/profiles/default',
+        path: '/freelancer/public-profile/profile',
       },
+      { title: 'Portfolio', path: '/freelancer/public-profile/portfolio' },
       {
-        title: 'Projects',
-        path: '/freelancer/public-profile/projects/3-columns',
+        title: 'Services',
+        path: '/freelancer/public-profile/services',
       },
-      { title: 'Works', path: '/freelancer/public-profile/works' },
-      { title: 'Teams', path: '/freelancer/public-profile/teams' },
-      { title: 'Activity', path: '/freelancer/public-profile/activity' },
+      { title: 'Experience', path: '/freelancer/public-profile/experience' },
+      {
+        title: 'Work History',
+        path: '/freelancer/public-profile/work-history',
+      },
     ],
   },
   {
@@ -345,47 +348,32 @@ export const FREELANCER_MENU_SIDEBAR = [
 export const FREELANCER_MENU_MEGA = [
   { title: 'Home', path: '/freelancer' },
   {
-    title: 'Profiles',
+    title: 'Profile',
     children: [
       {
-        title: 'Profiles',
+        title: 'Profile',
         children: [
           {
             children: [
               {
-                title: 'Projects - 3 Cols',
-                icon: Layout,
-                path: '/freelancer/public-profile/projects/3-columns',
-              },
-              {
-                title: 'Projects - 2 Cols',
-                icon: Grid,
-                path: '/freelancer/public-profile/projects/2-columns',
-              },
-              {
-                title: 'Works',
+                title: 'Portfolio',
                 icon: WorkIcon,
-                path: '/freelancer/public-profile/works',
+                path: '/freelancer/public-profile/portfolio',
               },
               {
-                title: 'Teams',
-                icon: PeopleIcon,
-                path: '/freelancer/public-profile/teams',
+                title: 'Services',
+                icon: Layout,
+                path: '/freelancer/public-profile/services',
               },
               {
-                title: 'Network',
-                icon: Network,
-                path: '/freelancer/public-profile/network',
-              },
-              {
-                title: 'Activity',
+                title: 'Experience',
                 icon: TrendingUp,
-                path: '/freelancer/public-profile/activity',
+                path: '/freelancer/public-profile/experience',
               },
               {
-                title: 'Campaigns - Card',
-                icon: LayoutGrid,
-                path: '/freelancer/public-profile/campaigns/card',
+                title: 'Work History',
+                icon: PeopleIcon,
+                path: '/freelancer/public-profile/work-history',
               },
             ],
           },
@@ -759,118 +747,41 @@ export const FREELANCER_MENU_MEGA = [
 export const FREELANCER_MENU_MEGA_MOBILE = [
   { title: 'Home', path: '/freelancer' },
   {
-    title: 'Profiles',
+    title: 'Profile',
     children: [
       {
-        title: 'Profiles',
+        title: 'Profile',
         children: [
           {
-            title: 'Default',
+            title: 'Profile',
             icon: Badge,
-            path: '/freelancer/public-profile/profiles/default',
+            path: '/freelancer/public-profile/profile',
           },
-          {
-            title: 'Creator',
-            icon: Coffee,
-            path: '/freelancer/public-profile/profiles/creator',
-          },
-          {
-            title: 'Company',
-            icon: Building,
-            path: '/freelancer/public-profile/profiles/company',
-          },
-          {
-            title: 'NFT',
-            icon: Bitcoin,
-            path: '/freelancer/public-profile/profiles/nft',
-          },
-          {
-            title: 'Blogger',
-            icon: MessageSquare,
-            path: '/freelancer/public-profile/profiles/blogger',
-          },
-          {
-            title: 'CRM',
-            icon: Monitor,
-            path: '/freelancer/public-profile/profiles/crm',
-          },
-          {
-            title: 'Gamer',
-            icon: Ghost,
-            path: '/freelancer/public-profile/profiles/gamer',
-          },
-          {
-            title: 'Feeds',
-            icon: Book,
-            path: '/freelancer/public-profile/profiles/feeds',
-          },
-          {
-            title: 'Plain',
-            icon: File,
-            path: '/freelancer/public-profile/profiles/plain',
-          },
-          {
-            title: 'Modal',
-            icon: SquareMousePointer,
-            path: '/freelancer/public-profile/profiles/modal',
-          },
-          { title: 'Freelancer', icon: Briefcase, path: '#', disabled: true },
-          { title: 'Developer', icon: Code, path: '#', disabled: true },
-          { title: 'Team', icon: Users, path: '#', disabled: true },
-          { title: 'Events', icon: CalendarCheck, path: '#', disabled: true },
         ],
       },
       {
         title: 'Other Pages',
         children: [
           {
-            title: 'Projects - 3 Cols',
-            icon: Layout,
-            path: '/freelancer/public-profile/projects/3-columns',
-          },
-          {
-            title: 'Projects - 2 Cols',
-            icon: Grid,
-            path: '/freelancer/public-profile/projects/2-columns',
-          },
-          {
-            title: 'Works',
+            title: 'Portfolio',
             icon: WorkIcon,
-            path: '/freelancer/public-profile/works',
+            path: '/freelancer/public-profile/portfolio',
           },
           {
-            title: 'Teams',
-            icon: PeopleIcon,
-            path: '/freelancer/public-profile/teams',
+            title: 'Services',
+            icon: WorkIcon,
+            path: '/freelancer/public-profile/services',
           },
           {
-            title: 'Network',
-            icon: Network,
-            path: '/freelancer/public-profile/network',
-          },
-          {
-            title: 'Activity',
+            title: 'Experience',
             icon: TrendingUp,
-            path: '/freelancer/public-profile/activity',
+            path: '/freelancer/public-profile/experience',
           },
           {
-            title: 'Campaigns - Card',
-            icon: LayoutGrid,
-            path: '/freelancer/public-profile/campaigns/card',
+            title: 'Work History',
+            icon: PeopleIcon,
+            path: '/freelancer/public-profile/work-history',
           },
-          {
-            title: 'Campaigns - List',
-            icon: Kanban,
-            path: '/freelancer/public-profile/campaigns/list',
-          },
-          {
-            title: 'Empty',
-            icon: FileText,
-            path: '/freelancer/public-profile/empty',
-          },
-          { title: 'Documents', icon: DocumentIcon, path: '#', disabled: true },
-          { title: 'Badges', icon: Award, path: '#', disabled: true },
-          { title: 'Awards', icon: Gift, path: '#', disabled: true },
         ],
       },
     ],

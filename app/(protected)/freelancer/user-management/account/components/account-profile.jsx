@@ -53,7 +53,7 @@ export default function AccountDetails() {
 
   useEffect(() => {
     if (user?.avatar) {
-      setAvatarExistingPreview(user.avatar);
+      setAvatarExistingPreview(user?.avatar);
       setAvatarAttachedPreview(null);
     }
   }, [user]);
@@ -138,8 +138,8 @@ export default function AccountDetails() {
 
   const handleCancelAvatar = () => {
     setAvatarAttachedPreview(null);
-    if (user.avatar) {
-      setAvatarExistingPreview(user.avatar);
+    if (user?.avatar) {
+      setAvatarExistingPreview(user?.avatar);
     }
     form.setValue('avatarFile', null);
     form.setValue('avatarAction', '', { shouldDirty: true });
@@ -197,11 +197,11 @@ export default function AccountDetails() {
                           avatarExistingPreview ||
                           undefined
                         }
-                        alt={user.name || ''}
+                        alt={user?.name || ''}
                       />
 
                       <AvatarFallback className="text-2xl">
-                        {getInitials(user.name || user.email)}
+                        {getInitials(user?.name || user?.email)}
                       </AvatarFallback>
                     </Avatar>
                     <div>
@@ -220,7 +220,7 @@ export default function AccountDetails() {
                             {avatarAttachedPreview ||
                             (!avatarAttachedPreview &&
                               !avatarExistingPreview &&
-                              user.avatar) ? (
+                              user?.avatar) ? (
                               <Button
                                 type="button"
                                 variant="outline"
@@ -230,7 +230,7 @@ export default function AccountDetails() {
                               </Button>
                             ) : null}
 
-                            {user.avatar &&
+                            {user?.avatar &&
                             avatarExistingPreview &&
                             !avatarAttachedPreview ? (
                               <Button

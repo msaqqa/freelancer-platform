@@ -86,7 +86,7 @@ export function DropdownMenuUser({ trigger }) {
         {/* Menu Items */}
         <DropdownMenuItem asChild>
           <Link
-            href="/public-profile/profiles/default"
+            href="/public-profile/profile"
             className="flex items-center gap-2"
           >
             <UserCircle />

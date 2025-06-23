@@ -17,11 +17,10 @@ export function AvatarInput({ onChange }) {
 
   const handleImageUpload = (selectedAvatar) => {
     setAvatar(selectedAvatar);
-    // Ensure the image is passed correctly to the form as File
     if (selectedAvatar.length > 0) {
-      onChange(selectedAvatar[0].file); // Send only the `file` object
+      onChange(selectedAvatar[0].file);
     } else {
-      onChange(null); // Clear field value if no image is selected
+      onChange(null);
     }
   };
 
