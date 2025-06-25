@@ -5,7 +5,7 @@ import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Container } from '@/components/common/container';
 
-export function UserHero({ openDialog }) {
+export function UserHero({ openDialog, handleOpendDialog }) {
   const { user } = useUserStore();
   const { theme } = useTheme();
 
@@ -42,7 +42,7 @@ export function UserHero({ openDialog }) {
       />
       <div
         className="absolute bottom-0 end-0 size-[40px] flex justify-center items-center cursor-pointer bg-background rounded-full border-3 border-primary"
-        onClick={openDialog}
+        onClick={handleOpendDialog}
       >
         <img
           src={toAbsoluteUrl('/media/icons/edit-light.svg')}

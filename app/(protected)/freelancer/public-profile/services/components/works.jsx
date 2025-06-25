@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { CardWork, CardWorkRow } from '@/partials/cards';
 import { Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { Empty } from '../../empty/components';
+import { Empty } from '@/components/common/empty';
 import ProjectAddDialog from '../dialogs/project-add-dialog';
 
 const Works = () => {

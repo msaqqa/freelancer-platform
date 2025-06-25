@@ -31,19 +31,19 @@ export function Steps({ currentStep }) {
             >
               {state === 'completed' ? (
                 <img
-                  src={toAbsoluteUrl('/media/illustrations/competed.svg')}
+                  src={toAbsoluteUrl('/media/icons/completed.svg')}
                   className="max-h-[140px]"
                   alt="image"
                 />
               ) : state === 'active' ? (
                 <img
-                  src={toAbsoluteUrl('/media/illustrations/pending.svg')}
+                  src={toAbsoluteUrl('/media/icons/pending.svg')}
                   className="max-h-[140px]"
                   alt="image"
                 />
               ) : (
                 <img
-                  src={toAbsoluteUrl('/media/illustrations/unselected.svg')}
+                  src={toAbsoluteUrl('/media/icons/unselected.svg')}
                   className="max-h-[140px]"
                   alt="image"
                 />

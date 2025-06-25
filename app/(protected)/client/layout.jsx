@@ -6,7 +6,7 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { Demo1Layout } from '../../components/layouts/demo1/layout';
 
-export default function ProtectedLayout({ children }) {
+export default function ClientLayout({ children }) {
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
 

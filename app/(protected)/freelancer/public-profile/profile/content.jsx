@@ -3,6 +3,7 @@
 import {
   About,
   CommunityBadges,
+  Education,
   Languages,
   PostVedio,
   Skills,
@@ -18,9 +19,10 @@ export function ProfileDefaultContent() {
       <div className="col-span-1">
         <div className="grid gap-5 lg:gap-7.5">
           <About />
-          <Skills title="Skills" />
+          <Skills />
           <Languages />
-          <CommunityBadges title="Community Badges" />
+          <CommunityBadges />
+          <Education />
           <Socials />
         </div>
       </div>

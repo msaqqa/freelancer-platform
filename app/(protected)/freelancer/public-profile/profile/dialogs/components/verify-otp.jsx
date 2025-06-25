@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+'use client';
+
+import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
@@ -13,8 +15,9 @@ import {
   InputOTPSlot,
 } from '@/components/ui/input-otp';
 import { Spinner } from '@/components/ui/spinners';
+import { Steps } from './';
 
-export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile }) => {
+export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
   const [otp, setOtp] = useState();
 
   const handleSubmit = async () => {
@@ -59,61 +62,64 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile }) => {
   const isProcessing = mutation.isPending || false;
 
   return (
-    <div>
-      <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-5">
-        <h2 className="text-xl font-semibold text-mono">
-          Enter the verification code
-        </h2>
-        <p className="text-sm text-secondary-foreground leading-5.5 text-center">
-          We’ve sent a 6-digit verification code to +972597803774.
-        </p>
-      </div>
-      <div className="w-full">
-        <InputOTP
-          maxLength={6}
-          value={otp}
-          onChange={setOtp}
-          onComplete={(val) => setOtp(val)}
-        >
-          <InputOTPGroup className="w-full flex justify-center gap-2">
-            <InputOTPSlot
-              index={0}
-              className="border border-input rounded-md"
-            />
-            <InputOTPSlot
-              index={1}
-              className="border border-input rounded-md"
-            />
-            <InputOTPSlot
-              index={2}
-              className="border border-input rounded-md"
-            />
-            <InputOTPSeparator />
-            <InputOTPSlot
-              index={3}
-              className="border border-input rounded-md"
-            />
-            <InputOTPSlot
-              index={4}
-              className="border border-input rounded-md"
-            />
-            <InputOTPSlot
-              index={5}
-              className="border border-input rounded-md"
-            />
-          </InputOTPGroup>
-        </InputOTP>
-      </div>
-      <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
-        <Button type="button" variant="outline" onClick={handleBackStep}>
-          Cancel
-        </Button>
+    <>
+      <Steps currentStep={0} />
+      <div>
+        <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-5">
+          <h2 className="text-xl font-semibold text-mono">
+            {t('stepOtpTitle')}
+          </h2>
+          <p className="text-sm text-secondary-foreground leading-5.5 text-center">
+            {t('stepOtpDesc')}
+          </p>
+        </div>
+        <div className="w-full">
+          <InputOTP
+            maxLength={6}
+            value={otp}
+            onChange={setOtp}
+            onComplete={(val) => setOtp(val)}
+          >
+            <InputOTPGroup className="w-full flex justify-center gap-2">
+              <InputOTPSlot
+                index={0}
+                className="border border-input rounded-md"
+              />
+              <InputOTPSlot
+                index={1}
+                className="border border-input rounded-md"
+              />
+              <InputOTPSlot
+                index={2}
+                className="border border-input rounded-md"
+              />
+              <InputOTPSeparator />
+              <InputOTPSlot
+                index={3}
+                className="border border-input rounded-md"
+              />
+              <InputOTPSlot
+                index={4}
+                className="border border-input rounded-md"
+              />
+              <InputOTPSlot
+                index={5}
+                className="border border-input rounded-md"
+              />
+            </InputOTPGroup>
+          </InputOTP>
+        </div>
+        <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
+          <Button type="button" variant="outline" onClick={handleBackStep}>
+            {t('backBtn')}
+          </Button>
 
-        <Button disabled={isProcessing} onClick={handleSubmit}>
-          {isProcessing && <Spinner className="animate-spin" />}
-          Send
-        </Button>
+          <Button disabled={isProcessing} onClick={handleSubmit}>
+            {isProcessing && <Spinner className="animate-spin" />}
+            {t('verifyBtn')}
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };

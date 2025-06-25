@@ -4,6 +4,7 @@ import commonAr from '../public/locales/ar/common.json';
 import requiredDataAr from '../public/locales/ar/required-data.json';
 import authEn from '../public/locales/en/auth.json';
 import commonEn from '../public/locales/en/common.json';
+import freelancerProfileEn from '../public/locales/en/freelancer/profile.json';
 import requiredDataEn from '../public/locales/en/required-data.json';
 
 export const I18N_LANGUAGES = [
@@ -28,6 +29,7 @@ export const I18N_RESOURCES = {
     auth: authEn,
     common: commonEn,
     requiredData: requiredDataEn,
+    freelancerProfile: freelancerProfileEn,
   },
   ar: {
     auth: authAr,

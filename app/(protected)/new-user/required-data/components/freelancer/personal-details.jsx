@@ -36,7 +36,7 @@ import {
 import { DatePickerComponent } from '@/components/common/date-picker';
 
 const PersonalDetails = ({ setActiveSection }) => {
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState({});
   const { t } = useTranslation('requiredData');
   const {
     control,
@@ -336,10 +336,10 @@ const PersonalDetails = ({ setActiveSection }) => {
                     {selectedCountry && (
                       <div className="flex items-center gap-1 px-3 h-8.5 bg-transparent">
                         <span className="text-sm">
-                          {selectedCountry.number_code}
+                          {selectedCountry?.number_code}
                         </span>
                         <img
-                          src={selectedCountry.flag}
+                          src={selectedCountry?.flag}
                           alt="Country Flag"
                           className="w-6 h-4"
                         />

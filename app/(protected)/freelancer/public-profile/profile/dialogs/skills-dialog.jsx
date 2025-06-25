@@ -5,6 +5,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { saveFreelancerSkills } from '@/services/freelancer/profile';
@@ -30,7 +31,8 @@ import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
 
 export const SkillsDialog = ({ open, closeDialog, skills }) => {
-  // const queryClient = useQueryClient();
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`skills.${key}`);
 
   // get skills data from api
   const { data: skillsData, isLoading: skillsLoading } = useQuery({
@@ -126,7 +128,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
-          <DialogTitle>{skills ? 'Edit skills' : 'Add skills'}</DialogTitle>
+          <DialogTitle>{fp('skillsTitle')}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -160,14 +162,14 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeDialog}>
-                Cancel
+                {t('cancelBtn')}
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading || !form.formState.isDirty}
               >
                 {isLoading && <Spinner className="animate-spin" />}
-                Save
+                {t('saveBtn')}
               </Button>
             </DialogFooter>
           </form>

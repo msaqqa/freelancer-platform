@@ -5,6 +5,7 @@ import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Facebook, Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { toAbsoluteUrl } from '@/lib/helpers';
@@ -53,30 +54,15 @@ const SocialsSchema = z.object({
 });
 
 export const SocialsDialog = ({ open, closeDialog, socials }) => {
-  const queryClient = useQueryClient();
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`socials.${key}`);
 
   // get socials data from API
   const { data: socialsData, isLoading: socialsLoading } = useQuery({
     queryKey: ['socials'],
     queryFn: getSocials,
   });
-  const socialsDataFields = socialsData?.data ?? [
-    {
-      id: 1,
-      name: 'Instagram',
-      icon: 'fa-brands fa-instagram',
-    },
-    {
-      id: 2,
-      name: 'Facebook',
-      icon: 'fa-brands fa-facebook',
-    },
-    {
-      id: 3,
-      name: 'Twitter',
-      icon: 'fa-brands fa-twitter',
-    },
-  ];
+  const socialsDataFields = socialsData?.data ?? [];
 
   // Form initialization with React Hook Form
   const form = useForm({
@@ -160,7 +146,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
         variant="fullscreen"
       >
         <DialogHeader className="py-5 px-6 border-b border-border">
-          <DialogTitle>{socials ? 'Edit Socials' : 'Add Socials'}</DialogTitle>
+          <DialogTitle>{fp('socialsTitle')}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="py-0 mb-5 ps-6 pe-3 me-3">
           <Form {...form}>
@@ -184,7 +170,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                               dangerouslySetInnerHTML={{ __html: item.icon }}
                             />
                             <Input
-                              placeholder={`Enter ${item.name} URL`}
+                              placeholder={`${fp('socialHolder')} ${item.name}`}
                               value={field.value}
                               onChange={(e) => {
                                 // const prevsocial = form.getValues('socialFields');
@@ -215,10 +201,10 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                         name={`otherSocialFields[${index}].title`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Title</FormLabel>
+                            <FormLabel>{fp('titleLabel')}</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="e.g. Portfolio Website"
+                                placeholder={fp('titleHolder')}
                                 {...field}
                               />
                             </FormControl>
@@ -235,10 +221,10 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                         name={`otherSocialFields[${index}].link`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Link</FormLabel>
+                            <FormLabel>{fp('linkLabel')}</FormLabel>
                             <FormControl>
                               <Input
-                                placeholder="Paste the full URL (e.g. https://...)"
+                                placeholder={fp('linkHolder')}
                                 {...field}
                               />
                             </FormControl>
@@ -273,20 +259,20 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
                   <Plus size={16} />
                 </span>
-                Add Link
+                {fp('addLink')}
               </Button>
 
               {/* Action Buttons */}
               <div className="flex space-x-4 justify-end">
                 <Button type="reset" variant="outline" onClick={closeDialog}>
-                  Cancel
+                  {t('cancelBtn')}
                 </Button>
                 <Button
                   type="submit"
                   disabled={!form.formState.isDirty || isLoading}
                 >
                   {isLoading && <Spinner className="animate-spin" />}
-                  Save
+                  {t('saveBtn')}
                 </Button>
               </div>
             </form>

@@ -14,7 +14,16 @@ export const EmptyState = ({
   return (
     <div className="grid place-items-center gap-4">
       <div className="flex justify-center items-center">
-        <img src={toAbsoluteUrl(icon)} className="max-h-[50px]" alt="image" />
+        <img
+          src={toAbsoluteUrl(icon.light)}
+          className="dark:hidden max-h-[50px]"
+          alt="image"
+        />
+        <img
+          src={toAbsoluteUrl(icon.dark)}
+          className="light:hidden max-h-[50px]"
+          alt="image"
+        />
       </div>
 
       <div className="text-sm text-foreground text-center">{description}</div>

@@ -16,7 +16,7 @@ export function useAuth() {
     queryFn: getAuthUserData,
     enabled: hasToken,
     retry: false,
-    staleTime: 0,
+    staleTime: 5 * 60 * 1000,
     // refetchOnWindowFocus: false,
     // refetchOnMount: false,
     onSuccess: (data) => {

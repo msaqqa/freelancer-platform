@@ -15,7 +15,10 @@ export default function ProfileDefaultPage() {
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <Fragment>
-      <UserHero openDialog={() => setOpenDialog(true)} />
+      <UserHero
+        openDialog={openDialog}
+        handleOpendDialog={() => setOpenDialog(true)}
+      />
       <Container>
         <Navbar>
           <PageMenu />

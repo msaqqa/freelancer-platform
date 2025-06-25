@@ -4,32 +4,35 @@ import { useState } from 'react';
 import { useUserStore } from '@/stores/user-store';
 import { SquarePen } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/common/empty-state';
-import { SkillsDialog } from '../dialogs';
+import { EducationDialog } from '../dialogs';
 
-const Skills = () => {
+const Education = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const { user } = useUserStore();
-  const skills = user?.skills || [];
   const { t } = useTranslation('freelancerProfile');
-  const fp = (key) => t(`skills.${key}`);
+  const fp = (key) => t(`education.${key}`);
+  const { user } = useUserStore();
+  const educations = user?.educations || [];
 
-  const renderItem = (item) => {
+  const renderTable = (item) => {
     return (
-      <Badge key={item.id} variant="secondary">
-        {item.name}
-      </Badge>
+      <div key={item.id} className="flex flex-col gap-2.5 mb-5">
+        <div className="text-sm text-mono">{item.status}</div>
+        <div className="text-sm text-secondary-foreground">
+          <span>{item.info}</span>
+          <span>{item.info}</span>
+        </div>
+      </div>
     );
   };
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Skills</CardTitle>
-        {skills.length > 0 && (
+        <CardTitle>{fp('educationTitle')}</CardTitle>
+        {educations.length > 0 && (
           <Button
             variant="ghost"
             mode="icon"
@@ -40,31 +43,29 @@ const Skills = () => {
         )}
       </CardHeader>
       <CardContent>
-        {skills.length ? (
-          <div className="flex flex-wrap gap-2.5 mb-2">
-            {skills.map((item) => {
-              return renderItem(item);
-            })}
-          </div>
+        {educations.length ? (
+          educations.map((item) => {
+            return renderTable(item);
+          })
         ) : (
           <EmptyState
-            title={fp('skillsTitle')}
-            description={fp('skillsDesc')}
+            title={fp('educationTitle')}
+            description={fp('educationDesc')}
             icon={{
-              light: '/media/icons/skills-light.svg',
-              dark: '/media/icons/skills-dark.svg',
+              light: '/media/icons/education-light.svg',
+              dark: '/media/icons/education-dark.svg',
             }}
             openDialog={() => setOpenDialog(true)}
           />
         )}
       </CardContent>
-      <SkillsDialog
+      <EducationDialog
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
-        skills={skills}
+        educations={educations}
       />
     </Card>
   );
 };
 
-export { Skills };
+export { Education };

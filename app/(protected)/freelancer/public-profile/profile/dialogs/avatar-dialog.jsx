@@ -1,4 +1,5 @@
-import React from 'react';
+'use client';
+
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,12 +14,9 @@ import { AvatarInput } from '@/app/components/partials/common/avatar-input';
 export const AvatarDialog = ({ open, closeDialog }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
-      <DialogContent
-        variant="fullscreen"
-        className="w-full max-w-[600px] mx-auto"
-      >
+      <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
-          <DialogTitle>{'Edit Avatar'}</DialogTitle>
+          <DialogTitle>Edit Avatar</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col items-center flex-wrap gap-2.5">

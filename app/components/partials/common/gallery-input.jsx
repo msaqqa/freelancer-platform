@@ -41,9 +41,14 @@ export function GalleryInput({ onChange, multiple = false }) {
                 onClick={onImageUpload}
               >
                 <img
-                  src={toAbsoluteUrl('/media/file-types/gallery-add.svg')}
-                  alt="Add photos"
-                  className="mx-auto mb-4"
+                  src={toAbsoluteUrl('/media/icons/gallery-light.svg')}
+                  alt="Add Image"
+                  className="dark:hidden mx-auto mb-4"
+                />
+                <img
+                  src={toAbsoluteUrl('/media/icons/gallery-dark.svg')}
+                  alt="Add Image"
+                  className="light:hidden mx-auto mb-4"
                 />
                 <div className="text-sm font-medium mb-2">Add photos</div>
                 <ul

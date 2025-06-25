@@ -2,9 +2,10 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery } from '@tanstack/react-query';
 import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { saveFreelancerLanguages } from '@/services/freelancer/profile';
@@ -38,7 +39,8 @@ import {
 import { Spinner } from '@/components/ui/spinners';
 
 export const LanguagesDialog = ({ open, closeDialog, languages }) => {
-  const queryClient = useQueryClient();
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`languages.${key}`);
 
   // get languages data from api
   const { data: langData, isLoading: langLoading } = useQuery({
@@ -47,7 +49,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   });
   const languagesOptions = langData?.data ?? [];
 
-  // get languages level data from api
+  // get language levels data from api
   const { data: levelData, isLoading: levelLoading } = useQuery({
     queryKey: ['languagesLevels'],
     queryFn: getLanguageLevels,
@@ -72,7 +74,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   const form = useForm({
     resolver: zodResolver(LanguagesSchema),
     defaultValues: {
-      languageFields: [{ language_id: '', level: '' }],
+      languageFields: [{ language_id: '1', level: '1' }],
     },
     mode: 'onSubmit',
   });
@@ -145,9 +147,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
         variant="fullscreen"
       >
         <DialogHeader className="py-5 px-6 border-b border-border">
-          <DialogTitle>
-            {languages ? 'Edit languages' : 'Add languages'}
-          </DialogTitle>
+          <DialogTitle>{fp('languagesTitle')}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="py-0 mb-5 ps-6 pe-3 me-3">
           <Form {...form}>
@@ -166,14 +166,16 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                         name={`languageFields[${index}].language_id`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Language</FormLabel>
+                            <FormLabel>{fp('languageLabel')}</FormLabel>
                             <FormControl>
                               <Select
                                 value={field.value}
                                 onValueChange={field.onChange}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select language" />
+                                  <SelectValue
+                                    placeholder={fp('languageHolder')}
+                                  />
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
@@ -202,14 +204,16 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                         name={`languageFields[${index}].level`}
                         render={({ field }) => (
                           <FormItem>
-                            <FormLabel>Level</FormLabel>
+                            <FormLabel>{fp('levelLabel')}</FormLabel>
                             <FormControl>
                               <Select
                                 value={field.value}
                                 onValueChange={field.onChange}
                               >
                                 <SelectTrigger>
-                                  <SelectValue placeholder="Select Level" />
+                                  <SelectValue
+                                    placeholder={fp('levelHolder')}
+                                  />
                                 </SelectTrigger>
                                 <SelectContent>
                                   <SelectGroup>
@@ -256,19 +260,19 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
                 <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
                   <Plus size={16} />
                 </span>
-                Add New Language
+                {fp('addBtn')}
               </Button>
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={closeDialog}>
-                  Cancel
+                  {t('cancelBtn')}
                 </Button>
                 <Button
                   type="submit"
                   disabled={isLoading || !form.formState.isDirty}
                 >
                   {isLoading && <Spinner className="animate-spin" />}
-                  Save
+                  {t('saveBtn')}
                 </Button>
               </DialogFooter>
             </form>

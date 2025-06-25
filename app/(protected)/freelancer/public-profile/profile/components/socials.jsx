@@ -2,25 +2,20 @@
 
 import { useState } from 'react';
 import Link from 'next/link';
-import {
-  RiFacebookCircleLine,
-  RiTwitterXLine,
-  RiYoutubeLine,
-} from '@remixicon/react';
-import { Dribbble, SquarePen } from 'lucide-react';
+import { useUserStore } from '@/stores/user-store';
+import { SquarePen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { SocialsDialog } from '../dialogs/socials-dialog';
-import { EmptyState } from './empty-state';
+import { EmptyState } from '@/components/common/empty-state';
+import { SocialsDialog } from '../dialogs';
 
 const Socials = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const items = [
-    // { logo: Dribbble, info: 'jennynft' },
-    // { logo: RiFacebookCircleLine, info: 'nftmania' },
-    // { logo: RiTwitterXLine, info: 'jennynft' },
-    // { logo: RiYoutubeLine, info: 'jennyklabber' },
-  ];
+  const { user } = useUserStore();
+  const socials = user?.socials || [];
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`socials.${key}`);
 
   const renderItems = (item, index) => {
     return (
@@ -39,8 +34,8 @@ const Socials = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Socials</CardTitle>
-        {items.length > 0 && (
+        <CardTitle>{fp('socialsTitle')}</CardTitle>
+        {socials.length > 0 && (
           <Button
             variant="ghost"
             mode="icon"
@@ -51,7 +46,7 @@ const Socials = () => {
         )}
       </CardHeader>
       <CardContent>
-        {items.length ? (
+        {socials.length ? (
           <div className="grid gap-y-5">
             {items.map((item, index) => {
               return renderItems(item, index);
@@ -59,9 +54,12 @@ const Socials = () => {
           </div>
         ) : (
           <EmptyState
-            title="Socials"
-            description="Let clients reach you through your social profiles."
-            icon="/media/icons/socials-icon.svg"
+            title={fp('socialsTitle')}
+            description={fp('socialsDesc')}
+            icon={{
+              light: '/media/icons/socials-light.svg',
+              dark: '/media/icons/socials-dark.svg',
+            }}
             openDialog={() => setOpenDialog(true)}
           />
         )}
@@ -69,6 +67,7 @@ const Socials = () => {
       <SocialsDialog
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
+        socials={socials}
       />
     </Card>
   );

@@ -1,37 +1,38 @@
 'use client';
 
 import { useState } from 'react';
+import { useUserStore } from '@/stores/user-store';
 import { SquarePen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableRow } from '@/components/ui/table';
-import { LanguagesDialog } from '../dialogs/languages-dialog';
-import { EmptyState } from './empty-state';
+import { EmptyState } from '@/components/common/empty-state';
+import { LanguagesDialog } from '../dialogs';
 
 const Languages = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { user } = useUserStore();
+  const languages = user?.languages || [];
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`languages.${key}`);
 
-  const tables = [
-    // { status: 'English', info: 'Fluent' },
-    // { status: 'Arabic', info: 'Native' },
-  ];
-
-  const renderTable = (table, index) => {
+  const renderTable = (item) => {
     return (
-      <TableRow key={index} className="border-0">
+      <TableRow key={item.id} className="border-0">
         <TableCell className="text-sm text-secondary-foreground py-2">
-          {table.status}
+          {item.name}
         </TableCell>
-        <TableCell className="text-sm text-mono py-2">{table.info}</TableCell>
+        <TableCell className="text-sm text-mono py-2">{item.level}</TableCell>
       </TableRow>
     );
   };
 
   return (
     <Card>
-      <CardHeader className="ps-8">
-        <CardTitle>Languages</CardTitle>
-        {tables.length > 0 && (
+      <CardHeader>
+        <CardTitle>{fp('languagesTitle')}</CardTitle>
+        {languages.length > 0 && (
           <Button
             variant="ghost"
             mode="icon"
@@ -42,19 +43,22 @@ const Languages = () => {
         )}
       </CardHeader>
       <CardContent>
-        {tables.length ? (
+        {languages.length ? (
           <Table>
             <TableBody>
-              {tables.map((table, index) => {
-                return renderTable(table, index);
+              {languages.map((item) => {
+                return renderTable(item);
               })}
             </TableBody>
           </Table>
         ) : (
           <EmptyState
-            title="Languages"
-            description="Add the languages you speak and your fluency level."
-            icon="/media/icons/languages-icon.svg"
+            title={fp('languagesTitle')}
+            description={fp('languagesDesc')}
+            icon={{
+              light: '/media/icons/languages-light.svg',
+              dark: '/media/icons/languages-dark.svg',
+            }}
             openDialog={() => setOpenDialog(true)}
           />
         )}
@@ -62,6 +66,7 @@ const Languages = () => {
       <LanguagesDialog
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
+        languages={languages}
       />
     </Card>
   );

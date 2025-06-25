@@ -73,20 +73,30 @@ export const updateIdentity = async (payload) => {
   }
 };
 
-// Function to get freelancer summary using GET request
+// Function to get freelancer summary
 export const getFreelancerSummary = async () => {
   try {
-    const response = await axios.get('/freelancer/summary');
+    const response = await apiTaqat.get('/freelancer/summary');
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
   }
 };
 
-// Function to post freelancer summary data using POST request
-export const postFreelancerSummary = async (data) => {
+// Function to post freelancer summary data
+export const postFreelancerSummary = async (payload) => {
   try {
-    const response = await axios.post('/freelancer/summary', data);
+    const response = await apiTaqat.post('/freelancer/summary', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
+// Function to get freelancer profile completion
+export const getFreelancerProfileComplete = async () => {
+  try {
+    const response = await apiTaqat.get('/freelancer/profile-complete');
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

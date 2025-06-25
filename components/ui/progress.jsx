@@ -71,7 +71,7 @@ function CircularProgress({
       </svg>
 
       {/* Circle value */}
-      <span className="text-xl font-semibold text-gray-800">{`${value}%`}</span>
+      <span className="text-xl font-semibold text-mono">{`${value}%`}</span>
     </div>
   );
 }

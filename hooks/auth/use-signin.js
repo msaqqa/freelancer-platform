@@ -55,11 +55,10 @@ function useSignin() {
       }
     },
     onError: (error) => {
+      console.error('on error in use sign in', error);
       if (error?.data?.is_verified) {
         setIsVerified(false);
       }
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
     },
   });
 

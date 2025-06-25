@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware';
 export const useUserStore = create(
   persist(
     (set) => ({
-      user: { type: 'freelancer', save_data: null },
+      user: {},
       setUser: (newUser) =>
         set((state) => ({
           user: {

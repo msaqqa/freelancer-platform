@@ -1,17 +1,30 @@
 'use client';
 
 import { useState } from 'react';
+import { useQuery } from '@tanstack/react-query';
 import { SquarePen } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { getFreelancerSummary } from '@/services/freelancer/profile';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
-import { SammaryDialog } from '../dialogs/sammary-dialog';
-import { EmptyState } from './empty-state';
+import { EmptyState } from '@/components/common/empty-state';
+import { SummaryDialog } from '../dialogs';
 
 const Summary = () => {
   const [openDialog, setOpenDialog] = useState(false);
-  const summary = null;
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`summary.${key}`);
 
+  // get summary data from api
+  const { data: summaryData, isLoading: summaryLoading } = useQuery({
+    queryKey: ['freelancerSummary'],
+    queryFn: getFreelancerSummary,
+  });
+
+  console.log('summaryData', summaryData);
+
+  const summary = {};
   const items = [];
 
   const renderItem = (item, index) => {
@@ -29,7 +42,7 @@ const Summary = () => {
   return (
     <Card>
       <CardHeader className="border-b-0">
-        <CardTitle>Summary</CardTitle>
+        <CardTitle>{fp('summaryTitle')}</CardTitle>
         {summary && (
           <Button
             variant="ghost"
@@ -45,11 +58,7 @@ const Summary = () => {
         {summary ? (
           <>
             <p className="text-sm text-foreground leading-5.5">
-              Now that I’m done thoroughly mangling that vague metaphor, let’s
-              get down to business. You know you need to start blogging to grow
-              your business, but you don’t know how. In this post, I’ll show you
-              how to write a great blog post in five simple steps that people
-              will actually want to read. Ready? Let’s get started.
+              {summary?.bio}
             </p>
             {items.length > 0 && (
               <div className="flex gap-2.5 xl:gap-7.5 kt-scrollable-x overflow-x-auto pb-2">
@@ -61,17 +70,21 @@ const Summary = () => {
           </>
         ) : (
           <EmptyState
-            title="Summary"
-            description="Add a short bio, showcase your work with photos, and introduce yourself in a short video."
-            icon="/media/icons/summary-icon.svg"
+            title={fp('summaryTitle')}
+            description={fp('summaryDesc')}
+            icon={{
+              light: '/media/icons/summary-light.svg',
+              dark: '/media/icons/summary-dark.svg',
+            }}
             openDialog={() => setOpenDialog(true)}
           />
         )}
       </div>
 
-      <SammaryDialog
+      <SummaryDialog
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
+        summary={summary}
       />
     </Card>
   );

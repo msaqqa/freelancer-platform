@@ -6,6 +6,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { saveFreelancerAbout } from '@/services/freelancer/profile';
@@ -43,9 +44,11 @@ import { Spinner } from '@/components/ui/spinners';
 import { Switch } from '@/components/ui/switch';
 import { FreelancerAboutSchema } from '../forms/about-schema';
 
-export const AboutDialog = ({ open, closeDialog, about }) => {
+export const AboutDialog = ({ open, closeDialog }) => {
   const [categoryId, setCategoryId] = useState(null);
   const { user, setUser } = useUserStore();
+  const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`about.${key}`);
 
   // get categoriesData data from api
   const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
@@ -83,9 +86,8 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
     defaultValues: {
       hourlyRate: '',
       availability: true,
-      category: '',
+      category: '1',
       subcategory: '',
-      // experience: '',
       country: '1',
     },
     mode: 'onBlur',
@@ -98,10 +100,10 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
     if (open) {
       form.reset({
         hourlyRate: user?.hourly_rate,
-        availability: user?.available_hire ? true : false,
+        availability: user?.available_hire,
         category: category,
-        // subcategory: '',
-        // country: '1',
+        subcategory: user?.sub_category?.id.toString(),
+        // country: user?.country?.id.toString(),
       });
     }
   }, [form, open, user]);
@@ -166,7 +168,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader className="py-5 border-b border-border">
-          <DialogTitle>{about ? 'Edit About' : 'Add About'}</DialogTitle>
+          <DialogTitle>{fp('dialogTitle')}</DialogTitle>
         </DialogHeader>
         <Form {...form}>
           <form
@@ -180,7 +182,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
               render={({ field }) => (
                 <FormItem className="w-full flex flex-row justify-between items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                   <FormLabel className="flex w-full items-center gap-1 max-w-56">
-                    Ready To Work?
+                    {fp('readyWork') + '?'}
                   </FormLabel>
                   <FormControl>
                     <div className="flex items-center gap-2">
@@ -188,7 +190,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                         htmlFor="auto-update"
                         className="text-foreground text-sm"
                       >
-                        Available To Hire
+                        {fp('availableHire')}
                       </FormLabel>
                       <Switch
                         checked={field.value}
@@ -207,7 +209,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
               name="hourlyRate"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>hourly Rate</FormLabel>
+                  <FormLabel>{fp('hourlyRate')}</FormLabel>
                   <div className="relative">
                     <FormControl>
                       <Input
@@ -221,7 +223,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                     <img
                       src={toAbsoluteUrl('/media/app/dollar-square.svg')}
                       className="bg-background absolute right-0 top-1/2 transform -translate-1/2 text-sm text-muted-foreground h-[20px]"
-                      alt=""
+                      alt="image"
                     />
                   </div>
                   <FormMessage />
@@ -235,7 +237,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Industry</FormLabel>
+                  <FormLabel>{fp('industry')}</FormLabel>
                   <FormControl>
                     <Select
                       value={field.value}
@@ -250,11 +252,11 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                       }}
                     >
                       <SelectTrigger>
-                        <SelectValue placeholder="Design" />
+                        <SelectValue placeholder="" />
                       </SelectTrigger>
                       <SelectContent>
                         {categoriesLoading && (
-                          <SelectItem>loading...</SelectItem>
+                          <SelectItem>{t('loading')}</SelectItem>
                         )}
                         {categories.map((cat) => (
                           <SelectItem key={cat.id} value={cat.id.toString()}>
@@ -275,7 +277,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
               name="subcategory"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Specialty</FormLabel>
+                  <FormLabel>{fp('specialty')}</FormLabel>
                   <div className="flex flex-col flex-grow">
                     <FormControl>
                       <Select
@@ -291,11 +293,11 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Graphic Design" />
+                          <SelectValue placeholder={fa('specialtyHolder')} />
                         </SelectTrigger>
                         <SelectContent>
                           {subcategoriesLoading && (
-                            <SelectItem>loading...</SelectItem>
+                            <SelectItem>{t('loading')}</SelectItem>
                           )}
                           {subcategories.map((subcat) => (
                             <SelectItem
@@ -320,7 +322,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
               name="country"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Country</FormLabel>
+                  <FormLabel>{fp('country')}</FormLabel>
                   <div className="flex flex-col flex-grow">
                     <FormControl>
                       <Select
@@ -340,7 +342,7 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
                         </SelectTrigger>
                         <SelectContent>
                           {countriesLoading && (
-                            <SelectItem value={null}>loading...</SelectItem>
+                            <SelectItem>{t('loading')}</SelectItem>
                           )}
                           {countries.length &&
                             countries.map((country) => (
@@ -362,14 +364,14 @@ export const AboutDialog = ({ open, closeDialog, about }) => {
 
             <DialogFooter>
               <Button type="button" variant="outline" onClick={closeDialog}>
-                Cancel
+                {t('cancelBtn')}
               </Button>
               <Button
                 type="submit"
                 disabled={isLoading || !form.formState.isDirty}
               >
                 {isLoading && <Spinner className="animate-spin" />}
-                Save
+                {t('saveBtn')}
               </Button>
             </DialogFooter>
           </form>

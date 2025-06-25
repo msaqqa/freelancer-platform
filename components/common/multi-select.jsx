@@ -16,12 +16,21 @@ const MultiSelect = ({
   ...props
 }) => {
   const { theme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState('light');
+  const [systemTheme, setSystemTheme] = useState(() => {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    return theme;
+  });
 
   useEffect(() => {
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+    } else {
+      setSystemTheme(theme);
     }
   }, [theme]);
 
