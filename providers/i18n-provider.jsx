@@ -10,7 +10,7 @@ import { I18nextProvider } from 'react-i18next';
 
 const LanguageContext = createContext(undefined);
 
-function I18nProvider({ lang, children }) {
+function I18nProvider({ lang = 'ar', children }) {
   const [languageCode, setLanguageCode] = useState(lang);
 
   // Find the current language configuration based on the language code

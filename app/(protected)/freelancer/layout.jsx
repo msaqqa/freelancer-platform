@@ -7,21 +7,21 @@ import { ScreenLoader } from '@/components/common/screen-loader';
 import { Demo1Layout } from '../../components/layouts/demo1/layout';
 
 export default function FreelancerLayout({ children }) {
-  const { data: user, isLoading, isError } = useAuth();
-  const router = useRouter();
+  // const { data: user, isLoading, isError } = useAuth();
+  // const router = useRouter();
 
-  useEffect(() => {
-    if (isLoading) return;
-    if (!user || isError) {
-      router.push('/signin');
-    } else if (user?.type !== 'freelancer') {
-      router.push('/404');
-    }
-  }, [isLoading, user, router]);
+  // useEffect(() => {
+  //   if (isLoading) return;
+  //   if (!user || isError) {
+  //     router.push('/signin');
+  //   } else if (user?.type !== 'freelancer') {
+  //     router.push('/404');
+  //   }
+  // }, [isLoading, user, router]);
 
-  if (isLoading) {
-    return <ScreenLoader />;
-  }
+  // if (isLoading) {
+  //   return <ScreenLoader />;
+  // }
 
   return <Demo1Layout>{children}</Demo1Layout>;
 }

@@ -102,3 +102,64 @@ export const getFreelancerProfileComplete = async () => {
     throw error.response?.data || error;
   }
 };
+
+// update the freelancer photo
+export async function updateFreelancerPhoto(photoData) {
+  try {
+    const response = await apiTaqat.post('/update-photo', photoData);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// add a freelancer education
+export async function addFreelancerEducation(educationData) {
+  try {
+    const response = await apiTaqat.post(
+      '/freelancer/educations',
+      educationData,
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// update a freelancer education (by ID)
+export async function updateFreelancerEducationById(
+  educationId,
+  educationData,
+) {
+  try {
+    const response = await apiTaqat.put(
+      `/freelancer/educations/${educationId}`,
+      educationData,
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// get the list of freelancer educations
+export async function getFreelancerEducations() {
+  try {
+    const response = await apiTaqat.get('/freelancer/educations');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// get freelancer education by id
+export async function getFreelancerEducationById(educationId) {
+  try {
+    const response = await apiTaqat.get(
+      `/freelancer/educations/${educationId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}

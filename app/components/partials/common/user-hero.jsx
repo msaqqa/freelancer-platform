@@ -5,20 +5,20 @@ import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Container } from '@/components/common/container';
 
-export function UserHero({ openDialog, handleOpendDialog }) {
+export function UserHero({ openDialog }) {
   const { user } = useUserStore();
   const { theme } = useTheme();
 
   const info = [
     {
-      label: user?.subCategory,
+      label: user?.sub_category?.name || '',
       icon: {
         light: '/media/icons/sub-category-light.svg',
         dark: '/media/icons/sub-category-dark.svg',
       },
     },
     {
-      label: user?.country,
+      label: user?.country?.name || '',
       icon: {
         light: '/media/icons/location-light.svg',
         dark: '/media/icons/location-dark.svg',
@@ -42,7 +42,7 @@ export function UserHero({ openDialog, handleOpendDialog }) {
       />
       <div
         className="absolute bottom-0 end-0 size-[40px] flex justify-center items-center cursor-pointer bg-background rounded-full border-3 border-primary"
-        onClick={handleOpendDialog}
+        onClick={openDialog}
       >
         <img
           src={toAbsoluteUrl('/media/icons/edit-light.svg')}

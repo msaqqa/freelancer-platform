@@ -32,7 +32,6 @@ export function ProfileDefaultContent() {
             <VerifyIdentity />
             <VerifyBadge />
             <Summary />
-            <PostVedio />
           </div>
         </div>
       </div>

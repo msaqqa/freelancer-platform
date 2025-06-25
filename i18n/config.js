@@ -1,6 +1,7 @@
 // src/config/languages.ts
 import authAr from '../public/locales/ar/auth.json';
 import commonAr from '../public/locales/ar/common.json';
+import freelancerProfileAr from '../public/locales/ar/freelancer/profile.json';
 import requiredDataAr from '../public/locales/ar/required-data.json';
 import authEn from '../public/locales/en/auth.json';
 import commonEn from '../public/locales/en/common.json';
@@ -35,5 +36,6 @@ export const I18N_RESOURCES = {
     auth: authAr,
     common: commonAr,
     requiredData: requiredDataAr,
+    freelancerProfile: freelancerProfileAr,
   },
 };

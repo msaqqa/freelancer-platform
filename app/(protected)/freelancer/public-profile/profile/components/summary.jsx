@@ -9,6 +9,7 @@ import { getFreelancerSummary } from '@/services/freelancer/profile';
 import { Button } from '@/components/ui/button';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { EmptyState } from '@/components/common/empty-state';
+import { PostVedio } from '.';
 import { SummaryDialog } from '../dialogs';
 
 const Summary = () => {
@@ -22,10 +23,8 @@ const Summary = () => {
     queryFn: getFreelancerSummary,
   });
 
-  console.log('summaryData', summaryData);
-
-  const summary = {};
-  const items = [];
+  const summary = summaryData?.data ?? {};
+  const items = summary?.images_urls ?? [];
 
   const renderItem = (item, index) => {
     return (
@@ -40,53 +39,56 @@ const Summary = () => {
   };
 
   return (
-    <Card>
-      <CardHeader className="border-b-0">
-        <CardTitle>{fp('summaryTitle')}</CardTitle>
-        {summary && (
-          <Button
-            variant="ghost"
-            mode="icon"
-            onClick={() => setOpenDialog(true)}
-          >
-            <SquarePen size={16} className="text-blue-500" />
-          </Button>
-        )}
-      </CardHeader>
+    <>
+      <Card>
+        <CardHeader className="border-b-0">
+          <CardTitle>{fp('summaryTitle')}</CardTitle>
+          {summary && (
+            <Button
+              variant="ghost"
+              mode="icon"
+              onClick={() => setOpenDialog(true)}
+            >
+              <SquarePen size={16} className="text-blue-500" />
+            </Button>
+          )}
+        </CardHeader>
 
-      <div className="grid gap-5 mb-5 px-7.5">
-        {summary ? (
-          <>
-            <p className="text-sm text-foreground leading-5.5">
-              {summary?.bio}
-            </p>
-            {items.length > 0 && (
-              <div className="flex gap-2.5 xl:gap-7.5 kt-scrollable-x overflow-x-auto pb-2">
-                {items.map((item, index) => {
-                  return renderItem(item, index);
-                })}
-              </div>
-            )}
-          </>
-        ) : (
-          <EmptyState
-            title={fp('summaryTitle')}
-            description={fp('summaryDesc')}
-            icon={{
-              light: '/media/icons/summary-light.svg',
-              dark: '/media/icons/summary-dark.svg',
-            }}
-            openDialog={() => setOpenDialog(true)}
-          />
-        )}
-      </div>
+        <div className="grid gap-5 mb-5 px-7.5">
+          {Object.keys(summary).length ? (
+            <>
+              <p className="text-sm text-foreground leading-5.5">
+                {summary?.bio}
+              </p>
+              {items.length > 0 && (
+                <div className="flex gap-2.5 xl:gap-7.5 kt-scrollable-x overflow-x-auto pb-2">
+                  {items.map((item, index) => {
+                    return renderItem(item, index);
+                  })}
+                </div>
+              )}
+            </>
+          ) : (
+            <EmptyState
+              title={fp('summaryTitle')}
+              description={fp('summaryDesc')}
+              icon={{
+                light: '/media/icons/summary-light.svg',
+                dark: '/media/icons/summary-dark.svg',
+              }}
+              openDialog={() => setOpenDialog(true)}
+            />
+          )}
+        </div>
 
-      <SummaryDialog
-        open={openDialog}
-        closeDialog={() => setOpenDialog(false)}
-        summary={summary}
-      />
-    </Card>
+        <SummaryDialog
+          open={openDialog}
+          closeDialog={() => setOpenDialog(false)}
+          summary={summary}
+        />
+      </Card>
+      {summary?.video && <PostVedio video={summary.video} />}
+    </>
   );
 };
 

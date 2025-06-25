@@ -15,10 +15,7 @@ export default function ProfileDefaultPage() {
   const [openDialog, setOpenDialog] = useState(false);
   return (
     <Fragment>
-      <UserHero
-        openDialog={openDialog}
-        handleOpendDialog={() => setOpenDialog(true)}
-      />
+      <UserHero openDialog={() => setOpenDialog(true)} />
       <Container>
         <Navbar>
           <PageMenu />
@@ -38,11 +35,11 @@ export default function ProfileDefaultPage() {
       </Container>
       <Container>
         <ProfileDefaultContent />
+        <AvatarDialog
+          open={openDialog}
+          closeDialog={() => setOpenDialog(false)}
+        />
       </Container>
-      <AvatarDialog
-        open={openDialog}
-        closeDialog={() => setOpenDialog(false)}
-      />
     </Fragment>
   );
 }

@@ -76,9 +76,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
       const formData = new FormData();
       Object.keys(values).forEach((key) => {
         if (key === 'images' && Array.isArray(values.images)) {
-          const imagesArray = values.images.map((image) => image.name);
-          const imagesJson = JSON.stringify(imagesArray);
-          formData.append('images', imagesJson);
+          formData.append('images', values.images);
         } else if (key !== 'images') {
           formData.append(key, values[key]);
         }

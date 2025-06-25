@@ -81,3 +81,23 @@ export async function getLanguageLevels() {
     throw error.response?.data || error;
   }
 }
+
+// get the list of education Degree
+export async function getEducationDegree() {
+  try {
+    const response = await apiTaqat.get('/education-levels');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
+
+// get the list of grades
+export async function getEducationGrades() {
+  try {
+    const response = await apiTaqat.get('/grade');
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+}
