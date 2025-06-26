@@ -78,7 +78,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
       await refetch();
       // redirect to freelancer main dashboard
       setTimeout(() => {
-        router.replace('/freelancer/public-profile/profiles/default');
+        router.replace('/freelancer/public-profile/profile');
       }, 1000);
     },
     onError: (error) => {

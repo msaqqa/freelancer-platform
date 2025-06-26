@@ -12,13 +12,13 @@ import { ModulesProvider } from '@/providers/modules-provider';
 import { QueryProvider } from '@/providers/query-provider';
 import { ThemeProvider } from '@/providers/theme-provider';
 
-const inter = Inter({ subsets: ['latin'] });
-const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400', '700'] });
+// const inter = Inter({ subsets: ['latin'] });
+// const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400', '700'] });
 
 export const metadata = {
   title: {
     template: '%s | Taqat',
-    default: 'Taqat Freelancer Platform', // a default is required when creating a template
+    default: 'Taqat Freelancer Platform',
   },
   icons: {
     icon: '/media/app/favicon.png',
@@ -33,10 +33,10 @@ export default async function RootLayout({ children }) {
   return (
     <html className="h-full" suppressHydrationWarning dir={dir}>
       <body
-        className={cn(
-          'antialiased flex h-full text-base text-foreground bg-background',
-          lang == 'ar' ? tajawal.className : inter.className,
-        )}
+      // className={cn(
+      //   'antialiased flex h-full text-base text-foreground bg-background',
+      //   lang == 'ar' ? tajawal.className : inter.className,
+      // )}
       >
         <QueryProvider>
           <SettingsProvider>

@@ -1,33 +1,81 @@
 'use client';
 
-import Link from 'next/link';
+import { useUserStore } from '@/stores/user-store';
 import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Container } from '@/components/common/container';
 
-export function UserHero({ image, name, info }) {
+export function UserHero({ openDialog }) {
+  const { user } = useUserStore();
   const { theme } = useTheme();
+
+  const info = [
+    {
+      label: user?.sub_category?.name || '',
+      icon: {
+        light: '/media/icons/sub-category-light.svg',
+        dark: '/media/icons/sub-category-dark.svg',
+      },
+    },
+    {
+      label: user?.country?.name || '',
+      icon: {
+        light: '/media/icons/location-light.svg',
+        dark: '/media/icons/location-dark.svg',
+      },
+    },
+    {
+      label: `${user?.experience || 0} Years Of Experience`,
+      icon: {
+        light: '/media/icons/experience-light.svg',
+        dark: '/media/icons/experience-dark.svg',
+      },
+    },
+  ];
+
+  const photo = openDialog ? (
+    <div className="relative">
+      <img
+        src={toAbsoluteUrl(user?.photo || '/media/avatars/blank.png')}
+        className="rounded-full border-3 border-primary size-[100px] shrink-0"
+        alt="image"
+      />
+      <div
+        className="absolute bottom-0 end-0 size-[40px] flex justify-center items-center cursor-pointer bg-background rounded-full border-3 border-primary"
+        onClick={openDialog}
+      >
+        <img
+          src={toAbsoluteUrl('/media/icons/edit-light.svg')}
+          className="size-[20px] shrink-0"
+          alt="image"
+        />
+      </div>
+    </div>
+  ) : (
+    <img
+      src={toAbsoluteUrl(user?.photo || '/media/avatars/blank.png')}
+      className="rounded-full border-3 border-primary size-[100px] shrink-0"
+      alt="image"
+    />
+  );
+
   const buildInfo = (info) => {
     return info.map((item, index) => {
       return (
         <div className="flex gap-1.25 items-center" key={`info-${index}`}>
-          {item.icon && (
-            <item.icon size={16} className="text-muted-foreground text-sm" />
-          )}
-          {item.email ? (
-            <Link
-              href={item.email}
-              target="_blank"
-              className="text-secondary-foreground font-medium hover:text-primary"
-              rel="noreferrer"
-            >
-              {item.email}
-            </Link>
-          ) : (
-            <span className="text-secondary-foreground font-medium">
-              {item.label}
-            </span>
-          )}
+          <img
+            src={toAbsoluteUrl(item?.icon?.light)}
+            className="dark:hidden max-size-[24px]"
+            alt="icon"
+          />
+          <img
+            src={toAbsoluteUrl(item?.icon?.dark)}
+            className="light:hidden max-size-[24px]"
+            alt="image"
+          />
+          <span className="text-secondary-foreground font-medium">
+            {item.label}
+          </span>
         </div>
       );
     });
@@ -45,10 +93,10 @@ export function UserHero({ image, name, info }) {
     >
       <Container>
         <div className="flex flex-col items-center gap-2 lg:gap-3.5 py-4 lg:pt-5 lg:pb-10">
-          {image}
+          {photo}
           <div className="flex items-center gap-1.5">
             <div className="text-lg leading-5 font-semibold text-mono">
-              {name}
+              {user?.name}
             </div>
             <svg
               xmlns="http://www.w3.org/2000/svg"

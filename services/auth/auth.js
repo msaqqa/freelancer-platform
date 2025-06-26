@@ -103,10 +103,8 @@ export const resendEmailOtp = async (email) => {
 export async function getAuthUserData() {
   try {
     const response = await apiTaqat.get('/profile');
-    console.log('response', response);
     return response.data;
   } catch (error) {
-    console.log('error', error);
     throw error.response?.data || error;
   }
 }

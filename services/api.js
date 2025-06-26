@@ -15,7 +15,6 @@ const createAxiosInstance = (baseURL) => {
     (config) => {
       const token = Cookies.get('token');
       const language = Cookies.get('language');
-      console.log('token', token);
       if (token) {
         config.headers.Authorization = `Bearer ${token}`;
       }

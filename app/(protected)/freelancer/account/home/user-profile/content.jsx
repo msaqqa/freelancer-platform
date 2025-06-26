@@ -1,6 +1,6 @@
 'use client';
 
-import { RecentUploads } from '@/app/(protected)/freelancer/public-profile/profiles/default/components/recent-uploads';
+import { RecentUploads } from '@/app/(protected)/freelancer/public-profile/profile/components/recent-uploads';
 import {
   BasicSettings,
   CalendarAccounts,
