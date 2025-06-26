@@ -11,18 +11,33 @@ import { EducationDialog } from '../dialogs';
 
 const Education = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const [educationId, setEducationId] = useState('');
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`education.${key}`);
   const { user } = useUserStore();
-  const educations = user?.educations || [];
+  const educations = user?.educations || [
+    { id: 1, status: 'isalmic', info: 'info' },
+  ];
 
   const renderTable = (item) => {
     return (
       <div key={item.id} className="flex flex-col gap-2.5 mb-5">
-        <div className="text-sm text-mono">{item.status}</div>
+        <div className="flex justify-between items-center gap-2.5">
+          <div className="text-sm text-mono">{item.status}</div>
+          <Button
+            variant="ghost"
+            mode="icon"
+            onClick={() => {
+              setOpenDialog(true);
+              setEducationId(item.id);
+            }}
+          >
+            <SquarePen size={16} className="text-blue-500" />
+          </Button>
+        </div>
         <div className="text-sm text-secondary-foreground">
-          <span>{item.info}</span>
-          <span>{item.info}</span>
+          <h4>{item.info}</h4>
+          <h4>{item.info}</h4>
         </div>
       </div>
     );
@@ -32,15 +47,6 @@ const Education = () => {
     <Card>
       <CardHeader>
         <CardTitle>{fp('educationTitle')}</CardTitle>
-        {educations.length > 0 && (
-          <Button
-            variant="ghost"
-            mode="icon"
-            onClick={() => setOpenDialog(true)}
-          >
-            <SquarePen size={16} className="text-blue-500" />
-          </Button>
-        )}
       </CardHeader>
       <CardContent>
         {educations.length ? (
@@ -63,6 +69,7 @@ const Education = () => {
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
         educations={educations}
+        educationId={educationId}
       />
     </Card>
   );

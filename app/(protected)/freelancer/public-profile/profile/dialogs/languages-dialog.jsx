@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect } from 'react';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -38,7 +40,8 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
 
-export const LanguagesDialog = ({ open, closeDialog, languages }) => {
+export const LanguagesDialog = ({ open, closeDialog }) => {
+  const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`languages.${key}`);
 
@@ -79,6 +82,20 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
     mode: 'onSubmit',
   });
 
+  // Reset form values when dialog is opened
+  useEffect(() => {
+    const langFormat = user?.languages?.map((item) => ({
+      language_id: item.id,
+      level: item.level,
+    }));
+    console.log('langFormat', langFormat);
+    if (open) {
+      form.reset({
+        languageFields: langFormat || [],
+      });
+    }
+  }, [form, open, user]);
+
   const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'languageFields',
@@ -111,7 +128,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
           position: 'top-center',
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['freelancer-languagess'] });
+      setUser(data);
       closeDialog();
     },
     onError: (error) => {
@@ -143,7 +160,7 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
-        className="mx-auto grow w-full max-w-2xl p-0 [&>button]:hidden gap-0"
+        className="mx-auto grow w-full max-w-xl p-0 gap-0"
         variant="fullscreen"
       >
         <DialogHeader className="py-5 px-6 border-b border-border">

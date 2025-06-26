@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { I18N_LANGUAGES } from '@/i18n/config';
+import i18next from 'i18next';
 import {
   BetweenHorizontalStart,
   Coffee,
@@ -40,8 +41,8 @@ export function UserDropdownMenu({ trigger }) {
   const { theme, setTheme } = useTheme();
 
   const handleLanguage = async (lang) => {
-    await changeLang(lang.code);
-    changeLanguage(lang.code);
+    changeLanguage(lang);
+    await changeLang(lang);
   };
 
   const handleThemeToggle = (checked) => {
@@ -201,12 +202,7 @@ export function UserDropdownMenu({ trigger }) {
           <DropdownMenuSubContent className="w-48">
             <DropdownMenuRadioGroup
               value={language.code}
-              onValueChange={(value) => {
-                const selectedLang = I18N_LANGUAGES.find(
-                  (lang) => lang.code === value,
-                );
-                if (selectedLang) handleLanguage(selectedLang);
-              }}
+              onValueChange={handleLanguage}
             >
               {I18N_LANGUAGES.map((item) => (
                 <DropdownMenuRadioItem

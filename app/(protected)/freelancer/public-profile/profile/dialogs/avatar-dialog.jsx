@@ -42,6 +42,7 @@ const formSchema = z.object({
 
 export const AvatarDialog = ({ open, closeDialog }) => {
   const { t } = useTranslation('freelancerProfile');
+  const fp = (key) => t(`avatar.${key}`);
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -106,7 +107,7 @@ export const AvatarDialog = ({ open, closeDialog }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent>
         <DialogHeader className="pb-4 border-b border-border">
-          <DialogTitle>Edit Avatar</DialogTitle>
+          <DialogTitle>{fp('dialogTitle')}</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -120,7 +121,7 @@ export const AvatarDialog = ({ open, closeDialog }) => {
               name="photo"
               render={({ field }) => (
                 <FormItem className="flex flex-col items-center gap-2.5">
-                  <FormLabel>photo</FormLabel>
+                  <FormLabel>{fp('photo')}</FormLabel>
                   <span className="text-sm text-secondary-foreground">
                     800x800px JPG or PNG
                   </span>

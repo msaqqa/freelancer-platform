@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
@@ -9,6 +9,7 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { MONTH as months } from '@/config/dateConfig';
+import { getYears } from '@/lib/date';
 import {
   addFreelancerEducation,
   getFreelancerEducationById,
@@ -96,22 +97,29 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
     mode: 'onBlur',
   });
 
+  const formatDate = (date) => {
+    if (date) {
+      const dateParts = date.split('-');
+      const month = dateParts[0];
+      const year = dateParts[1];
+      return { month, year };
+    }
+  };
+
   // Reset form values when dialog is opened
   useEffect(() => {
-    const startDate = education?.start_date || '10-2022';
-    const dateParts = startDate.split('-');
-    const startMonth = dateParts[0];
-    const startYear = dateParts[1];
+    const startDate = formatDate(education?.start_date);
+    const endDate = formatDate(education?.end_date);
     if (open) {
       form.reset({
         university: education?.university ?? '',
         study: education?.field_of_study ?? '',
         degree: education?.education_level_id ?? '',
         grade: education?.grade ?? '',
-        startMonth: startMonth ?? '',
-        startYear: startYear ?? '',
-        endMonth: '',
-        endYear: '',
+        startMonth: startDate?.month ?? '',
+        startYear: startDate?.year ?? '',
+        endMonth: endDate?.month ?? '',
+        endYear: endDate?.year ?? '',
       });
     }
   }, [form, open, educationId]);
@@ -135,13 +143,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   }, [form]);
 
   const currentYear = new Date().getFullYear();
-  const years = useMemo(() => {
-    const yearsArray = [];
-    for (let i = currentYear; i >= 1950; i--) {
-      yearsArray.push({ id: i, name: i.toString() });
-    }
-    return yearsArray;
-  }, [currentYear]);
+  const years = useMemo(() => getYears(), [currentYear]);
 
   // Mutation for creating/updating about
   const mutation = useMutation({

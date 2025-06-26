@@ -140,7 +140,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
         variant="fullscreen"
-        className="w-full max-w-[600px] mx-auto"
+        className="mx-auto grow w-full max-w-xl p-0 gap-0"
       >
         <DialogHeader className="pb-4 border-b border-border">
           <DialogTitle>{fp('summaryTitle')}</DialogTitle>

@@ -32,7 +32,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input, InputWrapper } from '@/components/ui/input';
 import {
   Select,
   SelectContent,
@@ -182,7 +182,7 @@ export const AboutDialog = ({ open, closeDialog }) => {
               render={({ field }) => (
                 <FormItem className="w-full flex flex-row justify-between items-baseline flex-wrap lg:flex-nowrap gap-2.5">
                   <FormLabel className="flex w-full items-center gap-1 max-w-56">
-                    {fp('readyWork') + '?'}
+                    {fp('readyWork')}
                   </FormLabel>
                   <FormControl>
                     <div className="flex items-center gap-2">
@@ -210,8 +210,8 @@ export const AboutDialog = ({ open, closeDialog }) => {
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>{fp('hourlyRate')}</FormLabel>
-                  <div className="relative">
-                    <FormControl>
+                  <FormControl>
+                    <InputWrapper>
                       <Input
                         type="text"
                         id="hourlyRate"
@@ -219,13 +219,13 @@ export const AboutDialog = ({ open, closeDialog }) => {
                         className="focus-visible:ring-0"
                         {...field}
                       />
-                    </FormControl>
-                    <img
-                      src={toAbsoluteUrl('/media/app/dollar-square.svg')}
-                      className="bg-background absolute right-0 top-1/2 transform -translate-1/2 text-sm text-muted-foreground h-[20px]"
-                      alt="image"
-                    />
-                  </div>
+                      <img
+                        src={toAbsoluteUrl('/media/app/dollar-square.svg')}
+                        className="bg-background h-[20px]"
+                        alt="image"
+                      />
+                    </InputWrapper>
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -293,7 +293,7 @@ export const AboutDialog = ({ open, closeDialog }) => {
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder={fa('specialtyHolder')} />
+                          <SelectValue placeholder={fp('specialtyHolder')} />
                         </SelectTrigger>
                         <SelectContent>
                           {subcategoriesLoading && (
@@ -338,7 +338,7 @@ export const AboutDialog = ({ open, closeDialog }) => {
                         }}
                       >
                         <SelectTrigger>
-                          <SelectValue placeholder="Select Country" />
+                          <SelectValue placeholder={fp('countryHolder')} />
                         </SelectTrigger>
                         <SelectContent>
                           {countriesLoading && (

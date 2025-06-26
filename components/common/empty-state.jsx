@@ -1,6 +1,7 @@
 'use client';
 
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 
@@ -11,6 +12,7 @@ export const EmptyState = ({
   openDialog,
   button = true,
 }) => {
+  const { t } = useTranslation('common');
   return (
     <div className="grid place-items-center gap-4">
       <div className="flex justify-center items-center">
@@ -38,7 +40,7 @@ export const EmptyState = ({
           <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
             <Plus size={16} />
           </span>
-          Add New {title}
+          {t('addNew')} {title}
         </Button>
       )}
     </div>

@@ -4,11 +4,11 @@ import { Fragment } from 'react/jsx-runtime';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 
-export function Steps({ currentStep }) {
+export function Steps({ currentStep, t }) {
   const steps = [
-    { title: 'Mobile Number' },
-    { title: 'Personal data' },
-    { title: 'Upload ID photo' },
+    { title: t('mobileNumber') },
+    { title: t('personalData') },
+    { title: t('uploadIdPhoto') },
   ];
 
   return (

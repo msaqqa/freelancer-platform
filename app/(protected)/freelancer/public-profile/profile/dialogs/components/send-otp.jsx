@@ -87,7 +87,7 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
 
   return (
     <>
-      <Steps currentStep={0} />
+      <Steps currentStep={0} t={t} />
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(handleSubmit)}
@@ -151,25 +151,24 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
               />
             </div>
             {/* Phone Number Input */}
-            <div className="flex-grow">
-              <FormField
-                control={form.control}
-                name="mobile"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormControl>
-                      <Input
-                        type="tel"
-                        maxLength="15"
-                        {...field}
-                        className="ps-0 border-0 focus-visible:outline-none focus-visible:ring-0"
-                        placeholder={t('mobileHolder')}
-                      />
-                    </FormControl>
-                  </FormItem>
-                )}
-              />
-            </div>
+            <FormField
+              control={form.control}
+              name="mobile"
+              className=""
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="tel"
+                      maxLength="15"
+                      {...field}
+                      className="ps-0 border-0 focus-visible:outline-none focus-visible:ring-0"
+                      placeholder={t('mobileHolder')}
+                    />
+                  </FormControl>
+                </FormItem>
+              )}
+            />
           </div>
           <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
             <Button type="button" variant="outline" onClick={closeDialog}>

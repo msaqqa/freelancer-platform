@@ -28,7 +28,7 @@ const Skills = () => {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Skills</CardTitle>
+        <CardTitle>{fp('skillsTitle')}</CardTitle>
         {skills.length > 0 && (
           <Button
             variant="ghost"

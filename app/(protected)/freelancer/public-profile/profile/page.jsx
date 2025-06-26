@@ -19,7 +19,7 @@ export default function ProfileDefaultPage() {
       <Container>
         <Navbar>
           <PageMenu />
-          <NavbarActions>
+          {/* <NavbarActions>
             <Button>
               <Users /> Connect
             </Button>
@@ -30,7 +30,7 @@ export default function ProfileDefaultPage() {
                 </Button>
               }
             />
-          </NavbarActions>
+          </NavbarActions> */}
         </Navbar>
       </Container>
       <Container>

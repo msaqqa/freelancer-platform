@@ -27,7 +27,7 @@ function Progress({ className, indicatorClassName, value, ...props }) {
 }
 
 function CircularProgress({
-  value = 75,
+  value = 0,
   size = 128,
   strokeWidth = 8,
   strokeColor = '#D9D9D9',

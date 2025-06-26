@@ -38,7 +38,7 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
-        className="mx-auto grow w-full max-w-2xl p-0 [&>button]:hidden gap-0"
+        className="mx-auto grow w-full max-w-xl p-0 gap-0"
         variant="fullscreen"
       >
         <DialogHeader className="py-5 px-6 border-b border-border">

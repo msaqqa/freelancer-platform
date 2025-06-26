@@ -2,11 +2,15 @@
 
 import { useUserStore } from '@/stores/user-store';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Container } from '@/components/common/container';
 
 export function UserHero({ openDialog }) {
   const { user } = useUserStore();
+  const { t } = useTranslation('common');
+
   const { theme } = useTheme();
 
   const info = [
@@ -16,6 +20,7 @@ export function UserHero({ openDialog }) {
         light: '/media/icons/sub-category-light.svg',
         dark: '/media/icons/sub-category-dark.svg',
       },
+      Skeleton: <Skeleton className="size-5" />,
     },
     {
       label: user?.country?.name || '',
@@ -23,13 +28,15 @@ export function UserHero({ openDialog }) {
         light: '/media/icons/location-light.svg',
         dark: '/media/icons/location-dark.svg',
       },
+      Skeleton: <Skeleton className="size-5" />,
     },
     {
-      label: `${user?.experience || 0} Years Of Experience`,
+      label: `${user?.experience || 0} ${t('experienceYears')}`,
       icon: {
         light: '/media/icons/experience-light.svg',
         dark: '/media/icons/experience-dark.svg',
       },
+      Skeleton: <Skeleton className="size-5" />,
     },
   ];
 

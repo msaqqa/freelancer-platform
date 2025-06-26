@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -30,7 +31,8 @@ import {
 import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
 
-export const SkillsDialog = ({ open, closeDialog, skills }) => {
+export const SkillsDialog = ({ open, closeDialog }) => {
+  const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`skills.${key}`);
 
@@ -64,14 +66,17 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
   });
 
   // Reset form values when dialog is opened
-  // useEffect(() => {
-  //   if (open) {
-  //     form.reset({
-  //       name: skills?.name || '',
-  //       description: skills?.description ?? '',
-  //     });
-  //   }
-  // }, [form, open, skills]);
+  useEffect(() => {
+    const skillsFormat = user?.skills?.map((item) => ({
+      id: item.id,
+      name: item.name,
+    }));
+    if (open) {
+      form.reset({
+        skills: skillsFormat || [],
+      });
+    }
+  }, [form, open, user]);
 
   // Mutation for creating/updating skills
   const mutation = useMutation({
@@ -90,8 +95,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
           position: 'top-center',
         },
       );
-
-      // queryClient.invalidateQueries({ queryKey: ['user-skillss'] });
+      setUser(data);
       closeDialog();
     },
     onError: (error) => {
@@ -141,7 +145,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{'skills'}</FormLabel>
+                  <FormLabel>{fp('skills')}</FormLabel>
                   <div className="flex flex-col flex-grow">
                     <FormControl>
                       <MultiSelect

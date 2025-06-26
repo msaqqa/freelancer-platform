@@ -43,7 +43,7 @@ const Summary = () => {
       <Card>
         <CardHeader className="border-b-0">
           <CardTitle>{fp('summaryTitle')}</CardTitle>
-          {summary && (
+          {Object.keys(summary).length > 0 && (
             <Button
               variant="ghost"
               mode="icon"

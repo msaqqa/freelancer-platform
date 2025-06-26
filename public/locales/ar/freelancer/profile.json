@@ -13,7 +13,9 @@
         "industry": "الصناعة",
         "specialty": "التخصص",
         "specialtyHolder": "اختر التخصص",
-        "country": "الدولة"
+        "country": "الدولة",
+        "countryHolder": "اختر البلد",
+        "hr": "ساعة"
     },
     "badges": {
         "badgesTitle": "شارات المجتمع",
@@ -34,7 +36,7 @@
         "addBtn": "إضافة مهارات جديدة"
     },
     "socials": {
-        "socialsTitle": "الوسائل الاجتماعية",
+        "socialsTitle": "التواصل الاجتماعي",
         "socialsDesc": "اسمح للعملاء بالوصول إليك من خلال حساباتك الاجتماعية.",
         "socialHolder": "أدخل الرابط",
         "titleLabel": "العنوان",
@@ -88,7 +90,7 @@
         "closeBtn": "إغلاق",
         "continueBtn": "متابعة",
         "stepOtpTitle": "أدخل رمز التحقق",
-        "stepOtpDesc": "لقد أرسلنا رمز التحقق المكون من 6 أرقام إلى +972597803774.",
+        "stepOtpDesc": "لقد أرسلنا رمز التحقق المكون من 6 أرقام إلى رقمك.",
         "otpLabel": "يرجى إدخاله أدناه للتحقق من رقم هاتفك.",
         "verifyBtn": "تحقق",
         "stepPersonalTitle": "المعلومات الشخصية",
@@ -96,20 +98,31 @@
         "nameLabel": "الاسم الأول",
         "nameHolder": "أدخل اسمك الأول",
         "fatherLabel": "اسم الأب",
-        "fatherHolder": "أدخل اسم والدك",
+        "fatherHolder": "أدخل اسم الأب",
         "grandfatherLabel": "اسم الجد",
-        "grandfatherHolder": "أدخل اسم جدك",
+        "grandfatherHolder": "أدخل اسم الجد",
         "familyLabel": "اسم العائلة",
-        "familyHolder": "أدخل اسم عائلتك",
+        "familyHolder": "أدخل اسم العائلة",
         "idLabel": "رقم الهوية",
-        "idHolder": "أدخل رقم هويتك",
+        "idHolder": "أدخل رقم الهوية",
         "addressLabel": "العنوان الكامل",
         "addressHolder": "أدخل عنوانك الكامل",
         "backBtn": "عودة",
         "stepIdTitle": "تحميل صورة الهوية",
         "stepIdDesc": "قم بتحميل صورة واضحة لجواز سفرك أو هويتك الوطنية.",
         "idPhotoLabel": "تأكد من أن جميع التفاصيل واضحة وحادة.",
-        "submitBtn": "إرسال للمراجعة"
+        "submitBtn": "إرسال للمراجعة",
+        "mobileNumber": "رقم الهاتف ",
+        "personalData": "البيانات الشخصية",
+        "uploadIdPhoto": "صورة الهوية"
+    },
+    "verified-badge": {
+        "badgeTitle": "احصل على شارة التحقق",
+        "complete-profile": "أكمل الملف الشخصي"
+    },
+    "avatar": {
+        "dialogTitle": "تعديل الصورة الشخصية",
+        "photo": "صورة"
     },
     "loading": "جاري التحميل...",
     "cancelBtn": "إلغاء",

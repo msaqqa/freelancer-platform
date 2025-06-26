@@ -28,7 +28,7 @@ const About = () => {
         </Badge>
       ),
     },
-    { status: `${fp('readyWork')}:`, info: '$20.0/hr' },
+    { status: `${fp('readyWork')}:`, info: `$20.0/${fp('hr')}` },
     { status: fp('totalJobs'), info: '10' },
     {
       status: fp('id'),

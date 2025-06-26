@@ -63,7 +63,7 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
 
   return (
     <>
-      <Steps currentStep={0} />
+      <Steps currentStep={0} t={t} />
       <div>
         <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-5">
           <h2 className="text-xl font-semibold text-mono">
