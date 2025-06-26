@@ -1,0 +1,84 @@
+{
+    "sidebarFreelancerTitle": "ابحث عن وظيفة جديدة",
+    "sidebarClientTitle": "مواهب جديدة",
+    "sidebarPersonalDetails": "التفاصيل الشخصية",
+    "sidebarProfessionalDetails": "التفاصيل المهنية",
+    
+    "accountTypeTitle": "مرحبًا بك في طاقات",
+    "accountTypeDesc": "بوابتك لفرص الأعمال اللامتناهية.",
+    "accountTypeClient": "أريد توظيف مواهب جديدة.",
+    "accountTypeFreelancer": "أريد إيجاد فرص عمل جديدة.",
+    "saveBtn": "حفظ التعديلات",
+
+    "personalDetailsTitle": "التفاصيل الشخصية",
+    "photo": "الصورة",
+    "name": "الاسم",
+    "nameHolder": "أدخل اسمك",
+    "birthDate": "تاريخ الميلاد",
+    "dateHolder": "اختر تاريخًا",
+    "gender": "الجنس",
+    "male": "ذكر",
+    "female": "أنثى",
+    "country": "البلد",
+    "city": "المدينة",
+
+    "professionalTitle": "التفاصيل المهنية",
+    "category": "الفئة",
+    "categoryHolder": "اختر فئتك",
+    "subcategory": "الفئة الفرعية",
+    "subcategoryHolder": "اختر فئتك الفرعية",
+    "skills": "المهارات",
+    "skillsHolder": "اختر مهاراتك",
+    "description": "الوصف (السيرة الذاتية)",
+    "descriptionHolder": "أدخل الوصف",
+    "hourlyRate": "الأجر بالساعة",
+    "availability": "التوفر",
+    "availabilityHolder": "متاح للتوظيف",
+
+    "alertSuccess": "تم حفظ البيانات بنجاح",
+    "loading": "جاري التحميل...",
+
+    "clientPersonalDetails": {
+    "personalDetailsTitle": "التفاصيل الشخصية",
+    "photo": "الصورة",
+    "name": "اسم العرض",
+    "nameHolder": "أدخل اسم العرض",
+    "bio": "نبذة قصيرة/وصف",
+    "bioHolder": "قدّم خبرتك في بضع جمل (اختياري)",
+    "country": "الموقع",
+    "countryHolder": "اختيار الدولة",
+    "website": "الموقع الإلكتروني",
+    "websiteHolder": "أدخل الموقع الإلكتروني (اختياري)"
+    },
+
+    "freelancerValidation": {
+    "nameRequired": "الاسم مطلوب",
+    "nameLength": "لا يمكن أن يتجاوز الاسم 50 حرفًا",
+    "photoRequired": "ملف الصورة مطلوب",
+    "photoSize": "يجب أن يكون حجم ملف الصورة أقل من 2 ميجابايت",
+    "photoType": "يسمح فقط بصيغ JPG أو PNG",
+    "birthDateRequired": "تاريخ الميلاد مطلوب",
+    "birthDateFormat": "صيغة التاريخ غير صحيحة",
+    "genderRequired": "الجنس مطلوب",
+    "countryRequired": "الدولة مطلوبة",
+    "mobileRequired": "رقم الهاتف المحمول مطلوب",
+    "mobileLength": "لا يمكن أن يتجاوز رقم الهاتف 15 رقمًا",
+    "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
+    "categoryRequired": "الفئة مطلوبة",
+    "subcategoryRequired": "الفئة الفرعية مطلوبة",
+    "bioLength": "لا يمكن أن يتجاوز وصفك 4000 حرفًا",
+    "hourlyRateRequired": "معدل الساعة لا يمكن أن يكون سالبًا",
+    "hourlyRateDigits": "معدل الساعة يجب أن يحتوي على أرقام فقط"
+    },
+
+    "clientValidation": {
+    "nameRequired": "الاسم مطلوب",
+    "nameLength": "لا يمكن أن يتجاوز الاسم 50 حرفًا",
+    "photoRequired": "ملف الصورة مطلوب",
+    "photoSize": "يجب أن يكون حجم ملف الصورة أقل من 2 ميجابايت",
+    "photoType": "يسمح فقط بصيغ JPG أو PNG",
+    "bioLength": "لا يمكن أن يتجاوز وصفك 4000 حرفًا",
+    "countryRequired": "الدولة مطلوبة",
+    "websiteFormat": "صيغة الرابط غير صحيحة"
+    }
+}
