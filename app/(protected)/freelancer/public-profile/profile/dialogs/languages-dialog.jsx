@@ -88,7 +88,6 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
       language_id: item.id,
       level: item.level,
     }));
-    console.log('langFormat', langFormat);
     if (open) {
       form.reset({
         languageFields: langFormat || [],

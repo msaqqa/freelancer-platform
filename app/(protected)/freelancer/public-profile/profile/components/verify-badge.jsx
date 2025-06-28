@@ -52,6 +52,8 @@ const VerifyBadge = () => {
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
         items={status}
+        percentage={percentage}
+        completionText={completion_text}
       />
     </Card>
   );

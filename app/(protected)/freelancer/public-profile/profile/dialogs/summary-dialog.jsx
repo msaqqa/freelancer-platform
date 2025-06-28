@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
@@ -31,12 +31,16 @@ import { Input, InputWrapper } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
 import { Textarea } from '@/components/ui/textarea';
-import { GalleryInput } from '@/app/components/partials/common/gallery-input';
+import { SummarySchema } from '../forms/summary-schema';
+import { GalleryInput } from './components';
 
 export const SummaryDialog = ({ open, closeDialog, summary }) => {
   const [bioChar, setBioCahr] = useState(0);
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`summary.${key}`);
+  const parentRef = useRef(null);
+  const [imagesUrls, setImagesUrls] = useState([]);
 
   const handleBioChange = (e) => {
     const val = e.target.value;
@@ -46,6 +50,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
 
   // Form initialization
   const form = useForm({
+    resolver: zodResolver(SummarySchema(tv)),
     defaultValues: {
       bio: '',
       imagesTitle: '',
@@ -53,7 +58,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
       videoTitle: '',
       video: '',
     },
-    mode: 'onSubmit',
+    mode: 'onBlur',
   });
 
   // Reset form values when dialog is opened
@@ -61,12 +66,14 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
     if (open) {
       form.reset({
         bio: summary?.bio || '',
-        // images: summary?.images || [],
         imagesTitle: summary?.images_title || '',
         video: summary?.video || '',
         videoTitle: summary?.video_title || '',
-        // images_urls
       });
+      setImagesUrls([{ url: '/media/images/600x400/1.jpg' }]);
+      if (summary?.images_urls?.length) {
+        // summary?.images_urls
+      }
     }
   }, [form, open, summary]);
 
@@ -139,13 +146,16 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
-        variant="fullscreen"
         className="mx-auto grow w-full max-w-xl p-0 gap-0"
+        variant="fullscreen"
       >
-        <DialogHeader className="pb-4 border-b border-border">
+        <DialogHeader className="py-5 px-6 border-b border-border">
           <DialogTitle>{fp('summaryTitle')}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="grow pe-3 -me-3">
+        <ScrollArea
+          className="py-0 mb-5 ps-6 pe-3 me-3"
+          viewportRef={parentRef}
+        >
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
@@ -156,7 +166,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                 control={form.control}
                 name="bio"
                 render={({ field }) => (
-                  <FormItem>
+                  <FormItem className="relative">
                     <FormLabel>{fp('summaryTitle')}</FormLabel>
                     <div className="relative">
                       <FormControl>
@@ -169,14 +179,16 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           onChange={(val) => {
                             field.onChange(val);
                             handleBioChange(val);
+                            form.trigger('bio');
                           }}
+                          onBlur={() => form.trigger('bio')}
                         />
                       </FormControl>
-                      <span className="absolute right-3 bottom-3 text-sm text-muted-foreground/80">
+                      <span className="absolute end-5 bottom-3 text-sm text-muted-foreground/80">
                         {bioChar}/4000
                       </span>
                     </div>
-                    <FormMessage className="mt-1" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />
@@ -191,15 +203,18 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                     <FormDescription>
                       {fp('galleryPhotoHolder')}
                     </FormDescription>
-                    <FormControl>
+                    <FormControl className="mb-5">
                       <GalleryInput
+                        {...field}
                         multiple={true}
                         onChange={(val) => {
                           field.onChange(val);
+                          form.trigger('images');
                         }}
+                        imagesUrls={imagesUrls}
                       />
                     </FormControl>
-                    <FormMessage className="mt-1" />
+                    <FormMessage />
                   </FormItem>
                 )}
               />

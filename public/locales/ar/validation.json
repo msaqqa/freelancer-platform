@@ -1,0 +1,5 @@
+{
+    "maxBio": "Bio cannot exceed {{bioLength}} characters",
+    "maxImages": "Maximum {{imagesLength}} images allowed",
+    "invalidURL": "Invalid URL"
+}

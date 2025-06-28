@@ -18,6 +18,7 @@ import {
 import { getEducationDegree, getEducationGrades } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
 import {
   Dialog,
   DialogContent,
@@ -229,8 +230,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                       <FormLabel>{fp('universityLabel')}</FormLabel>
                       <FormControl>
                         <Input
-                          type="text"
-                          id="firstName"
                           placeholder={fp('universityHolder')}
                           className="focus-visible:ring-0"
                           {...field}
@@ -517,6 +516,23 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                     )}
                   />
                 </div>
+              </div>
+
+              <div className="flex items-center space-x-2">
+                <FormField
+                  control={form.control}
+                  name=" stillStudying"
+                  render={({ field }) => (
+                    <>
+                      <Checkbox
+                        id="remember-me"
+                        checked={field.value}
+                        onCheckedChange={(checked) => field.onChange(!!checked)}
+                      />
+                      <FormLabel className="">{fp('stillStudying')}</FormLabel>
+                    </>
+                  )}
+                />
               </div>
 
               <DialogFooter>

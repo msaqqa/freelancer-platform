@@ -1,0 +1,9 @@
+{
+    "maxBio": "Bio cannot exceed {{bioLength}} characters",
+    "maxImages": "Maximum {{imagesLength}} images allowed",
+    "invalidURL": "Invalid URL",
+    "linkRequired": "Link is required",
+    "titleRequired": "Title is required",
+    "SocialsSchema": "SocialsSchema"
+
+}

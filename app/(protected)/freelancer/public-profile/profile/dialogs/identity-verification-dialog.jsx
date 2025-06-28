@@ -8,7 +8,6 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   IdentityEnd,
   IdentityStart,
@@ -22,6 +21,7 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
   const [mobile, setMobile] = useState('');
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`identity.${key}`);
+  const iv = (key) => t(`identity.validation${key}`);
 
   useEffect(() => {
     setStep(1);
@@ -41,37 +41,34 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
         className="mx-auto grow w-full max-w-xl p-0 gap-0"
         variant="fullscreen"
       >
-        <DialogHeader className="py-5 px-6 border-b border-border">
+        <DialogHeader className="py-5 px-6 mb-0 border-b border-border">
           <DialogTitle>{fp('dialogTitle')}</DialogTitle>
         </DialogHeader>
-        <ScrollArea className="py-0 mb-5 ps-6 pe-3 me-3 flex-1">
-          {step === 1 && (
-            <IdentityStart handleNextStep={handleNextStep} t={fp} />
-          )}
-          {step === 2 && (
-            <SendOtp
-              handleNextStep={handleNextStep}
-              closeDialog={closeDialog}
-              setMobile={setMobile}
-              t={fp}
-            />
-          )}
-          {step === 3 && (
-            <VerifyOtp
-              handleNextStep={handleNextStep}
-              handleBackStep={handleBackStep}
-              mobile={mobile}
-              t={fp}
-            />
-          )}
-          <UpdateIdentity
-            step={step}
+        {step === 1 && <IdentityStart handleNextStep={handleNextStep} t={fp} />}
+        {step === 2 && (
+          <SendOtp
+            handleNextStep={handleNextStep}
+            closeDialog={closeDialog}
+            setMobile={setMobile}
+            t={fp}
+            v={iv}
+          />
+        )}
+        {step === 3 && (
+          <VerifyOtp
             handleNextStep={handleNextStep}
             handleBackStep={handleBackStep}
+            mobile={mobile}
             t={fp}
           />
-          {step === 6 && <IdentityEnd closeDialog={closeDialog} t={fp} />}
-        </ScrollArea>
+        )}
+        <UpdateIdentity
+          step={step}
+          handleNextStep={handleNextStep}
+          handleBackStep={handleBackStep}
+          t={fp}
+        />
+        {step === 6 && <IdentityEnd closeDialog={closeDialog} t={fp} />}
       </DialogContent>
     </Dialog>
   );

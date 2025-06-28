@@ -114,7 +114,12 @@
         "submitBtn":"Submit for Review",
         "mobileNumber": "Mobile Number",
         "personalData": "Personal Data",
-        "uploadIdPhoto": "Upload ID Photo"
+        "uploadIdPhoto": "Upload ID Photo",
+        "validation": {
+            "mobileRequired": "Mobile number is required",
+            "mobileLength": "Phone number cannot be more than 15 digits",
+            "mobileDigits": "'Phone number must contain only digits'"
+        }
     },
     "verified-badge": {
         "badgeTitle": "Get verified badge",
@@ -126,5 +131,7 @@
     },
     "loading": "Loading...",
     "cancelBtn":"Cancel",
-    "saveBtn":"Save"
+    "saveBtn":"Save",
+    "AddPhoto": "Add Photo",
+    "MaxImages": "Max 6 images"
 }

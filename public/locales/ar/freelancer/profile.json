@@ -114,7 +114,12 @@
         "submitBtn": "إرسال للمراجعة",
         "mobileNumber": "رقم الهاتف ",
         "personalData": "البيانات الشخصية",
-        "uploadIdPhoto": "صورة الهوية"
+        "uploadIdPhoto": "صورة الهوية",
+        "validation": {
+            "mobileRequired": "رقم الهاتف المحمول مطلوب",
+            "mobileLength": "لا يمكن أن يتجاوز رقم الهاتف 15 رقمًا",
+            "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط"
+        }
     },
     "verified-badge": {
         "badgeTitle": "احصل على شارة التحقق",
@@ -126,5 +131,7 @@
     },
     "loading": "جاري التحميل...",
     "cancelBtn": "إلغاء",
-    "saveBtn": "حفظ"
+    "saveBtn": "حفظ",
+    "AddPhoto": "أضف صورة",
+    "MaxImages": "الحد الأقصى 6 صور"
 }

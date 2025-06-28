@@ -2,13 +2,13 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { Facebook, Plus, Trash2 } from 'lucide-react';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
-import { toAbsoluteUrl } from '@/lib/helpers';
+import { saveFreelancerSocials } from '@/services/freelancer/profile';
 import { getSocials } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -29,32 +29,11 @@ import {
 import { Input, InputWrapper } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
-
-// Zod validation schema for the form
-const SocialsSchema = z.object({
-  socials: z
-    .array(
-      z.object({
-        link: z.string().min(1, {
-          message: 'Link is required',
-        }),
-      }),
-    )
-    .min(1, { message: 'At least one language is required' }),
-  otherSocialFields: z
-    .array(
-      z.object({
-        title: z.string().min(1, {
-          message: 'Title is required',
-        }),
-        link: z.string().min(1, { message: 'Link is required' }),
-      }),
-    )
-    .optional(),
-});
+import { SocialsSchema } from '../forms/social-schema';
 
 export const SocialsDialog = ({ open, closeDialog, socials }) => {
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`socials.${key}`);
 
   // get socials data from API
@@ -66,7 +45,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
 
   // Form initialization with React Hook Form
   const form = useForm({
-    // resolver: zodResolver(SocialsSchema),
+    resolver: zodResolver(SocialsSchema(tv)),
     defaultValues: {
       socials: [],
       otherSocialFields: [{ title: '', link: '' }],
@@ -80,9 +59,8 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
   });
 
   // Mutation for creating/updating socials
-  const editFreelancerSocials = () => {};
   const mutation = useMutation({
-    mutationFn: editFreelancerSocials,
+    mutationFn: saveFreelancerSocials,
     onSuccess: () => {
       const isEdit = !!socials?.id;
       const message = isEdit
@@ -193,7 +171,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
               {/* Render dynamic social fields */}
               {fields.map((field, index) => (
                 <div key={field.id} className="flex items-end mb-4">
-                  <div className="flex items-center gap-2.5 w-[90%]">
+                  <div className="flex gap-2.5 w-[90%]">
                     {/* Title */}
                     <div className="flex-1">
                       <FormField

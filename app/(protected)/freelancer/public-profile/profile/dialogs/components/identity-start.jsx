@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 
 export const IdentityStart = ({ handleNextStep, t }) => {
   return (
-    <div className="flex flex-col justify-center gap-2.5">
+    <div className="h-full flex flex-col justify-center gap-2.5">
       <div className="flex flex-col justify-center mb-5">
         <img
           src={toAbsoluteUrl('/media/illustrations/42.svg')}

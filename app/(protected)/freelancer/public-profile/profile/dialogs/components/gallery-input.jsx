@@ -1,15 +1,29 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { ImageInput } from '@/components/image-input';
 
-export function GalleryInput({ onChange, multiple = false }) {
+export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
   const [gallery, setGallery] = useState([]);
-  const navBar2 = useRef(null);
+  const [imagesPreview, setImagesPreview] = useState([]);
+  const navBar = useRef(null);
+  const { t } = useTranslation('freelancerProfile');
+
+  useEffect(() => {
+    if (imagesUrls.length > 0) {
+      setImagesPreview(imagesUrls);
+    }
+  }, [imagesUrls]);
+
+  const handleRemoveImage = (index) => {
+    const newImages = imagesPreview.filter((_, i) => i !== index);
+    setImagesPreview(newImages);
+  };
 
   const handleImageUpload = (selectedImages) => {
     setGallery(selectedImages);
@@ -43,26 +57,26 @@ export function GalleryInput({ onChange, multiple = false }) {
                 <img
                   src={toAbsoluteUrl('/media/icons/gallery-light.svg')}
                   alt="Add Image"
-                  className="dark:hidden mx-auto mb-4"
+                  className="dark:hidden mx-auto"
                 />
                 <img
                   src={toAbsoluteUrl('/media/icons/gallery-dark.svg')}
                   alt="Add Image"
-                  className="light:hidden mx-auto mb-4"
+                  className="light:hidden mx-auto"
                 />
-                <div className="text-sm font-medium mb-2">Add photos</div>
+                <div className="text-sm font-medium mb-2">{t('AddPhoto')}</div>
                 <ul
                   className={`flex w-full ${multiple ? 'flex-col justify-center' : 'list-disc flex-row justify-around'} text-center text-xs`}
                 >
-                  <li className="mb-2">1080×1350 px</li> <br />
-                  <li>(Max 6 images)</li>
+                  <li className="mb-2">{t('AddPhoto')}</li> <br />
+                  <li>({t('MaxImages')})</li>
                 </ul>
               </div>
             )}
-            <ScrollArea viewportRef={navBar2} className="w-full pb-2 mb-4">
+            <ScrollArea viewportRef={navBar} className="pb-2">
               <div
                 className="flex-1 flex items-center gap-3 pb-2"
-                style={multiple ? { width: 'calc(var(--spacing) * 94)' } : null}
+                style={multiple ? { width: 'calc(var(--spacing) * 88)' } : null}
               >
                 {fileList.map((file, index) => (
                   <div
@@ -75,6 +89,7 @@ export function GalleryInput({ onChange, multiple = false }) {
                       className="gallery-image w-full h-full object-cover rounded-lg"
                     />
                     <Button
+                      type="button"
                       variant="ghost"
                       mode="icon"
                       onClick={() => onImageRemove(index)}
@@ -84,8 +99,29 @@ export function GalleryInput({ onChange, multiple = false }) {
                     </Button>
                   </div>
                 ))}
+                {imagesPreview.map((file, index) => (
+                  <div
+                    key={index}
+                    className={`relative flex flex-col justify-center items-center bg-muted rounded-xl shrink-0 ${multiple ? 'w-[160px]' : 'w-full'} h-[200px]`}
+                  >
+                    <img
+                      src={toAbsoluteUrl(file.url)}
+                      alt={`Uploaded Image ${index}`}
+                      className="gallery-image w-full h-full object-cover rounded-lg"
+                    />
+                    <Button
+                      type="button"
+                      variant="ghost"
+                      mode="icon"
+                      onClick={() => handleRemoveImage(index)}
+                      className="bg-muted w-6.5 h-6.5 rounded-full absolute top-2 right-2"
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </div>
+                ))}
               </div>
-              <ScrollBar className="w-full" orientation="horizontal" />
+              <ScrollBar orientation="horizontal" />
             </ScrollArea>
           </div>
         );

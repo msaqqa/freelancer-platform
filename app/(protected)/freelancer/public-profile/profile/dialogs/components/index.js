@@ -5,3 +5,4 @@ export * from './steps';
 export * from './connections';
 export * from './identity-start';
 export * from './identity-end';
+export * from './gallery-input';
