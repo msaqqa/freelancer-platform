@@ -9,7 +9,6 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { saveFreelancerLanguages } from '@/services/freelancer/profile';
 import { getLanguageLevels, getLanguages } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -39,10 +38,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
+import { LanguagesSchema } from './forms';
 
 export const LanguagesDialog = ({ open, closeDialog }) => {
   const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`languages.${key}`);
 
   // get languages data from api
@@ -59,23 +60,9 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
   });
   const levelOptions = levelData?.data ?? [];
 
-  // Zod validation schema for the form
-  const LanguagesSchema = z.object({
-    languageFields: z
-      .array(
-        z.object({
-          language_id: z.string().min(1, {
-            message: 'Language is required',
-          }),
-          level: z.string().min(1, { message: 'Level is required' }),
-        }),
-      )
-      .min(1, { message: 'At least one language is required' }),
-  });
-
   // Form initialization with React Hook Form
   const form = useForm({
-    resolver: zodResolver(LanguagesSchema),
+    resolver: zodResolver(LanguagesSchema(tv)),
     defaultValues: {
       languageFields: [{ language_id: '1', level: '1' }],
     },
@@ -85,8 +72,8 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
   // Reset form values when dialog is opened
   useEffect(() => {
     const langFormat = user?.languages?.map((item) => ({
-      language_id: item.id,
-      level: item.level,
+      language_id: item?.id?.toString(),
+      level: item?.level,
     }));
     if (open) {
       form.reset({
@@ -156,6 +143,16 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
     mutation.mutate(updateValues);
   };
 
+  const removeBtnAlighn = (index) => {
+    const { errors } = form.formState;
+    if (errors.languageFields) {
+      const checkErrors =
+        errors.languageFields[index].language_id ||
+        errors.languageFields[index].level;
+      return checkErrors;
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
@@ -173,7 +170,10 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
             >
               {/* Render language fields */}
               {fields.map((field, index) => (
-                <div key={field.id} className="flex items-end mb-4">
+                <div
+                  key={field.id}
+                  className={`flex ${removeBtnAlighn(index) ? 'items-center' : 'items-end'} mb-4`}
+                >
                   <div className="flex items-baseline gap-2.5 w-[90%]">
                     {/* Language */}
                     <div className="flex-1">
@@ -198,7 +198,7 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
                                     {languagesOptions.map((language) => (
                                       <SelectItem
                                         key={language.id}
-                                        value={language.id.toString()}
+                                        value={language?.id.toString()}
                                       >
                                         {language?.name?.en}
                                       </SelectItem>
@@ -235,10 +235,10 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
                                   <SelectGroup>
                                     {levelOptions.map((level) => (
                                       <SelectItem
-                                        key={level.key}
-                                        value={level.key.toString()}
+                                        key={level?.id}
+                                        value={level?.id?.toString()}
                                       >
-                                        {level.label}
+                                        {level?.label}
                                       </SelectItem>
                                     ))}
                                   </SelectGroup>

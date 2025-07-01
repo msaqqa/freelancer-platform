@@ -106,7 +106,7 @@ export const getFreelancerProfileComplete = async () => {
 // update the freelancer photo
 export async function updateFreelancerPhoto(photoData) {
   try {
-    const response = await apiTaqat.post('/update-photo', photoData);
+    const response = await apiTaqat.post('/freelancer/update-photo', photoData);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;

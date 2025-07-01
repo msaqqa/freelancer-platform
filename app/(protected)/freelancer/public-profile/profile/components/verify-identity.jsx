@@ -27,7 +27,7 @@ const VerifyIdentity = () => {
               alt="image"
             />
           </div>
-          <div className="flex flex-col gap-1.5 max-w-[300px]">
+          <div className="flex flex-col gap-1.5 max-w-[300px] text-center md:text-start">
             <h2 className="text-xl font-semibold text-mono">
               {fp('identityTitle')}
             </h2>

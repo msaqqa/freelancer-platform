@@ -3,6 +3,7 @@
 import { Card } from '@/components/ui/card';
 
 const PostVedio = ({ video }) => {
+  console.log('video', video);
   return (
     <Card>
       <div className="p-7.5 pb-5">

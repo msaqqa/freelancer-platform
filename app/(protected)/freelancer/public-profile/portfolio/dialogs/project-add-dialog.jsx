@@ -4,12 +4,17 @@ import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Popover } from '@radix-ui/react-popover';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, X } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import {
+  addFreelancerPortfolio,
+  getFreelancerPortfolioById,
+  updateFreelancerPortfolioById,
+} from '@/services/freelancer/portfolio';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Badge, BadgeButton } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -43,7 +48,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
 import { MediaButton } from '@/app/components/partials/common/media-button';
 
-const ProjectAddDialog = ({ open, closeDialog, project }) => {
+const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   const [step, setStep] = useState(1);
   const [coverImage, setCoverImage] = useState(null);
   const queryClient = useQueryClient();
@@ -65,15 +70,22 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
     setStep(step - 1);
   };
 
+  // get getFreelancerPortfolioById data from api
+  const { data: portfolioData, isLoading: portfolioLoading } = useQuery({
+    queryKey: ['portfolioId', portfolioId],
+    queryFn: () => getFreelancerPortfolioById(portfolioId),
+  });
+  const portfolio = portfolioData?.data ?? {};
+
   // Form initialization with React Hook Form
   const form = useForm({
     // resolver: zodResolver(),
     defaultValues: {
-      title: '',
       projectFields: [
         { type: 'text', value: '' },
-        { type: 'image', value: '' },
+        { type: 'image', file: '' },
       ],
+      title: '',
       tags: [],
       projectCover: null,
     },
@@ -81,29 +93,29 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
   });
 
   // Reset form values when dialog is opened
-  useEffect(() => {
-    if (open) {
-      form.reset({
-        title: project?.title,
-        projectFields: project?.fields,
-        tags: project?.tags,
-        projectCover: project?.projectCover,
-      });
-    }
-  }, [form, open, project]);
+  // useEffect(() => {
+  //   if (open) {
+  //     form.reset({
+  //       title: portfolio?.title,
+  //       projectFields: portfolio?.content_blocks,
+  //       tags: portfolio?.tags,
+  //       projectCover: portfolio?.main_image,
+  //     });
+  //   }
+  // }, [form, open, portfolio]);
 
-  const {
-    fields: projectFields,
-    append,
-    remove,
-  } = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control: form.control,
     name: 'projectFields',
   });
 
   // Handle adding new field
   const handleAddField = (type) => {
-    append({ type, value: '' });
+    if (type === 'image') {
+      append({ type, file: '' });
+    } else {
+      append({ type, value: '' });
+    }
   };
 
   // Handle removing field
@@ -112,25 +124,43 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
   };
 
   const handleSubmit = (values) => {
+    const updateValues = {
+      ...values,
+      main_image: values.projectCover,
+    };
     console.log('updateValues', values);
-    // mutation.mutate(updateValues);
+    mutation.mutate(values);
   };
-
-  const addProject = () => {};
 
   // Define the mutation for deleting the project
   const mutation = useMutation({
-    mutationFn: addProject,
-    onSuccess: () => {
-      const message = 'project deleted successfully';
+    mutationFn: async (values) => {
+      const formData = new FormData();
+      Object.keys(values).forEach((key) => {
+        if (key === 'projectFields' && Array.isArray(values.projectFields)) {
+          formData.append('content_blocks', values.projectFields);
+        } else if (key !== 'projectFields') {
+          formData.append(key, values[key]);
+        }
+      });
 
+      let response;
+      portfolioId
+        ? (response = await updateFreelancerPortfolioById(
+            portfolioId,
+            formData,
+          ))
+        : (response = await addFreelancerPortfolio(formData));
+      return response;
+    },
+    onSuccess: (data) => {
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
+            <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
 
@@ -185,7 +215,7 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
       >
         <DialogHeader className="pb-5 border-b border-border">
           <DialogTitle>
-            {project ? 'Edit Projects' : 'Add Projects'}
+            {portfolioId ? 'Edit Portfolio' : 'Add Portfolio'}
           </DialogTitle>
         </DialogHeader>
         <ScrollArea className="grow pe-3 -me-3">
@@ -201,8 +231,8 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
                       Tell us more about your project
                     </p>
                   )}
-                  {/* Render image fields */}
-                  {projectFields.map((item, index) => (
+                  {/* Render fields */}
+                  {fields.map((item, index) => (
                     <div key={item.id} className="relative mb-5">
                       {item.type === 'text' ? (
                         <FormField
@@ -239,7 +269,7 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
                         <>
                           <FormField
                             control={form.control}
-                            name={`projectFields[${index}].value`}
+                            name={`projectFields[${index}].file`}
                             render={({ field }) => (
                               <FormItem>
                                 <FormControl>
@@ -499,7 +529,7 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
                 </div>
               )}
 
-              <div className="flex justify-end">
+              {/* <div className="flex justify-end">
                 <Button
                   disabled={mutation.status === 'pending'}
                   className="text-end"
@@ -509,7 +539,7 @@ const ProjectAddDialog = ({ open, closeDialog, project }) => {
                   )}
                   Continue
                 </Button>
-              </div>
+              </div> */}
             </form>
           </Form>
         </ScrollArea>

@@ -13,19 +13,19 @@ import { SocialsDialog } from '../dialogs';
 const Socials = () => {
   const [openDialog, setOpenDialog] = useState(false);
   const { user } = useUserStore();
-  const socials = user?.socials || [];
+  const socials = user.socials;
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`socials.${key}`);
 
-  const renderItems = (item, index) => {
+  const renderItems = (item) => {
     return (
-      <div key={index} className="flex items-center gap-2.5">
-        <item.logo className="text-lg text-muted-foreground" size={18} />
+      <div key={item.id} className="flex items-center gap-2.5">
+        <div dangerouslySetInnerHTML={{ __html: item.icon }} />
         <Link
-          href="#"
+          href={item.link}
           className="text-sm leading-none text-mono hover:text-primary-active"
         >
-          {item.info}
+          {item.name}
         </Link>
       </div>
     );
@@ -48,8 +48,8 @@ const Socials = () => {
       <CardContent>
         {socials.length ? (
           <div className="grid gap-y-5">
-            {items.map((item, index) => {
-              return renderItems(item, index);
+            {socials.map((item) => {
+              return renderItems(item);
             })}
           </div>
         ) : (

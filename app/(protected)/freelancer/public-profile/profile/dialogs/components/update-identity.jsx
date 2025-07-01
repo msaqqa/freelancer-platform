@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { updateIdentity } from '@/services/freelancer/profile';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -19,13 +20,14 @@ import {
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
-import { FreelancerIdentitySchema } from '../../forms/identity-schema';
+import { FreelancerIdentitySchema } from '../forms/identity-schema';
 import { GalleryInput, Steps } from './';
 
 export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
+  const { t: tv } = useTranslation('validation');
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(FreelancerIdentitySchema()),
+    resolver: zodResolver(FreelancerIdentitySchema(tv)),
     defaultValues: {
       firstName: '',
       fatherName: '',

@@ -8,8 +8,9 @@ import { Button } from '@/components/ui/button';
 import { Empty } from '@/components/common/empty';
 import ProjectAddDialog from '../dialogs/project-add-dialog';
 
-const Works = () => {
+const PortfolioContent = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const imagesUrl = [{ url: '/media/images/600x400/21.jpg' }];
 
   const items = [
     // {
@@ -104,7 +105,7 @@ const Works = () => {
     <div className="flex flex-col items-stretch gap-5 lg:gap-7.5">
       <div className="flex flex-wrap items-center gap-5 justify-between">
         <h3 className="text-lg text-mono font-semibold">
-          {items.length} Projects
+          {items.length > 0 ? items.length : null} Projects
         </h3>
         <div className="flex items-center space-x-2.5">
           <div className="flex items-center">
@@ -150,4 +151,4 @@ const Works = () => {
   );
 };
 
-export { Works };
+export { PortfolioContent };

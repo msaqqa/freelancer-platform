@@ -33,7 +33,7 @@ const VerifyBadge = () => {
       <div className="flex flex-col md:flex-row justify-between items-center gap-7">
         <div className="flex flex-col md:flex-row items-center gap-5">
           <CircularProgress value={percentage} size={100} strokeWidth={8} />
-          <div className="flex flex-col gap-1.5 max-w-[300px]">
+          <div className="flex flex-col gap-1.5 max-w-[300px] text-center md:text-start">
             <h2 className="text-xl font-semibold text-mono">
               {fp('badgeTitle')}
             </h2>

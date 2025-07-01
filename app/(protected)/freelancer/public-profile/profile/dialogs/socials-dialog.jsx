@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
@@ -7,7 +9,6 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { saveFreelancerSocials } from '@/services/freelancer/profile';
 import { getSocials } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -29,19 +30,37 @@ import {
 import { Input, InputWrapper } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
-import { SocialsSchema } from '../forms/social-schema';
+import { SocialsSchema } from './forms';
 
-export const SocialsDialog = ({ open, closeDialog, socials }) => {
+export const SocialsDialog = ({ open, closeDialog }) => {
   const { t } = useTranslation('freelancerProfile');
   const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`socials.${key}`);
+  const { user, setUser } = useUserStore();
+  const [mergedData, setMergedData] = useState([]);
 
   // get socials data from API
-  const { data: socialsData, isLoading: socialsLoading } = useQuery({
+  const { data: socialsData } = useQuery({
     queryKey: ['socials'],
     queryFn: getSocials,
   });
   const socialsDataFields = socialsData?.data ?? [];
+  const socials = user.socials;
+
+  useEffect(() => {
+    if (socials?.length > 0) {
+      const data = socialsDataFields?.map((social) => {
+        const matchingSocial = socials?.find((item) => item.id === social.id);
+        if (matchingSocial) {
+          return { ...social, link: matchingSocial.link };
+        }
+        return social;
+      });
+      setMergedData(data);
+    } else {
+      setMergedData(socialsDataFields);
+    }
+  }, [socialsData]);
 
   // Form initialization with React Hook Form
   const form = useForm({
@@ -52,6 +71,17 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
     },
     mode: 'onSubmit',
   });
+  const { errors } = form.formState;
+
+  // Reset form values when dialog is opened
+  // useEffect(() => {
+  //   if (open) {
+  //     form.reset({
+  //       socials: socials || [],
+  //     });
+  //   }
+  //   console.log('first', form.getValues());
+  // }, [form, open, socials]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -61,27 +91,21 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
   // Mutation for creating/updating socials
   const mutation = useMutation({
     mutationFn: saveFreelancerSocials,
-    onSuccess: () => {
-      const isEdit = !!socials?.id;
-      const message = isEdit
-        ? 'Socials updated successfully'
-        : 'Socials added successfully';
-
+    onSuccess: (data) => {
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
+            <AlertTitle>{data?.message}</AlertTitle>
           </Alert>
         ),
         {
           position: 'top-center',
         },
       );
-
-      queryClient.invalidateQueries({ queryKey: ['user-socials'] });
+      setUser(data.data);
       closeDialog();
     },
     onError: (error) => {
@@ -105,8 +129,18 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
   const isLoading = mutation.status === 'pending';
 
   const handleSubmit = (values) => {
-    console.log('values', values);
-    // mutation.mutate(values);
+    const socialsFields = values.socials.filter(
+      (field) => field?.social_id && field?.link,
+    );
+    const customFields = values.otherSocialFields.filter(
+      (field) => field.title && field.link,
+    );
+    const updateValues = {
+      socials: socialsFields,
+      custom: customFields,
+    };
+    console.log('updateValues', updateValues);
+    mutation.mutate(updateValues);
   };
 
   const handleAddField = () => {
@@ -133,7 +167,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
               className="space-y-6"
             >
               {/* Render fixed social fields from API */}
-              {socialsDataFields?.map((item) => {
+              {mergedData?.map((item) => {
                 return (
                   <FormField
                     key={item.id}
@@ -149,14 +183,14 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                             />
                             <Input
                               placeholder={`${fp('socialHolder')} ${item.name}`}
+                              defaultValue={item.link}
                               value={field.value}
                               onChange={(e) => {
-                                // const prevsocial = form.getValues('socialFields');
                                 field.onChange(e);
-                                form.setValue(`socials[${item.id}]`, {
-                                  social_id: item.id,
-                                  link: e.target.value,
-                                });
+                                form.setValue(
+                                  `socials[${item.id}].social_id`,
+                                  item.id,
+                                );
                               }}
                             />
                           </InputWrapper>
@@ -170,8 +204,8 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
 
               {/* Render dynamic social fields */}
               {fields.map((field, index) => (
-                <div key={field.id} className="flex items-end mb-4">
-                  <div className="flex gap-2.5 w-[90%]">
+                <div key={index} className="flex items-end mb-4">
+                  <div className="flex items-baseline gap-2.5 w-[90%]">
                     {/* Title */}
                     <div className="flex-1">
                       <FormField
@@ -227,6 +261,10 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                 </div>
               ))}
 
+              {errors?.otherSocialFields && (
+                <FormMessage>{errors.otherSocialFields.message}</FormMessage>
+              )}
+
               {/* Add button */}
               <Button
                 type="button"
@@ -242,13 +280,10 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
 
               {/* Action Buttons */}
               <div className="flex space-x-4 justify-end">
-                <Button type="reset" variant="outline" onClick={closeDialog}>
+                <Button type="button" variant="outline" onClick={closeDialog}>
                   {t('cancelBtn')}
                 </Button>
-                <Button
-                  type="submit"
-                  disabled={!form.formState.isDirty || isLoading}
-                >
+                <Button disabled={!form.formState.isDirty || isLoading}>
                   {isLoading && <Spinner className="animate-spin" />}
                   {t('saveBtn')}
                 </Button>

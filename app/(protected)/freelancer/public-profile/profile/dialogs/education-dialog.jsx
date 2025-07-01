@@ -1,10 +1,9 @@
 'use client';
 
 import { useEffect, useMemo } from 'react';
-import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -44,29 +43,22 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
-import { FreelancerEducationSchema } from '../forms/education-schema';
-
-// Get freelancer education by id from an existing array of educations
-export function getEducationById(educations, educationId) {
-  const education = educations.find((item) => item.id === educationId);
-  if (!education) {
-    throw new Error('Education not found');
-  }
-  return education;
-}
+import { FreelancerEducationSchema } from './forms';
 
 // get freelancer education by id
 export const EducationDialog = ({ open, closeDialog, educationId }) => {
-  const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`education.${key}`);
+  const queryClient = useQueryClient();
 
   // get getEducationDegree data from api
   const { data: educationData, isLoading: educationLoading } = useQuery({
-    queryKey: ['educationById'],
+    queryKey: ['educationById', educationId],
     queryFn: () => getFreelancerEducationById(educationId),
   });
   const education = educationData?.data ?? {};
+  console.log('education', education);
 
   // get getEducationDegree data from api
   const { data: DegreeData, isLoading: degreeLoading } = useQuery({
@@ -84,7 +76,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(FreelancerEducationSchema()),
+    resolver: zodResolver(FreelancerEducationSchema(tv)),
     defaultValues: {
       university: '',
       study: '',
@@ -94,6 +86,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       startYear: '',
       endMonth: '',
       endYear: '',
+      stillStudying: false,
     },
     mode: 'onBlur',
   });
@@ -115,43 +108,26 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       form.reset({
         university: education?.university ?? '',
         study: education?.field_of_study ?? '',
-        degree: education?.education_level_id ?? '',
-        grade: education?.grade ?? '',
+        degree: education?.degree?.id?.toString() ?? '1',
+        grade: education?.grade?.id?.toString() || '1',
         startMonth: startDate?.month ?? '',
         startYear: startDate?.year ?? '',
         endMonth: endDate?.month ?? '',
         endYear: endDate?.year ?? '',
+        stillStudying: education?.still_studying ?? false,
       });
     }
   }, [form, open, educationId]);
-
-  // ======================
-
-  useEffect(() => {
-    const { startMonth, startYear } = form.getValues();
-    if (startMonth && startYear) {
-      const startCombinedValue = `${startMonth}-${startYear}`;
-      form.setValue('startDate', startCombinedValue);
-    }
-  }, [form]);
-
-  useEffect(() => {
-    const { endMonth, endYear } = form.getValues();
-    if (endMonth && endYear) {
-      const endCombinedValue = `${endMonth}-${endYear}`;
-      form.setValue('endDate', endCombinedValue);
-    }
-  }, [form]);
 
   const currentYear = new Date().getFullYear();
   const years = useMemo(() => getYears(), [currentYear]);
 
   // Mutation for creating/updating about
   const mutation = useMutation({
-    mutationFn: async () => {
+    mutationFn: async (values) => {
       educationId
-        ? await updateFreelancerEducationById(educationId)
-        : await addFreelancerEducation();
+        ? await updateFreelancerEducationById(educationId, values)
+        : await addFreelancerEducation(values);
     },
     onSuccess: (data) => {
       toast.custom(
@@ -160,13 +136,14 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{data?.message}</AlertTitle>
+            <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
         {
           position: 'top-center',
         },
       );
+      queryClient.invalidateQueries({ queryKey: ['freelancer-educations'] });
       closeDialog();
     },
     onError: (error) => {
@@ -193,16 +170,25 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // Handle form submission
   const handleSubmit = (values) => {
+    const { startMonth, startYear, endMonth, endYear } = form.getValues();
+    let startCombinedValue, endCombinedValue;
+    if (startMonth && startYear) {
+      startCombinedValue = `${startMonth}-${startYear}`;
+    }
+    if (endMonth && endYear) {
+      endCombinedValue = `${endMonth}-${endYear}`;
+    }
     const updateValues = {
       university: values.university,
       field_of_study: values.study,
       grade: values.grade,
       education_level_id: values.degree,
-      start_date: values.startDate,
-      end_date: values.endDate,
+      start_date: startCombinedValue,
+      end_date: endCombinedValue,
+      still_studying: values.stillStudying,
     };
     console.log('updateValues', updateValues);
-    // mutation.mutate(updateValues);
+    mutation.mutate(updateValues);
   };
 
   return (
@@ -267,13 +253,13 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                           {degreeLoading && (
                             <SelectItem>{t('loading')}</SelectItem>
                           )}
-                          {degreeOptions.length &&
-                            degreeOptions.map((cat) => (
+                          {degreeOptions.length > 0 &&
+                            degreeOptions.map((item) => (
                               <SelectItem
-                                key={cat.id}
-                                value={cat.id.toString()}
+                                key={item.id}
+                                value={item?.id?.toString()}
                               >
-                                {cat.name}
+                                {item.name}
                               </SelectItem>
                             ))}
                         </SelectContent>
@@ -333,13 +319,13 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                           {gradesLoading && (
                             <SelectItem>{t('loading')}</SelectItem>
                           )}
-                          {gradesOptions.length &&
-                            gradesOptions.map((cat) => (
+                          {gradesOptions.length > 0 &&
+                            gradesOptions.map((item) => (
                               <SelectItem
-                                key={cat.id}
-                                value={cat.id.toString()}
+                                key={item.id}
+                                value={item?.id.toString()}
                               >
-                                {cat.name}
+                                {item.label}
                               </SelectItem>
                             ))}
                         </SelectContent>
@@ -361,7 +347,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                     control={form.control}
                     name="startMonth"
                     render={({ field }) => (
-                      <FormItem className="flex-1">
+                      <FormItem className="flex-1 w-full">
                         <FormControl>
                           <Select
                             value={field.value}
@@ -399,7 +385,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                     control={form.control}
                     name="startYear"
                     render={({ field }) => (
-                      <FormItem className="flex-1">
+                      <FormItem className="flex-1 w-full">
                         <FormControl>
                           <Select
                             value={field.value}
@@ -445,7 +431,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                     control={form.control}
                     name="endMonth"
                     render={({ field }) => (
-                      <FormItem className="flex-1">
+                      <FormItem className="flex-1 w-full">
                         <FormControl>
                           <Select
                             value={field.value}
@@ -483,7 +469,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                     control={form.control}
                     name="endYear"
                     render={({ field }) => (
-                      <FormItem className="flex-1">
+                      <FormItem className="flex-1 w-full">
                         <FormControl>
                           <Select
                             value={field.value}

@@ -8,7 +8,6 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { saveFreelancerSkills } from '@/services/freelancer/profile';
 import { getSkills } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -30,6 +29,7 @@ import {
 } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
+import { SkillsSchema } from './forms';
 
 export const SkillsDialog = ({ open, closeDialog }) => {
   const { user, setUser } = useUserStore();
@@ -48,20 +48,9 @@ export const SkillsDialog = ({ open, closeDialog }) => {
     name: skill.name,
   }));
 
-  const SkillsSchema = z.object({
-    skills: z
-      .array(
-        z.object({
-          id: z.number(),
-          name: z.string(),
-        }),
-      )
-      .optional(),
-  });
-
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(SkillsSchema),
+    resolver: zodResolver(SkillsSchema()),
     mode: 'onSubmit',
   });
 

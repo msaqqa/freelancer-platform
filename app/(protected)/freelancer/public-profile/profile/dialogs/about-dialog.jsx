@@ -42,12 +42,13 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
 import { Switch } from '@/components/ui/switch';
-import { FreelancerAboutSchema } from '../forms/about-schema';
+import { FreelancerAboutSchema } from './forms';
 
 export const AboutDialog = ({ open, closeDialog }) => {
   const [categoryId, setCategoryId] = useState(null);
   const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`about.${key}`);
 
   // get categoriesData data from api
@@ -82,7 +83,7 @@ export const AboutDialog = ({ open, closeDialog }) => {
 
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(FreelancerAboutSchema()),
+    resolver: zodResolver(FreelancerAboutSchema(tv)),
     defaultValues: {
       hourlyRate: '',
       availability: true,
@@ -103,7 +104,7 @@ export const AboutDialog = ({ open, closeDialog }) => {
         availability: user?.available_hire,
         category: category,
         subcategory: user?.sub_category?.id.toString(),
-        // country: user?.country?.id.toString(),
+        country: user?.country?.id.toString(),
       });
     }
   }, [form, open, user]);

@@ -8,7 +8,7 @@ import { EllipsisVertical, Users } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Container } from '@/components/common/container';
 import { PageMenu } from '@/app/(protected)/freelancer/public-profile/page-menu';
-import { Works } from './components';
+import { PortfolioContent } from './components';
 
 export default function ProfileWorksPage() {
   return (
@@ -32,7 +32,7 @@ export default function ProfileWorksPage() {
         </Navbar>
       </Container>
       <Container>
-        <Works />
+        <PortfolioContent />
       </Container>
     </Fragment>
   );

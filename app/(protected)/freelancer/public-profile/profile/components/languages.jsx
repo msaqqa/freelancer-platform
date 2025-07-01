@@ -23,7 +23,9 @@ const Languages = () => {
         <TableCell className="text-sm text-secondary-foreground py-2">
           {item.name}
         </TableCell>
-        <TableCell className="text-sm text-mono py-2">{item.level}</TableCell>
+        <TableCell className="text-sm text-mono py-2">
+          {item.level_name}
+        </TableCell>
       </TableRow>
     );
   };

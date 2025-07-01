@@ -1,12 +1,12 @@
 'use client';
 
+import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { updateFreelancerPhoto } from '@/services/freelancer/profile';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -27,25 +27,16 @@ import {
 } from '@/components/ui/form';
 import { Spinner } from '@/components/ui/spinners';
 import { AvatarInput } from '@/app/components/partials/common/avatar-input';
-
-// Zod validation schema for the form
-const formSchema = z.object({
-  photo: z
-    .instanceof(File, { message: 'Please upload a photo.' })
-    .refine((file) => file.size <= 800 * 800, {
-      message: 'The photo size must not exceed 800x800 pixels.',
-    })
-    .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
-      message: 'The photo must be in JPEG or PNG format.',
-    }),
-});
+import { AvatarSchema } from './forms';
 
 export const AvatarDialog = ({ open, closeDialog }) => {
+  const { user, setUser } = useUserStore();
   const { t } = useTranslation('freelancerProfile');
+  const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`avatar.${key}`);
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(AvatarSchema(tv)),
     defaultValues: {
       photo: null,
     },
@@ -64,7 +55,6 @@ export const AvatarDialog = ({ open, closeDialog }) => {
       return response;
     },
     onSuccess: async (data) => {
-      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -78,6 +68,8 @@ export const AvatarDialog = ({ open, closeDialog }) => {
           position: 'top-center',
         },
       );
+      setUser(data?.data);
+      data?.data;
       closeDialog();
     },
     onError: (error) => {

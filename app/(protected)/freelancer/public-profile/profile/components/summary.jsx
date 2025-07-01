@@ -19,7 +19,7 @@ const Summary = () => {
 
   // get summary data from api
   const { data: summaryData, isLoading: summaryLoading } = useQuery({
-    queryKey: ['freelancerSummary'],
+    queryKey: ['freelancer-summary'],
     queryFn: getFreelancerSummary,
   });
 

@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -31,8 +31,8 @@ import { Input, InputWrapper } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
 import { Textarea } from '@/components/ui/textarea';
-import { SummarySchema } from '../forms/summary-schema';
 import { GalleryInput } from './components';
+import { SummarySchema } from './forms';
 
 export const SummaryDialog = ({ open, closeDialog, summary }) => {
   const [bioChar, setBioCahr] = useState(0);
@@ -41,6 +41,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
   const fp = (key) => t(`summary.${key}`);
   const parentRef = useRef(null);
   const [imagesUrls, setImagesUrls] = useState([]);
+  const queryClient = useQueryClient();
 
   const handleBioChange = (e) => {
     const val = e.target.value;
@@ -70,9 +71,9 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
         video: summary?.video || '',
         videoTitle: summary?.video_title || '',
       });
-      setImagesUrls([{ url: '/media/images/600x400/1.jpg' }]);
+
       if (summary?.images_urls?.length) {
-        // summary?.images_urls
+        setImagesUrls(summary?.images_urls);
       }
     }
   }, [form, open, summary]);
@@ -83,7 +84,9 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
       const formData = new FormData();
       Object.keys(values).forEach((key) => {
         if (key === 'images' && Array.isArray(values.images)) {
-          formData.append('images', values.images);
+          values.images.map((image) => {
+            formData.append('images[]', image);
+          });
         } else if (key !== 'images') {
           formData.append(key, values[key]);
         }
@@ -106,6 +109,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
           position: 'top-center',
         },
       );
+      queryClient.invalidateQueries({ queryKey: ['freelancer-summary'] });
       closeDialog();
     },
     onError: (error) => {

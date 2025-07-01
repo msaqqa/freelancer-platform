@@ -8,7 +8,7 @@ export const SummarySchema = (t, bioLength = 8, imagesLength = 6) => {
       .optional(),
     imagesTitle: z.string().optional(),
     images: z
-      .array(z.string())
+      .array(z.instanceof(File))
       .max(6, { message: t('maxImages', { imagesLength }) })
       .optional(),
     videoTitle: z.string().optional(),
