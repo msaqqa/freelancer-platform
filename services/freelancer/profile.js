@@ -93,6 +93,18 @@ export const postFreelancerSummary = async (payload) => {
   }
 };
 
+// Function to delete freelancer image by ID
+export const deleteFreelancerImage = async (imageId) => {
+  try {
+    const response = await apiTaqat.delete(
+      `/freelancer/summary/image/${imageId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};
+
 // Function to get freelancer profile completion
 export const getFreelancerProfileComplete = async () => {
   try {
@@ -163,3 +175,13 @@ export async function getFreelancerEducationById(educationId) {
     throw error.response?.data || error;
   }
 }
+
+// resend OTP code to the freelancer mobile
+export const resendMobileCode = async (payload) => {
+  try {
+    const response = await apiTaqat.post('/freelancer/resend-otp', payload);
+    return response.data;
+  } catch (error) {
+    throw error.response?.data || error;
+  }
+};

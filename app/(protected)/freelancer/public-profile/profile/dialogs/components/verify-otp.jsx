@@ -1,12 +1,13 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import '@/components/ui/select';
+import Link from 'next/link';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { verifyOtp } from '@/services/freelancer/profile';
+import { resendMobileCode, verifyOtp } from '@/services/freelancer/profile';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import {
   InputOTP,
@@ -19,8 +20,47 @@ import { Steps } from './';
 
 export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
   const [otp, setOtp] = useState('');
+  const [timeLeft, setTimeLeft] = useState(300);
+  const [isButtonDisabled, setIsButtonDisabled] = useState(true);
+  const [timer, setTimer] = useState(null);
 
-  const handleSubmit = async () => {
+  useEffect(() => {
+    const timerId = setInterval(() => {
+      setTimeLeft((prevTime) => {
+        if (prevTime <= 1) {
+          clearInterval(timerId);
+          setIsButtonDisabled(false);
+          return 0;
+        }
+        return prevTime - 1;
+      });
+    }, 1000);
+    setTimer(timerId);
+    return () => clearInterval(timerId);
+  }, [timeLeft]);
+  const minutes = Math.floor(timeLeft / 60);
+  const seconds = timeLeft % 60;
+
+  const resendOtpMutation = useMutation({
+    mutationFn: resendMobileCode,
+    onSuccess: () => {
+      setIsButtonDisabled(true);
+      setTimeLeft(300);
+      clearInterval(timer);
+    },
+    onError: (error) => {
+      throw error?.response?.data?.message || error.message;
+    },
+  });
+
+  const isResendLodaing = resendOtpMutation.isPending || false;
+
+  const handleResetOtp = () => {
+    console.log('mobile', mobile);
+    resendOtpMutation.mutate({ mobile });
+  };
+
+  const handleSubmit = () => {
     mutation.mutate({ mobile, otp });
   };
 
@@ -65,16 +105,19 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
     <div className="h-full flex flex-col p-6">
       <Steps currentStep={0} t={t} />
       <div className="flex-1 flex flex-col justify-between">
-        <div className="flex flex-col gap-5 w-full md:w-[70%] mx-auto">
-          <div className="flex flex-col items-center gap-y-2.5 mb-5">
+        <div className="flex flex-col gap-5 w-full md:w-[80%] mx-auto">
+          <div className="flex flex-col items-center gap-y-4.5 mb-5 text-center">
             <h2 className="text-xl font-semibold text-mono">
               {t('stepOtpTitle')}
             </h2>
-            <p className="text-sm text-secondary-foreground leading-5.5 text-center">
+            <p className="text-md text-foreground leading-5.5">
               {t('stepOtpDesc')}
             </p>
+            <p className="text-sm text-secondary-foreground">
+              {t('stepOtpLabel')}
+            </p>
           </div>
-          <div className="w-full">
+          <div className="w-full mb-5">
             <InputOTP
               maxLength={6}
               value={otp}
@@ -109,6 +152,23 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
                 />
               </InputOTPGroup>
             </InputOTP>
+          </div>
+          <div className="text-center">
+            <span className="text-sm text-secondary-foreground">
+              {t('notReceivedOTP')}
+            </span>
+            <span className="inline-block w-[50px] text-sm font-semibold text-foreground">
+              {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+            </span>
+            <Button
+              mode="link"
+              underlined="solid"
+              disabled={isButtonDisabled || isResendLodaing}
+              onClick={handleResetOtp}
+            >
+              {t('resendCode')}{' '}
+              {isResendLodaing && <Spinner className="animate-spin" />}
+            </Button>
           </div>
         </div>
 

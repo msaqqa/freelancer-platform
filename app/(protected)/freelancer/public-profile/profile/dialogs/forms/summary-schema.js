@@ -16,8 +16,15 @@ export const SummarySchema = (t, bioLength = 8, imagesLength = 6) => {
       .string()
       .trim()
       .optional()
-      .refine((value) => !value || z.string().url().safeParse(value).success, {
-        message: t('invalidURL'),
-      }),
+      .refine(
+        (value) => {
+          if (!value) return true;
+          const isValidUrl = z.string().url().safeParse(value).success;
+          const isYouTubeUrl =
+            /^https?:\/\/(www\.)?(youtube\.com|youtu\.be)/.test(value);
+          return isValidUrl && isYouTubeUrl;
+        },
+        { message: t('invalidYouTubeURL') },
+      ),
   });
 };

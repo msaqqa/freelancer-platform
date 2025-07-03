@@ -44,7 +44,7 @@ const VerifyBadge = () => {
         </div>
         <div className="grid justify-end min-w-20">
           <Button variant="mono" onClick={() => setOpenDialog(true)}>
-            {fp('complete-profile')} ({completed_items}/{total_items})
+            {fp('badgeBtn')} ({completed_items}/{total_items})
           </Button>
         </div>
       </div>
@@ -52,8 +52,7 @@ const VerifyBadge = () => {
         open={openDialog}
         closeDialog={() => setOpenDialog(false)}
         items={status}
-        percentage={percentage}
-        completionText={completion_text}
+        badgeComplete={dataComplete}
       />
     </Card>
   );

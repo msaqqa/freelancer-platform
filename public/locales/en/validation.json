@@ -33,5 +33,6 @@
     "photoSize": "The photo size must not exceed 800x800 pixels.",
     "photoType": "The photo must be in JPEG or PNG format.",
 
-    "otherSociaCondition": "othEach social field must contain both a title and a linkerSocialFields"
+    "otherSocialCondition": "custom social must contain title and a link field",
+    "invalidYouTubeURL": "Please enter a valid YouTube URL only"
 }

@@ -130,7 +130,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
             <>
               <Steps currentStep={1} t={t} />
               <div>
-                <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-10">
+                <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-10">
                   <h2 className="text-xl font-semibold text-mono">
                     {t('stepPersonalTitle')}
                   </h2>
@@ -139,7 +139,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                   </p>
                 </div>
                 <div className="flex flex-col gap-4.5">
-                  <div className="flex flex-col md:flex-row items-center gap-2.5">
+                  <div className="flex flex-col md:flex-row gap-2.5">
                     {/* First Name */}
                     <div className="flex-1 w-full">
                       <FormField
@@ -186,7 +186,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                       />
                     </div>
                   </div>
-                  <div className="flex flex-col md:flex-row items-center gap-2.5">
+                  <div className="flex flex-col md:flex-row gap-2.5">
                     {/* Grandfather Name */}
                     <div className="flex-1 w-full">
                       <FormField
@@ -287,7 +287,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
             <>
               <Steps currentStep={2} t={t} />
               <div>
-                <div className="flex flex-col items-center gap-y-2.5 space-y-px w-full md:w-[70%] mx-auto mb-5">
+                <div className="flex flex-col items-center gap-y-2.5 space-y-px w-full md:w-[80%] mx-auto mb-5">
                   <h2 className="text-xl font-semibold text-mono">
                     {t('stepIdTitle')}
                   </h2>

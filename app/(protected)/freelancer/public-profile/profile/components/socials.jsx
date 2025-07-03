@@ -35,7 +35,7 @@ const Socials = () => {
     <Card>
       <CardHeader>
         <CardTitle>{fp('socialsTitle')}</CardTitle>
-        {socials.length > 0 && (
+        {socials?.length > 0 && (
           <Button
             variant="ghost"
             mode="icon"
@@ -46,7 +46,7 @@ const Socials = () => {
         )}
       </CardHeader>
       <CardContent>
-        {socials.length ? (
+        {socials?.length ? (
           <div className="grid gap-y-5">
             {socials.map((item) => {
               return renderItems(item);

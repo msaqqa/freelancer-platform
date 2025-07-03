@@ -56,9 +56,9 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   const { data: educationData, isLoading: educationLoading } = useQuery({
     queryKey: ['educationById', educationId],
     queryFn: () => getFreelancerEducationById(educationId),
+    enabled: !!educationId,
   });
   const education = educationData?.data ?? {};
-  console.log('education', education);
 
   // get getEducationDegree data from api
   const { data: DegreeData, isLoading: degreeLoading } = useQuery({

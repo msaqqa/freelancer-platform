@@ -32,6 +32,7 @@ function CircularProgress({
   strokeWidth = 8,
   strokeColor = '#D9D9D9',
   trailColor = '#00803A',
+  valueSize = 'xl',
 }) {
   const radius = (size - strokeWidth) / 2;
   const circumference = 2 * Math.PI * radius;
@@ -71,7 +72,9 @@ function CircularProgress({
       </svg>
 
       {/* Circle value */}
-      <span className="text-xl font-semibold text-mono">{`${value}%`}</span>
+      <span
+        className={`text-${valueSize} font-semibold text-mono`}
+      >{`%${value}`}</span>
     </div>
   );
 }

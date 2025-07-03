@@ -108,7 +108,7 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
           onSubmit={form.handleSubmit(handleSubmit)}
           className="space-y-6 flex-1 flex flex-col justify-between"
         >
-          <div className="flex flex-col gap-5 w-full md:w-[70%] mx-auto">
+          <div className="flex flex-col gap-5 w-full md:w-[80%] mx-auto">
             <div className="flex flex-col items-center gap-y-2.5 mb-5">
               <h2 className="text-xl font-semibold text-mono">
                 {t('stepMobileTitle')}

@@ -147,8 +147,8 @@ export const LanguagesDialog = ({ open, closeDialog }) => {
     const { errors } = form.formState;
     if (errors.languageFields) {
       const checkErrors =
-        errors.languageFields[index].language_id ||
-        errors.languageFields[index].level;
+        errors.languageFields[index]?.language_id ||
+        errors.languageFields[index]?.level;
       return checkErrors;
     }
   };

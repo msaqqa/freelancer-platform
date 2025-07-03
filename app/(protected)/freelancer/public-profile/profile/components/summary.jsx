@@ -26,13 +26,13 @@ const Summary = () => {
   const summary = summaryData?.data ?? {};
   const items = summary?.images_urls ?? [];
 
-  const renderItem = (item, index) => {
+  const renderItem = (item) => {
     return (
       <div
-        key={index}
-        className="bg-cover bg-no-repeat min-h-[340px] min-w-[250px] rounded-xl"
+        key={item.id}
+        className="bg-cover bg-no-repeat bg-center min-h-[340px] min-w-[250px] rounded-xl"
         style={{
-          backgroundImage: `url(${toAbsoluteUrl(item)})`,
+          backgroundImage: `url(${toAbsoluteUrl(item.url)})`,
         }}
       ></div>
     );
@@ -61,7 +61,7 @@ const Summary = () => {
                 {summary?.bio}
               </p>
               {items.length > 0 && (
-                <div className="flex gap-2.5 xl:gap-7.5 kt-scrollable-x overflow-x-auto pb-2">
+                <div className="flex gap-2.5 xl:gap-4.5 kt-scrollable-x overflow-x-auto pb-2">
                   {items.map((item, index) => {
                     return renderItem(item, index);
                   })}

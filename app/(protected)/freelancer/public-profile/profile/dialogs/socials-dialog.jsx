@@ -69,7 +69,7 @@ export const SocialsDialog = ({ open, closeDialog }) => {
       socials: [],
       otherSocialFields: [{ title: '', link: '' }],
     },
-    mode: 'onSubmit',
+    mode: 'onBlur',
   });
   const { errors } = form.formState;
 
@@ -151,6 +151,16 @@ export const SocialsDialog = ({ open, closeDialog }) => {
     remove(index);
   };
 
+  const removeBtnAlighn = (index) => {
+    const { errors } = form.formState;
+    if (errors.otherSocialFields) {
+      const checkErrors =
+        errors.otherSocialFields[index]?.title ||
+        errors.otherSocialFields[index]?.link;
+      return checkErrors;
+    }
+  };
+
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent
@@ -204,7 +214,10 @@ export const SocialsDialog = ({ open, closeDialog }) => {
 
               {/* Render dynamic social fields */}
               {fields.map((field, index) => (
-                <div key={index} className="flex items-end mb-4">
+                <div
+                  key={index}
+                  className={`flex ${removeBtnAlighn(index) ? 'items-center' : 'items-end'} mb-4`}
+                >
                   <div className="flex items-baseline gap-2.5 w-[90%]">
                     {/* Title */}
                     <div className="flex-1">

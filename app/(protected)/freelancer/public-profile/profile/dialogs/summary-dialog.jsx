@@ -40,7 +40,6 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
   const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`summary.${key}`);
   const parentRef = useRef(null);
-  const [imagesUrls, setImagesUrls] = useState([]);
   const queryClient = useQueryClient();
 
   const handleBioChange = (e) => {
@@ -71,10 +70,6 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
         video: summary?.video || '',
         videoTitle: summary?.video_title || '',
       });
-
-      if (summary?.images_urls?.length) {
-        setImagesUrls(summary?.images_urls);
-      }
     }
   }, [form, open, summary]);
 
@@ -178,7 +173,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           id="bio"
                           placeholder={fp('summaryHolder')}
                           className="focus-visible:ring-0"
-                          rows={5}
+                          rows={8}
                           value={field.value}
                           onChange={(val) => {
                             field.onChange(val);
@@ -215,7 +210,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           field.onChange(val);
                           form.trigger('images');
                         }}
-                        imagesUrls={imagesUrls}
+                        imagesUrls={summary?.images_urls || []}
                       />
                     </FormControl>
                     <FormMessage />

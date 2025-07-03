@@ -20,7 +20,7 @@ export const IdentityStart = ({ handleNextStep, t }) => {
         />
       </div>
 
-      <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-5">
+      <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-5">
         <h2 className="text-xl font-semibold text-mono">
           {t('stepStartTitle')}
         </h2>

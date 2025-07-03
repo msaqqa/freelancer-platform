@@ -91,6 +91,9 @@
         "continueBtn":"Continue",
         "stepOtpTitle":"Enter the verification code",
         "stepOtpDesc":"We’ve sent a 6-digit verification code to your number",
+        "stepOtpLabel": "Please enter it below to verify your phone number.",
+        "notReceivedOTP":"Didn’t receive the code?",
+        "resendCode":"Resend Code",
         "otpLabel": "Please enter it below to verify your phone number.",
         "verifyBtn":"Verify",
         "stepPersonalTitle": "Personal Information ",
@@ -115,15 +118,13 @@
         "mobileNumber": "Mobile Number",
         "personalData": "Personal Data",
         "uploadIdPhoto": "Upload ID Photo",
-        "validation": {
-            "mobileRequired": "Mobile number is required",
-            "mobileLength": "Phone number cannot be more than 15 digits",
-            "mobileDigits": "'Phone number must contain only digits'"
-        }
+         "stepEndTitle":"You’re all set!",
+        "stepEndDesc": "Verification is under review. This may take up to 24 hours.",
+        "stepEndBtn": "Back to Profile"
     },
     "verified-badge": {
         "badgeTitle": "Get verified badge",
-        "complete-profile": "Complete profile"
+        "badgeBtn": "Complete profile"
     },
     "avatar": {
         "dialogTitle": "Edit Avatar",

@@ -3,7 +3,7 @@
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 
-export const IdentityEnd = ({ closeDialog }) => {
+export const IdentityEnd = ({ closeDialog, t }) => {
   return (
     <div className="h-full flex flex-col justify-center gap-2.5 ">
       <div className="flex flex-col justify-center mb-5">
@@ -20,10 +20,13 @@ export const IdentityEnd = ({ closeDialog }) => {
         />
       </div>
 
-      <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[70%] mx-auto mb-5">
-        <h2 className="text-xl font-semibold text-mono">You’re all set!</h2>
+      <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-5">
+        <h2 className="text-xl font-semibold text-mono">
+          {' '}
+          {t('stepEndTitle')}
+        </h2>
         <p className="text-sm text-secondary-foreground leading-5.5 text-center">
-          Verification is under review. This may take up to 24 hours.
+          {t('stepEndDesc')}
         </p>
       </div>
 
@@ -35,7 +38,7 @@ export const IdentityEnd = ({ closeDialog }) => {
           className="w-1/2"
           onClick={closeDialog}
         >
-          Back to Profile
+          {t('stepEndBtn')}
         </Button>
       </div>
     </div>

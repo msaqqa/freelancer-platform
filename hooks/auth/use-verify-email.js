@@ -7,7 +7,7 @@ import Cookies from 'js-cookie';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
-import { resendEmailOtp, verifyEmailOtp } from '@/services/auth/auth';
+import { resendVerificationCode, verifyEmailOtp } from '@/services/auth/auth';
 
 function useVerifyEmail() {
   const { t } = useTranslation('auth');
@@ -52,7 +52,7 @@ function useVerifyEmail() {
   });
 
   const resendOtpMutation = useMutation({
-    mutationFn: resendEmailOtp,
+    mutationFn: resendVerificationCode,
     onError: (error) => {
       setErrors(error);
       console.error('error', error);
@@ -62,7 +62,7 @@ function useVerifyEmail() {
 
   const handleResetOtp = () => {
     setErrors(null);
-    resendOtpMutation.mutate(email);
+    resendOtpMutation.mutate({ email });
   };
 
   // const errors = verifyOtpMutation.error || resendOtpMutation.error;
