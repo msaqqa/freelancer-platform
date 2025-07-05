@@ -2,7 +2,7 @@
 
 import * as React from 'react';
 import { OTPInput, OTPInputContext } from 'input-otp';
-import { Dot } from 'lucide-react';
+import { Minus } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 function InputOTP({ className, containerClassName, ...props }) {
@@ -55,8 +55,13 @@ function InputOTPSlot({ index, className, ...props }) {
 
 function InputOTPSeparator({ ...props }) {
   return (
-    <div data-slot="input-otp-separator" role="separator" {...props}>
-      <Dot />
+    <div
+      data-slot="input-otp-separator"
+      role="separator"
+      className="text-input"
+      {...props}
+    >
+      <Minus size={16} />
     </div>
   );
 }

@@ -26,11 +26,6 @@ function useSignin() {
     mode: 'onBlur',
   });
 
-  const onSubmit = (values) => {
-    setIsVerified(true);
-    mutation.mutate(values);
-  };
-
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data) => {
@@ -55,13 +50,17 @@ function useSignin() {
       }
     },
     onError: (error) => {
+      console.error('on error in use sign in', error);
       if (error?.data?.is_verified) {
         setIsVerified(false);
       }
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
     },
   });
+
+  const onSubmit = (values) => {
+    setIsVerified(true);
+    mutation.mutate(values);
+  };
 
   const handleGoogleSignin = async () => {
     await getGoogleOAuthUrl();

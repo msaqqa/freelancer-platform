@@ -9,6 +9,7 @@ import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { toAbsoluteUrl } from '@/lib/helpers';
 import { saveFreelancerSocials } from '@/services/freelancer/profile';
 import { getSocials } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -246,10 +247,26 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                           <FormItem>
                             <FormLabel>{fp('linkLabel')}</FormLabel>
                             <FormControl>
-                              <Input
-                                placeholder={fp('linkHolder')}
-                                {...field}
-                              />
+                              <InputWrapper>
+                                <img
+                                  src={toAbsoluteUrl(
+                                    '/media/icons/custom-social-light.svg',
+                                  )}
+                                  className="dark:hidden h-[20px]"
+                                  alt="image"
+                                />
+                                <img
+                                  src={toAbsoluteUrl(
+                                    '/media/icons/custom-social-dark.svg',
+                                  )}
+                                  className="light:hidden h-[20px]"
+                                  alt="image"
+                                />
+                                <Input
+                                  placeholder={fp('linkHolder')}
+                                  {...field}
+                                />
+                              </InputWrapper>
                             </FormControl>
                             <FormMessage />
                           </FormItem>

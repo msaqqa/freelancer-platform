@@ -77,17 +77,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerEducationSchema(tv)),
-    defaultValues: {
-      university: '',
-      study: '',
-      grade: '',
-      degree: '',
-      startMonth: '',
-      startYear: '',
-      endMonth: '',
-      endYear: '',
-      stillStudying: false,
-    },
     mode: 'onBlur',
   });
 
@@ -104,12 +93,25 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   useEffect(() => {
     const startDate = formatDate(education?.start_date);
     const endDate = formatDate(education?.end_date);
-    if (open && education) {
+    if (open) {
+      form.reset({
+        university: '',
+        study: '',
+        grade: '',
+        degree: '',
+        startMonth: '',
+        startYear: '',
+        endMonth: '',
+        endYear: '',
+        stillStudying: false,
+      });
+    }
+    if (open && education && !educationLoading) {
       form.reset({
         university: education?.university ?? '',
         study: education?.field_of_study ?? '',
-        degree: education?.degree?.id?.toString() ?? '1',
-        grade: education?.grade?.id?.toString() || '1',
+        degree: education?.degree?.id?.toString() ?? '',
+        grade: education?.grade?.id?.toString() ?? '',
         startMonth: startDate?.month ?? '',
         startYear: startDate?.year ?? '',
         endMonth: endDate?.month ?? '',
@@ -117,7 +119,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         stillStudying: education?.still_studying ?? false,
       });
     }
-  }, [form, open, educationId, education]);
+  }, [form, open, educationId, educationLoading]);
 
   const currentYear = new Date().getFullYear();
   const years = useMemo(() => getYears(), [currentYear]);
