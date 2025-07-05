@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Copy, FileText, Pencil, Trash2 } from 'lucide-react';
+import { FileText, Pencil, Trash2 } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -10,32 +10,31 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export function DropdownMenu8({ trigger }) {
+export function DropdownMenu8({
+  trigger,
+  handleView,
+  handleEdit,
+  handleDlete,
+}) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
       <DropdownMenuContent className="w-[150px]" side="bottom" align="end">
         <DropdownMenuItem asChild>
-          <Link href="#">
+          <Link href="#" onClick={handleView}>
             <FileText />
             <span>View</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
-          <Link href="#">
+          <Link href="#" onClick={handleEdit}>
             <Pencil />
             <span>Edit</span>
           </Link>
         </DropdownMenuItem>
-        <DropdownMenuItem asChild>
-          <Link href="#">
-            <Copy />
-            <span>Make a copy</span>
-          </Link>
-        </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href="#">
+          <Link href="#" onClick={handleDlete}>
             <Trash2 />
             <span>Delete</span>
           </Link>

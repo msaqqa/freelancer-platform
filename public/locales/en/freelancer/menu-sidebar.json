@@ -1,0 +1,20 @@
+{
+    "dashboards": "Dashboards",
+    "lightSidebar": "Light Sidebar",
+    "freelancer": "Freelancer",
+    "darkSidebar": "Dark Sidebar",
+    "profile": "Profile",
+    "portfolio": "Portfolio",
+    "services": "Services",
+    "experience": "Experience",
+    "workHistory": "Work History",
+    "myAccount": "My Account",
+    "account": "Account",
+    "getStarted": "Get Started",
+    "userProfile": "User Profile",
+    "companyProfile": "Company Profile",
+    "settingsWithSidebar": "Settings - With Sidebar",
+    "settingsEnterprise": "Settings - Enterprise",
+    "settingsPlain": "Settings - Plain",
+    "settingsModal": "Settings - Modal"
+}

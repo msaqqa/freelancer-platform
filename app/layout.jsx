@@ -18,7 +18,7 @@ const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400', '700'] });
 export const metadata = {
   title: {
     template: '%s | Taqat',
-    default: 'Taqat Freelancer Platform', // a default is required when creating a template
+    default: 'Taqat Freelancer Platform',
   },
   icons: {
     icon: '/media/app/favicon.png',
