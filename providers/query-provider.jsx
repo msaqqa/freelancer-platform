@@ -15,6 +15,9 @@ const QueryProvider = ({ children }) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
+        staleTime: 5 * 60 * 1000,
+        refetchOnWindowFocus: true,
+        refetchOnMount: false,
         queryCache: new QueryCache({
           onError: (error) => {
             const message =

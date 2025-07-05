@@ -115,7 +115,7 @@ export const MENU_SIDEBAR_COMPACT = [
       {
         title: 'Profiles',
         children: [
-          { title: 'Default', path: '/public-profile/profiles/default' },
+          { title: 'Default', path: '/public-profile/profile' },
           { title: 'Creator', path: '/public-profile/profiles/creator' },
           { title: 'Company', path: '/public-profile/profiles/company' },
           { title: 'NFT', path: '/public-profile/profiles/nft' },
@@ -438,7 +438,7 @@ export const MENU_ROOT = [
     title: 'Public Profile',
     icon: UserCircle,
     rootPath: '/public-profile/',
-    path: '/public-profile/profiles/default',
+    path: '/public-profile/profile',
     childrenIndex: 2,
   },
   {

@@ -88,11 +88,9 @@ export const verifyEmailOtp = async ({ email, otpCode }) => {
 };
 
 // resend OTP code to the user email
-export const resendEmailOtp = async (email) => {
+export const resendVerificationCode = async (contact) => {
   try {
-    const response = await apiTaqat.post('/resend-otp', {
-      email,
-    });
+    const response = await apiTaqat.post('/resend-otp', contact);
     return response.data;
   } catch (error) {
     throw error.response?.data || error;
@@ -103,10 +101,8 @@ export const resendEmailOtp = async (email) => {
 export async function getAuthUserData() {
   try {
     const response = await apiTaqat.get('/profile');
-    console.log('response', response);
     return response.data;
   } catch (error) {
-    console.log('error', error);
     throw error.response?.data || error;
   }
 }
