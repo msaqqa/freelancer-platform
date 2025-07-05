@@ -1,12 +1,12 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { Demo1Layout } from '../../components/layouts/demo1/layout';
 
-export default function ProtectedLayout({ children }) {
+export default function ClientLayout({ children }) {
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
 
@@ -15,7 +15,7 @@ export default function ProtectedLayout({ children }) {
     if (!user || isError) {
       router.push('/signin');
     } else if (user?.type !== 'client') {
-      router.push('/404');
+      notFound();
     }
   }, [isLoading, user, router]);
 

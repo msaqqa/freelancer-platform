@@ -3,7 +3,7 @@
 import { Fragment } from 'react';
 import { Engage } from '@/partials/common/engage';
 import { toAbsoluteUrl } from '@/lib/helpers';
-import { ProfileActivityContent } from '@/app/(protected)/freelancer/public-profile/activity/content';
+import { ProfileActivityContent } from '@/app/(protected)/freelancer/public-profile/experience/content';
 
 export function AccountActivityContent() {
   return (

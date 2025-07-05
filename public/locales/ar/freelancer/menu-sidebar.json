@@ -1,0 +1,20 @@
+{
+    "dashboards": "لوحات التحكم",
+    "lightSidebar": "الشريط الجانبي الفاتح",
+    "darkSidebar": "الشريط الجانبي الداكن",
+    "freelancer": "مستقل",
+    "profile": "الملف الشخصي",
+    "portfolio": "المعرض",
+    "services": "الخدمات",
+    "experience": "الخبرة",
+    "workHistory": "تاريخ العمل",
+    "myAccount": "حسابي",
+    "account": "الحساب",
+    "getStarted": "ابدأ",
+    "userProfile": "الملف الشخصي للمستخدم",
+    "companyProfile": "الملف الشخصي للشركة",
+    "settingsWithSidebar": "الإعدادات - مع الشريط الجانبي",
+    "settingsEnterprise": "الإعدادات - المؤسسة",
+    "settingsPlain": "الإعدادات - عادي",
+    "settingsModal": "الإعدادات - نافذة منبثقة"
+}

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 import { Demo1Layout } from '../../components/layouts/demo1/layout';
@@ -15,7 +15,7 @@ export default function FreelancerLayout({ children }) {
     if (!user || isError) {
       router.push('/signin');
     } else if (user?.type !== 'freelancer') {
-      router.push('/404');
+      notFound();
     }
   }, [isLoading, user, router]);
 
@@ -23,6 +23,5 @@ export default function FreelancerLayout({ children }) {
     return <ScreenLoader />;
   }
 
-  return user?.type === 'freelancer' && <Demo1Layout>{children}</Demo1Layout>;
-  // return <Demo1Layout>{children}</Demo1Layout>;
+  return <Demo1Layout>{children}</Demo1Layout>;
 }

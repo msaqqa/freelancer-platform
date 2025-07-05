@@ -1,0 +1,38 @@
+{
+    "hourlyRateRequired": "Hourly rate is required",
+    "hourlyRateNumber": "Hourly rate must be a valid number",
+    "categoryRequired": "Category is required",
+    "subcategoryRequired": "Subcategory is required",
+    "countryRequired": "Country is required",
+
+    "maxBio": "Bio cannot exceed {{bioLength}} characters",
+    "maxImages": "Maximum {{imagesLength}} images allowed",
+    "invalidURL": "Invalid URL",
+    "titleRequired": "Title is required",
+    "linkRequired": "Link is required",
+    "languageRequired": "Language is required",
+    "levelRequired": "Level is required",
+
+    "firstNameRequired": "First name is required",
+    "fatherNameRequired": "Father name is required",
+    "grandfatherNameRequired": "Grandfather name is required",
+    "familyNameRequired": "Family name is required",
+    "IDRequired": "ID number is required",
+    "addressRequired": "Full address is required",
+    "imageRequired": "ID image is required.",
+    "imageSize": "Image file must be smaller than 2MB",
+    "imageType": "Only JPG or PNG, formats are allowed",
+
+    "universityRequired": "University is required",
+    "studyRequired": "Study is required",
+    "gradeRequired": "Grade is required",
+    "startMonthRequired": "Start month is required",
+    "startYearRequired": "Start year is required",
+
+    "photoRequired": "Please upload a photo.",
+    "photoSize": "The photo size must not exceed 800x800 pixels.",
+    "photoType": "The photo must be in JPEG or PNG format.",
+
+    "otherSocialCondition": "custom social must contain title and a link field",
+    "invalidYouTubeURL": "Please enter a valid YouTube URL only"
+}

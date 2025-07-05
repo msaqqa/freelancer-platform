@@ -22,7 +22,10 @@ export default function Page() {
     form,
     errors,
     isProcessing,
-    isResendOtProcessing,
+    minutes,
+    seconds,
+    isButtonDisabled,
+    isResendLodaing,
     onSubmit,
     handleResetOtp,
   } = useVerifyEmail();
@@ -64,22 +67,24 @@ export default function Page() {
                     <Input placeholder={t('codeHolder')} {...field} />
                   </FormControl>
                   <FormMessage />
-                  <div className="flex items-center gap-2">
-                    {isResendOtProcessing ? (
-                      <Spinner className="animate-spin" />
-                    ) : null}{' '}
-                    <span
-                      onClick={
-                        isResendOtProcessing ? undefined : handleResetOtp
-                      }
-                      className={`text-xs font-semibold text-foreground hover:text-primary cursor-pointer ${
-                        isResendOtProcessing
-                          ? 'pointer-events-none cursor-not-allowed opacity-50'
-                          : ''
-                      }`}
+                  <div className="flex justify-between items-center space-x-2">
+                    <div>
+                      <span className="text-sm font-medium text-foreground">
+                        {t('notReceivedOTP')}
+                      </span>
+                      <span className="text-sm font-semibold text-foreground ms-2">
+                        {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
+                      </span>
+                    </div>
+                    <Button
+                      mode="link"
+                      underlined="solid"
+                      disabled={isButtonDisabled || isResendLodaing}
+                      onClick={handleResetOtp}
                     >
-                      {t('resendOtp')}
-                    </span>
+                      {t('resendCode')}{' '}
+                      {isResendLodaing && <Spinner className="animate-spin" />}
+                    </Button>
                   </div>
                 </FormItem>
               )}
@@ -87,7 +92,7 @@ export default function Page() {
 
             <Button
               type="submit"
-              disabled={isProcessing || isResendOtProcessing}
+              disabled={isProcessing || isResendLodaing}
               className="w-full"
             >
               {isProcessing ? <Spinner className="animate-spin" /> : null}

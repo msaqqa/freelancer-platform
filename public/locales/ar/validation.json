@@ -1,0 +1,38 @@
+{
+  "hourlyRateRequired": "معدل الأجر بالساعة مطلوب",
+  "hourlyRateNumber": "يجب أن يكون معدل الأجر بالساعة رقمًا صحيحًا",
+  "categoryRequired": "الفئة مطلوبة",
+  "subcategoryRequired": "الفئة الفرعية مطلوبة",
+  "countryRequired": "الدولة مطلوبة",
+
+  "maxBio": "يجب ألا يتجاوز الوصف {{bioLength}} حرفًا",
+  "maxImages": "الحد الأقصى {{imagesLength}} صورة مسموح بها",
+  "invalidURL": "رابط غير صالح",
+  "titleRequired": "العنوان مطلوب",
+  "linkRequired": "الرابط مطلوب",
+  "languageRequired": "اللغة مطلوبة",
+  "levelRequired": "المستوى مطلوب",
+
+  "firstNameRequired": "الاسم الأول مطلوب",
+  "fatherNameRequired": "اسم الأب مطلوب",
+  "grandfatherNameRequired": "اسم الجد مطلوب",
+  "familyNameRequired": "اسم العائلة مطلوب",
+  "IDRequired": "رقم الهوية مطلوب",
+  "addressRequired": "العنوان الكامل مطلوب",
+  "imageRequired": "صورة الهوية مطلوبة.",
+  "imageSize": "يجب أن يكون حجم الصورة أقل من 2 ميجابايت",
+  "imageType": "يسمح فقط بصيغ JPG أو PNG",
+
+  "universityRequired": "اسم الجامعة مطلوب",
+  "studyRequired": "مجال الدراسة مطلوب",
+  "gradeRequired": "المعدل مطلوب",
+  "startMonthRequired": "شهر البدء مطلوب",
+  "startYearRequired": "سنة البدء مطلوبة",
+
+  "photoRequired": "يرجى رفع صورة.",
+  "photoSize": "يجب ألا يتجاوز حجم الصورة 800×800 بكسل.",
+  "photoType": "يجب أن تكون الصورة بصيغة JPEG أو PNG.",
+
+  "otherSocialCondition": "الوسيلة الاجتماعية المخصصة يجب أن تحتوي على عنوان ورابط",
+  "invalidYouTubeURL": "يرجى إدخال رابط YouTube صالح فقط"
+}
