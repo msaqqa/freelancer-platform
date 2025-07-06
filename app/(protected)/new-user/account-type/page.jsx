@@ -2,9 +2,8 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { submitAccountType } from '@/services/auth/auth';
@@ -13,7 +12,7 @@ import TypeComponent from './components/type-component';
 
 export default function AccountType() {
   const [userState, setUserState] = useState('');
-  const { setUser } = useUserStore();
+  const queryClient = useQueryClient();
 
   const router = useRouter();
   const { t } = useTranslation('requiredData');
@@ -25,7 +24,6 @@ export default function AccountType() {
   const mutation = useMutation({
     mutationFn: submitAccountType,
     onSuccess: async (data) => {
-      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -39,9 +37,9 @@ export default function AccountType() {
           position: 'top-center',
         },
       );
-      setTimeout(() => {
-        router.replace(`/new-user/required-data`);
-      }, 1000);
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      // redirect to required-data page
+      router.replace(`/new-user/required-data`);
     },
     onError: (error) => {
       toast.custom(

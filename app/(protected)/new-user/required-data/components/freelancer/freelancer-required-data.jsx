@@ -1,14 +1,12 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { useAuth } from '@/hooks/auth/use-auth';
 import { addRequiredDataFreelancer } from '@/services/freelancer/required-data';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { FreelancerRequiredDataSchema } from '../../forms/freelancer-required-data-schema';
@@ -16,8 +14,6 @@ import { PersonalDetails } from './personal-details';
 import { ProfessionalDetails } from './professional-details';
 
 function FreelancerRequiredData({ activeSection, setActiveSection }) {
-  const { setUser } = useUserStore();
-  const { refetch } = useAuth();
   const { t } = useTranslation('requiredData');
   const fv = (key) => t(`freelancerValidation.${key}`);
   const router = useRouter();
@@ -60,8 +56,6 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
       return response;
     },
     onSuccess: async (data) => {
-      // queryClient.invalidateQueries({ queryKey: ['account-profile'] });
-      setUser(data?.data);
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -75,11 +69,9 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
           position: 'top-center',
         },
       );
-      await refetch();
-      // redirect to freelancer main dashboard
-      setTimeout(() => {
-        router.replace('/freelancer/public-profile/profile');
-      }, 1000);
+      // redirect to freelancer profile
+      console.log('onSuccess', data);
+      router.replace('/freelancer/public-profile/profile');
     },
     onError: (error) => {
       toast.custom(

@@ -1,9 +1,9 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { CLIENT_MENU_SIDEBAR } from '@/config/client-menu.config';
 import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { useMenu } from '@/hooks/use-menu';
 
 const Toolbar = ({ children }) => {
@@ -19,9 +19,9 @@ const ToolbarActions = ({ children }) => {
 };
 
 const ToolbarPageTitle = ({ text }) => {
-  const { user } = useUserStore();
+  const { data: user } = useAuth();
   const MENU_SIDEBAR =
-    user.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
+    user?.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
   const pathname = usePathname();
   const { getCurrentItem } = useMenu(pathname);
   const item = getCurrentItem(MENU_SIDEBAR);

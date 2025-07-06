@@ -2,11 +2,9 @@
 
 import { useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import Cookies from 'js-cookie';
 
 export default function AuthCallbackPage() {
-  const { setUser } = useUserStore();
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -16,7 +14,6 @@ export default function AuthCallbackPage() {
     const requiredData = searchParams.get('save_data');
     if (token) {
       Cookies.set('token', token);
-      setUser({ token, type, save_data: requiredData });
     }
 
     if (type === 'client' && requiredData) {

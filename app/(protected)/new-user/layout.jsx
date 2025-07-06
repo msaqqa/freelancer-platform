@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { notFound, useRouter } from 'next/navigation';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
@@ -19,7 +19,7 @@ function NewUserlayout({ children }) {
     } else if (!user?.type && !user?.save_data) {
       router.push('/new-user/account-type');
     } else {
-      router.push('/404');
+      notFound();
     }
   }, [isLoading, user, router]);
 
