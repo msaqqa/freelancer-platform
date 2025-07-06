@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,6 +25,8 @@ import { GalleryInput, Steps } from './';
 
 export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
   const { t: tv } = useTranslation('validation');
+  const queryClient = useQueryClient();
+
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerIdentitySchema(tv)),
@@ -55,7 +57,6 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
       return response;
     },
     onSuccess: (data) => {
-      handleNextStep();
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -69,6 +70,8 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
           position: 'top-center',
         },
       );
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      handleNextStep();
     },
     onError: (error) => {
       toast.custom(

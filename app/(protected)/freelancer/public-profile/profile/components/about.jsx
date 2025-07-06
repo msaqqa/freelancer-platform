@@ -50,7 +50,7 @@ const About = ({ user, isLoading }) => {
       info: (
         <span className="flex items-center gap-px">
           {user?.id_verified?.label}
-          {user?.id_verified?.label === 'verified' && <ShieldCheck size={16} />}
+          {user?.id_verified?.status === 2 && <ShieldCheck size={16} />}
         </span>
       ),
     },

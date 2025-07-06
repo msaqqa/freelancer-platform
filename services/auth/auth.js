@@ -61,7 +61,6 @@ export const forgetPassword = async (email) => {
 
 // user change password
 export const resetPassword = async (payload) => {
-  console.log('payload', payload);
   try {
     const response = await apiTaqat.post('/reset-password', {
       ...payload,

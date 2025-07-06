@@ -70,7 +70,6 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
         },
       );
       // redirect to freelancer profile
-      console.log('onSuccess', data);
       router.replace('/freelancer/public-profile/profile');
     },
     onError: (error) => {

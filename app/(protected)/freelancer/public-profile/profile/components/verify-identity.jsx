@@ -1,16 +1,30 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { IdentityVerificationDialog } from '../dialogs';
 
-const VerifyIdentity = () => {
+const VerifyIdentity = ({ user }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`identity.${key}`);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const status = user?.id_verified?.status;
+
+  useEffect(() => {
+    if (status == 0 || status == 1) {
+      setIsDisabled(true);
+    }
+  }, [user]);
+
+  const handleIdentityBtn = () => {
+    if (status == 2 || status == null) {
+      setOpenDialog(true);
+    }
+  };
   return (
     <Card className="shadow-none p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-7">
@@ -37,7 +51,11 @@ const VerifyIdentity = () => {
           </div>
         </div>
         <div className="grid justify-end min-w-20">
-          <Button variant="mono" onClick={() => setOpenDialog(true)}>
+          <Button
+            variant="mono"
+            disabled={isDisabled}
+            onClick={handleIdentityBtn}
+          >
             {fp('identityBtn')}
           </Button>
         </div>

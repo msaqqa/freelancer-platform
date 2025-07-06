@@ -28,7 +28,7 @@ export function ProfileDefaultContent({ user, isLoading }) {
       <div className="col-span-2">
         <div className="flex flex-col gap-5 lg:gap-7.5">
           <div className="flex flex-col gap-5 lg:gap-7.5">
-            <VerifyIdentity />
+            <VerifyIdentity user={user} />
             <VerifyBadge />
             <Summary />
           </div>

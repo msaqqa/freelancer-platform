@@ -98,9 +98,7 @@ const ClientPersonalDetails = () => {
         },
       );
       // redirect to client main dashboard
-      setTimeout(() => {
-        router.replace('/client');
-      }, 1000);
+      router.replace('/client');
     },
     onError: (error) => {
       toast.custom(

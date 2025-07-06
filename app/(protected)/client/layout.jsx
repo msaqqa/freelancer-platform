@@ -12,11 +12,8 @@ export default function ClientLayout({ children }) {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!user || isError) {
-      router.push('/signin');
-    } else if (user?.type !== 'client') {
-      notFound();
-    }
+    if (!user || isError) router.push('/signin');
+    if (user?.type !== 'client') notFound();
   }, [isLoading, user, router]);
 
   if (isLoading) {

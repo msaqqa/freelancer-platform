@@ -13,8 +13,7 @@ import { Button } from '@/components/ui/button';
 import { ScrollArea, ScrollBar } from '@/components/ui/scroll-area';
 import { ImageInput } from '@/components/image-input';
 
-export function GalleryInput({ multiple = false, onChange, imagesUrls }) {
-  console.log('imagesUrls', imagesUrls);
+export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
   const [gallery, setGallery] = useState([]);
   const navBar = useRef(null);
   const { t } = useTranslation('freelancerProfile');

@@ -58,4 +58,6 @@ const createAxiosInstance = (baseURL) => {
   return instance;
 };
 
-export const apiTaqat = createAxiosInstance('https://dev.taqatportal.com/api');
+export const apiTaqat = createAxiosInstance(
+  process.env.NEXT_PUBLIC_TAQAT_API_URL,
+);
