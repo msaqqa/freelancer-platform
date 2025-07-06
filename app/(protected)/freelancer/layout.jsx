@@ -12,11 +12,8 @@ export default function FreelancerLayout({ children }) {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!user || isError) {
-      router.push('/signin');
-    } else if (user?.type !== 'freelancer') {
-      notFound();
-    }
+    if (!user || isError) router.push('/signin');
+    if (user?.type !== 'freelancer') notFound();
   }, [isLoading, user, router]);
 
   if (isLoading) {

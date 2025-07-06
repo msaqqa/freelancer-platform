@@ -1,6 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import { AvatarInput } from '@/partials/common/avatar-input';
 import { useQuery } from '@tanstack/react-query';
 import { format } from 'date-fns';
@@ -36,28 +35,14 @@ import {
 import { DatePickerComponent } from '@/components/common/date-picker';
 
 const PersonalDetails = ({ setActiveSection }) => {
-  const [selectedCountry, setSelectedCountry] = useState({});
   const { t } = useTranslation('requiredData');
-  const {
-    control,
-    formState: { errors },
-    trigger,
-  } = useFormContext();
+  const { control, trigger } = useFormContext();
 
   const { data, isLoading } = useQuery({
     queryKey: ['countries'],
     queryFn: getCountries,
   });
   const countries = data?.data ?? [];
-
-  useEffect(() => {
-    handleCountryChange(1);
-  }, [countries]);
-
-  const handleCountryChange = (countryId) => {
-    const country = countries.find((c) => c.id === Number(countryId));
-    setSelectedCountry(country);
-  };
 
   const handleClickBtn = async () => {
     const isValid = await trigger([
@@ -66,7 +51,6 @@ const PersonalDetails = ({ setActiveSection }) => {
       'birthDate',
       'gender',
       'country',
-      'mobile',
     ]);
     if (isValid) {
       setActiveSection('professional_details');
@@ -232,45 +216,6 @@ const PersonalDetails = ({ setActiveSection }) => {
           )}
         />
 
-        {/* Gender Select */}
-        {/* <FormField
-          control={control}
-          name="gender"
-          render={({ field }) => (
-            <FormItem className="w-full flex flex-row items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-              <FormLabel className="flex w-full items-center gap-1 max-w-56">
-                {t('gender')}
-              </FormLabel>
-              <div className="flex flex-col flex-grow">
-                <FormControl>
-                  <Select
-                    {...field}
-                    defaultValue={field.value}
-                    onValueChange={(val) => {
-                      field.onChange(val);
-                      trigger('gender');
-                    }}
-                    onOpenChange={(isOpen) => {
-                      if (!isOpen) {
-                        trigger('gender');
-                      }
-                    }}
-                  >
-                    <SelectTrigger>
-                      <SelectValue placeholder={t('genderHolder')} />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">{t('male')}</SelectItem>
-                      <SelectItem value="female">{t('female')}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </FormControl>
-                <FormMessage className="mt-1" />
-              </div>
-            </FormItem>
-          )}
-        /> */}
-
         {/* Country Select */}
         <FormField
           control={control}
@@ -287,7 +232,6 @@ const PersonalDetails = ({ setActiveSection }) => {
                     onValueChange={(val) => {
                       field.onChange(val);
                       trigger('country');
-                      handleCountryChange(val);
                     }}
                     onOpenChange={(isOpen) => {
                       if (!isOpen) {
@@ -311,48 +255,6 @@ const PersonalDetails = ({ setActiveSection }) => {
                         ))}
                     </SelectContent>
                   </Select>
-                </FormControl>
-                <FormMessage className="mt-1" />
-              </div>
-            </FormItem>
-          )}
-        />
-
-        {/* Phone Number */}
-        <FormField
-          control={control}
-          name="mobile"
-          render={({ field }) => (
-            <FormItem className="w-full flex flex-row items-baseline flex-wrap lg:flex-nowrap gap-2.5">
-              <FormLabel className="flex w-full items-center gap-1 max-w-56">
-                {t('mobile')}
-              </FormLabel>
-              <div className="flex flex-col flex-grow">
-                <FormControl>
-                  <div
-                    className={`flex items-center gap-2 border rounded-md ${errors.mobile ? 'border-destructive focus:border-destructive ring-destructive' : 'border-input'} `}
-                  >
-                    {/* Country Code and Flag inside the input */}
-                    {selectedCountry && (
-                      <div className="flex items-center gap-1 px-3 h-8.5 bg-transparent">
-                        <span className="text-sm">
-                          {selectedCountry?.number_code}
-                        </span>
-                        <img
-                          src={selectedCountry?.flag}
-                          alt="Country Flag"
-                          className="w-6 h-4"
-                        />
-                      </div>
-                    )}
-                    {/* Phone Number Input */}
-                    <Input
-                      type="tel"
-                      maxLength="15"
-                      {...field}
-                      className="ps-0 border-0 focus-visible:outline-none focus-visible:ring-0"
-                    />
-                  </div>
                 </FormControl>
                 <FormMessage className="mt-1" />
               </div>

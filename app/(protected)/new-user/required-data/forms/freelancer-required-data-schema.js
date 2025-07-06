@@ -27,12 +27,6 @@ export const FreelancerRequiredDataSchema = (t) => {
 
     country: z.string().min(1, { message: t('countryRequired') }),
 
-    mobile: z
-      .string()
-      .min(1, { message: t('mobileRequired') })
-      .max(15, { message: t('mobileLength') })
-      .regex(/^[0-9]{1,15}$/, { message: t('mobileDigits') }),
-
     category: z.string().min(1, { message: t('categoryRequired') }),
 
     subcategory: z.string().min(1, { message: t('subcategoryRequired') }),

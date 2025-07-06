@@ -4,10 +4,10 @@
 import { useCallback } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { CLIENT_MENU_MEGA_MOBILE } from '@/config/client-menu.config';
 import { FREELANCER_MENU_MEGA_MOBILE } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/auth/use-auth';
 import {
   AccordionMenu,
   AccordionMenuGroup,
@@ -20,7 +20,7 @@ import {
 import { Badge } from '@/components/ui/badge';
 
 export function MegaMenuMobile() {
-  const { user } = useUserStore();
+  const { data: user } = useAuth();
   const MENU_MEGA_MOBILE =
     user?.type === 'client'
       ? CLIENT_MENU_MEGA_MOBILE

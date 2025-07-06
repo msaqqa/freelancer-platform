@@ -1,8 +1,8 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useUserStore } from '@/stores/user-store';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
 import { useSettings } from '@/providers/settings-provider';
@@ -24,7 +24,7 @@ const stickySidebarClasses = {
 };
 
 export function AccountSettingsSidebarContent() {
-  const { user } = useUserStore();
+  const { data: user } = useAuth();
   const isMobile = useIsMobile();
   const { settings } = useSettings();
   const [sidebarSticky, setSidebarSticky] = useState(false);
@@ -65,7 +65,7 @@ export function AccountSettingsSidebarContent() {
           >
             <Scrollspy offset={100}>
               <RequiredDataSidebar
-                accountType={user.type}
+                accountType={user?.type}
                 activeSection={activeSection}
                 setActiveSection={setActiveSection}
               />
@@ -74,13 +74,13 @@ export function AccountSettingsSidebarContent() {
         </div>
       )}
       <div className="flex flex-col items-stretch grow gap-5 lg:gap-7.5">
-        {user.type == 'freelancer' && (
+        {user?.type == 'freelancer' && (
           <FreelancerRequiredData
             activeSection={activeSection}
             setActiveSection={setActiveSection}
           />
         )}
-        {user.type == 'client' && <ClientPersonalDetails />}
+        {user?.type == 'client' && <ClientPersonalDetails />}
       </div>
     </div>
   );

@@ -48,7 +48,7 @@ export default function Page() {
             <AlertIcon>
               <Spinner className="size-4 animate-spin stroke-muted-foreground" />
             </AlertIcon>
-            <AlertTitle>Verifying...</AlertTitle>
+            <AlertTitle>{t('verifying')}</AlertTitle>
           </Alert>
         )}
 
@@ -77,6 +77,7 @@ export default function Page() {
                       </span>
                     </div>
                     <Button
+                      type="button"
                       mode="link"
                       underlined="solid"
                       disabled={isButtonDisabled || isResendLodaing}
