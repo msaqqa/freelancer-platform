@@ -248,6 +248,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                           <FormControl>
                             <Input
                               type="text"
+                              maxLength="9"
                               id="IDNumber"
                               placeholder={t('idHolder')}
                               className="focus-visible:ring-0"

@@ -29,6 +29,9 @@
   "gradeRequired": "المعدل مطلوب",
   "startMonthRequired": "شهر البدء مطلوب",
   "startYearRequired": "سنة البدء مطلوبة",
+  "endMonthRequired": "شهر النهاية مطلوبة عند اختيار سنة النهاية",
+  "endYearRequired": "سنة النهاية مطلوبة عند اختيار شهر النهاية",
+  "endYearAfterStartYear": "يجب أن يكون تاريخ الانتهاء تاريخًا بعد تاريخ البدء أو يساويه",
 
   "photoRequired": "يرجى رفع صورة.",
   "photoSize": "يجب ألا يتجاوز حجم الصورة 800×800 بكسل.",

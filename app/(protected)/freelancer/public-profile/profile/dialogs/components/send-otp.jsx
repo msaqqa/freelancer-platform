@@ -6,7 +6,6 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { sendOtp } from '@/services/freelancer/profile';
 import { getCountries } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -28,20 +27,12 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
+import { MobileSchema } from '../forms';
 import { Steps } from './';
 
-export const MobileSchema = (t) => {
-  return z.object({
-    mobile: z
-      .string()
-      .regex(/^\d+$/, { message: t('mobileDigits') })
-      .min(1, { message: t('mobileRequired') })
-      .max(15, { message: t('mobileLength') }),
-  });
-};
-
-export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
+export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
   const { t: tv } = useTranslation('validation');
+
   // Form initialization
   const form = useForm({
     resolver: zodResolver(MobileSchema(tv)),
@@ -49,7 +40,7 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
       country: '1',
       mobile: '',
     },
-    mode: 'onSubmit',
+    mode: 'onBlur',
   });
   const { errors } = form?.formState;
 

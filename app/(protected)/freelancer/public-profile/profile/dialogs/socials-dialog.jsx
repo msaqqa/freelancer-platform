@@ -122,6 +122,9 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
     onError: (error) => {

@@ -65,7 +65,7 @@
         "countryRequired": "Country is required",
         "mobileRequired": "Mobile number is required",
         "mobileLength": "Phone number cannot be more than 15 digits",
-        "mobileDigits": "'Phone number must contain only digits'",
+        "mobileDigits": "Phone number must contain only digits",
         "categoryRequired": "Category is required",
         "subcategoryRequired": "Subcategory is required",
         "bioLength": "Bio character cannot be more than 4000 characters",

@@ -105,6 +105,9 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-summary'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
     onError: (error) => {

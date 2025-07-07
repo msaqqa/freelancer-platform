@@ -1,5 +1,6 @@
 'use client';
 
+import { DialogTitle } from '@radix-ui/react-dialog';
 import { useTranslation } from 'react-i18next';
 import { Dialog, DialogContent, DialogHeader } from '@/components/ui/dialog';
 import { CircularProgress } from '@/components/ui/progress';
@@ -25,8 +26,10 @@ export const VerifyBadgeDialog = ({ open, closeDialog, badgeComplete }) => {
               valueSize={'md'}
             />
             <div className="flex flex-col gap-1.5 max-w-[300px]">
-              <h2 className="flex items-center gap-x-2 text-xl font-semibold text-mono">
-                {fp('badgeTitle')}
+              <div className="flex items-center gap-x-2">
+                <DialogTitle className="text-xl font-semibold text-mono">
+                  {fp('badgeTitle')}
+                </DialogTitle>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="15"
@@ -40,7 +43,7 @@ export const VerifyBadgeDialog = ({ open, closeDialog, badgeComplete }) => {
                     fill="currentColor"
                   />
                 </svg>
-              </h2>
+              </div>
               <p className="text-sm text-secondary-foreground leading-5.5">
                 {badgeComplete.completionText}
               </p>

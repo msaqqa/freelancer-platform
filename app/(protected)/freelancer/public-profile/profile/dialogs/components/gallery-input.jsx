@@ -111,7 +111,10 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                 </ul>
               </div>
             )}
-            <ScrollArea viewportRef={navBar} className="w-full pb-2">
+            <ScrollArea
+              viewportRef={navBar}
+              className="w-full overflow-x-auto pb-2"
+            >
               <div
                 className="flex-1 flex items-center gap-3 pb-2"
                 style={

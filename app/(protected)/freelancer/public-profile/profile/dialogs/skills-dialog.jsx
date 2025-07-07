@@ -85,6 +85,9 @@ export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
     onError: (error) => {

@@ -16,7 +16,7 @@ const VerifyBadge = () => {
 
   // get profile complete data from api
   const { data, isLoading } = useQuery({
-    queryKey: ['profileComplete'],
+    queryKey: ['freelancer-profile-complete'],
     queryFn: getFreelancerProfileComplete,
   });
   const dataComplete = data?.data[0] ?? {};

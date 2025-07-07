@@ -33,7 +33,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input, InputWrapper } from '@/components/ui/input';
+import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
@@ -54,7 +54,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // get getEducationDegree data from api
   const { data: educationData, isLoading: educationLoading } = useQuery({
-    queryKey: ['educationById', educationId],
+    queryKey: ['freelancer-educationById', educationId],
     queryFn: () => getFreelancerEducationById(educationId),
     enabled: !!educationId,
   });
@@ -119,7 +119,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         startYear: startDate?.year,
         endMonth: endDate?.month,
         endYear: endDate?.year,
-        stillStudying: education?.endMonth ? false : true,
+        stillStudying: education?.end_date ? false : true,
       });
     }
   }, [form, open, educationId, educationLoading]);
@@ -150,6 +150,10 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-educations'] });
+      educationId &&
+        queryClient.invalidateQueries({
+          queryKey: ['freelancer-educationById', educationId],
+        });
       closeDialog();
     },
     onError: (error) => {
@@ -432,7 +436,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 <FormLabel className="inline-block mb-2">
                   {fp('endDateLabel')}
                 </FormLabel>
-                <div className="flex flex-col md:flex-row items-center gap-2.5">
+                <div className="flex flex-col md:flex-row gap-2.5">
                   {/* Month Select */}
                   <FormField
                     control={form.control}
@@ -445,6 +449,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             onValueChange={(val) => {
                               field.onChange(val);
                               form.setValue('stillStudying', false);
+                              form.trigger('endMonth');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -484,6 +489,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             onValueChange={(val) => {
                               field.onChange(val);
                               form.setValue('stillStudying', false);
+                              form.trigger('endYear');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -529,6 +535,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             if (checked) {
                               form.setValue('endMonth', '');
                               form.setValue('endYear', '');
+                              form.clearErrors(['endYear', 'endMonth']);
                             }
                           }}
                         />

@@ -29,6 +29,9 @@
     "gradeRequired": "Grade is required",
     "startMonthRequired": "Start month is required",
     "startYearRequired": "Start year is required",
+    "endMonthRequired": "End month is required when end year is selected",
+    "endYearRequired": "End year is required when end month is selected",
+    "endYearAfterStartYear": "The end year must be a date after or equal to start year",
 
     "photoRequired": "Please upload a photo.",
     "photoSize": "The photo size must not exceed 800x800 pixels.",
@@ -40,5 +43,5 @@
 
     "mobileRequired": "Mobile number is required",
     "mobileLength": "Phone number cannot be more than 15 digits",
-    "mobileDigits": "'Phone number must contain only digits'"
+    "mobileDigits": "Phone number must contain only digits"
 }
