@@ -8,7 +8,11 @@ export const FreelancerIdentitySchema = (t) => {
       .string()
       .min(1, { message: t('grandfatherNameRequired') }),
     familyName: z.string().min(1, { message: t('familyNameRequired') }),
-    IDNumber: z.string().min(1, { message: t('IDRequired') }),
+    IDNumber: z
+      .string()
+      .regex(/^\d+$/, { message: t('IDMustBeNumber') })
+      .min(9, { message: t('IDLength') })
+      .max(9, { message: t('IDLength') }),
     fullAddress: z.string().min(1, { message: t('addressRequired') }),
     image: z
       .instanceof(File, { message: t('imageRequired') })

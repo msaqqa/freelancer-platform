@@ -210,7 +210,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           field.onChange(val);
                           form.trigger('images');
                         }}
-                        imagesUrls={summary?.images_urls || []}
+                        imagesUrls={summary?.images_urls}
                       />
                     </FormControl>
                     <FormMessage />

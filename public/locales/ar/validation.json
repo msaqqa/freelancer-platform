@@ -17,7 +17,8 @@
   "fatherNameRequired": "اسم الأب مطلوب",
   "grandfatherNameRequired": "اسم الجد مطلوب",
   "familyNameRequired": "اسم العائلة مطلوب",
-  "IDRequired": "رقم الهوية مطلوب",
+  "IDLength": "رقم الهوية يجب أن يتكون من 9 أرقام",
+  "IDMustBeNumber": "رقم الهوية يجب أن يحتوي على أرقام فقط",
   "addressRequired": "العنوان الكامل مطلوب",
   "imageRequired": "صورة الهوية مطلوبة.",
   "imageSize": "يجب أن يكون حجم الصورة أقل من 2 ميجابايت",
@@ -32,7 +33,13 @@
   "photoRequired": "يرجى رفع صورة.",
   "photoSize": "يجب ألا يتجاوز حجم الصورة 800×800 بكسل.",
   "photoType": "يجب أن تكون الصورة بصيغة JPEG أو PNG.",
+  "photoDimensions": "يجب أن تكون الصورة مربعة وأبعادها لا تقل عن {{minDimension}}×{{minDimension}} بكسل.",
+
 
   "otherSocialCondition": "الوسيلة الاجتماعية المخصصة يجب أن تحتوي على عنوان ورابط",
-  "invalidYouTubeURL": "يرجى إدخال رابط YouTube صالح فقط"
+  "invalidYouTubeURL": "يرجى إدخال رابط YouTube صالح فقط",
+
+  "mobileRequired": "رقم الهاتف المحمول مطلوب",
+  "mobileLength": "لا يمكن أن يتجاوز رقم الهاتف 15 رقمًا",
+  "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط"
 }

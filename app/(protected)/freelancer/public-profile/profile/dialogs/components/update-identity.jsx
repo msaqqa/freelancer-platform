@@ -326,7 +326,11 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
 
           {(step === 4 || step === 5) && (
             <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
-              <Button type="button" variant="outline" onClick={handleBackStep}>
+              <Button
+                type="button"
+                variant="outline"
+                onClick={() => handleBackStep(step === 4 ? 2 : 1)}
+              >
                 {t('backBtn')}
               </Button>
 

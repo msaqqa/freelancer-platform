@@ -172,7 +172,11 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
         </div>
 
         <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
-          <Button type="button" variant="outline" onClick={handleBackStep}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleBackStep(1)}
+          >
             {t('backBtn')}
           </Button>
 

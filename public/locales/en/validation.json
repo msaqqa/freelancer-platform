@@ -17,7 +17,8 @@
     "fatherNameRequired": "Father name is required",
     "grandfatherNameRequired": "Grandfather name is required",
     "familyNameRequired": "Family name is required",
-    "IDRequired": "ID number is required",
+    "IDLength": "The ID number must consist of 9 digits",
+    "IDMustBeNumber": "The ID number must contain only numbers",
     "addressRequired": "Full address is required",
     "imageRequired": "ID image is required.",
     "imageSize": "Image file must be smaller than 2MB",
@@ -32,7 +33,12 @@
     "photoRequired": "Please upload a photo.",
     "photoSize": "The photo size must not exceed 800x800 pixels.",
     "photoType": "The photo must be in JPEG or PNG format.",
+    "photoDimensions": "The photo must be square and at least {{minDimension}}×{{minDimension}} pixels.",
 
     "otherSocialCondition": "custom social must contain title and a link field",
-    "invalidYouTubeURL": "Please enter a valid YouTube URL only"
+    "invalidYouTubeURL": "Please enter a valid YouTube URL only",
+
+    "mobileRequired": "Mobile number is required",
+    "mobileLength": "Phone number cannot be more than 15 digits",
+    "mobileDigits": "'Phone number must contain only digits'"
 }

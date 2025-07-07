@@ -31,8 +31,8 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
     setStep(step + 1);
   };
 
-  const handleBackStep = () => {
-    setStep(step - 1);
+  const handleBackStep = (backNum) => {
+    setStep(step - backNum);
   };
 
   return (

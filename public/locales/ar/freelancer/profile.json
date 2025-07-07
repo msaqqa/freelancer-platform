@@ -2,6 +2,7 @@
   "about": {
     "aboutTitle": "نبذة عني",
     "available": "متاح",
+    "notAvailable":"غير متاح",
     "verified": "موثق",
     "readyWork": "جاهز للعمل",
     "hourlyRate": "الأجر بالساعة",
@@ -134,8 +135,10 @@
   "loading": "جارٍ التحميل...",
   "cancelBtn": "إلغاء",
   "saveBtn": "حفظ",
-  "AddPhoto": "أضف صورة",
-  "MaxImages": "الحد الأقصى 6 صور",
+  "addPhotos": "أضف صورة",
+  "maxImages": "الحد الأقصى 6 صور",
+  "addID": "الهوية أو جواز السفر",
+  "imageType": "JPG أو PNG، الحد الأقصى للحجم: 5 ميجابايت",
   "edit": "تعديل",
   "add": "إضافة"
 }

@@ -153,7 +153,7 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
   // Handle form submission
   const handleSubmit = (values) => {
     const updateValues = {
-      available_hire: values.availability ? 1 : 0,
+      available_hire: values.availability,
       hourly_rate: values.hourlyRate,
       category_id: values.category,
       sub_category_id: values.subcategory,

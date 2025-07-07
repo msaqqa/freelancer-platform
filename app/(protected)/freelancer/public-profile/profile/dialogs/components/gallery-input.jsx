@@ -92,6 +92,7 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                   src={toAbsoluteUrl('/media/icons/gallery-light.svg')}
                   alt="Add Image"
                   className="dark:hidden mx-auto"
+                  MaxImages
                 />
                 <img
                   src={toAbsoluteUrl('/media/icons/gallery-dark.svg')}
@@ -102,8 +103,11 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                 <ul
                   className={`flex w-full ${multiple ? 'flex-col justify-center' : 'list-disc flex-row justify-around'} text-center text-xs`}
                 >
-                  <li className="mb-2">{t('AddPhoto')}</li> <br />
-                  <li>({t('MaxImages')})</li>
+                  <li className="mb-2">
+                    {multiple ? t('addPhotos') : t('addID')}
+                  </li>{' '}
+                  <br />
+                  <li>({multiple ? t('maxImages') : t('imageType')})</li>
                 </ul>
               </div>
             )}
@@ -137,27 +141,28 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                     </Button>
                   </div>
                 ))}
-                {imagesUrls.map((file) => (
-                  <div
-                    key={file.id}
-                    className={`relative flex flex-col justify-center items-center bg-muted rounded-xl shrink-0 ${multiple ? 'w-[160px]' : 'w-full'} h-[200px]`}
-                  >
-                    <img
-                      src={toAbsoluteUrl(file.url)}
-                      alt={`Uploaded Image ${file.id}`}
-                      className="gallery-image w-full h-full object-cover rounded-lg"
-                    />
-                    <Button
-                      type="button"
-                      variant="ghost"
-                      mode="icon"
-                      onClick={() => handleRemoveImage(file.id)}
-                      className="bg-muted w-6.5 h-6.5 rounded-full absolute top-2 right-2"
+                {imagesUrls.length > 0 &&
+                  imagesUrls.map((file) => (
+                    <div
+                      key={file.id}
+                      className={`relative flex flex-col justify-center items-center bg-muted rounded-xl shrink-0 ${multiple ? 'w-[160px]' : 'w-full'} h-[200px]`}
                     >
-                      <Trash2 size={16} />
-                    </Button>
-                  </div>
-                ))}
+                      <img
+                        src={toAbsoluteUrl(file.url)}
+                        alt={`Uploaded Image ${file.id}`}
+                        className="gallery-image w-full h-full object-cover rounded-lg"
+                      />
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        mode="icon"
+                        onClick={() => handleRemoveImage(file.id)}
+                        className="bg-muted w-6.5 h-6.5 rounded-full absolute top-2 right-2"
+                      >
+                        <Trash2 size={16} />
+                      </Button>
+                    </div>
+                  ))}
               </div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>

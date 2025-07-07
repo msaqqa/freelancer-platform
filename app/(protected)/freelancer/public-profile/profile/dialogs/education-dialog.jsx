@@ -33,7 +33,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input, InputWrapper } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import {
   Select,
@@ -77,6 +77,9 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerEducationSchema(tv)),
+    defaultValues: {
+      stillStudying: false,
+    },
     mode: 'onBlur',
   });
 
@@ -108,15 +111,15 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
     }
     if (open && education && !educationLoading) {
       form.reset({
-        university: education?.university ?? '',
-        study: education?.field_of_study ?? '',
-        degree: education?.degree?.id?.toString() ?? '',
-        grade: education?.grade?.id?.toString() ?? '',
-        startMonth: startDate?.month ?? '',
-        startYear: startDate?.year ?? '',
-        endMonth: endDate?.month ?? '',
-        endYear: endDate?.year ?? '',
-        stillStudying: education?.still_studying ?? false,
+        university: education?.university,
+        study: education?.field_of_study,
+        degree: education?.degree?.id?.toString(),
+        grade: education?.grade?.id?.toString(),
+        startMonth: startDate?.month,
+        startYear: startDate?.year,
+        endMonth: endDate?.month,
+        endYear: endDate?.year,
+        stillStudying: education?.endMonth ? false : true,
       });
     }
   }, [form, open, educationId, educationLoading]);
@@ -181,6 +184,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
     if (endMonth && endYear) {
       endCombinedValue = `${endMonth}-${endYear}`;
     }
+
     const updateValues = {
       university: values.university,
       field_of_study: values.study,
@@ -188,7 +192,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       education_level_id: values.degree,
       start_date: startCombinedValue,
       end_date: endCombinedValue,
-      still_studying: values.stillStudying,
     };
     console.log('updateValues', updateValues);
     mutation.mutate(updateValues);
@@ -441,10 +444,11 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.setValue('stillStudying', false);
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
-                                form.trigger('startMonth');
+                                form.trigger('endMonth');
                               }
                             }}
                           >
@@ -479,10 +483,11 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.setValue('stillStudying', false);
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
-                                form.trigger('startYear');
+                                form.trigger('endYear');
                               }
                             }}
                           >
@@ -508,19 +513,30 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 </div>
               </div>
 
+              {/* Still Studying */}
               <div className="flex items-center space-x-2">
                 <FormField
                   control={form.control}
-                  name=" stillStudying"
+                  name="stillStudying"
                   render={({ field }) => (
-                    <>
-                      <Checkbox
-                        id="remember-me"
-                        checked={field.value}
-                        onCheckedChange={(checked) => field.onChange(!!checked)}
-                      />
-                      <FormLabel className="">{fp('stillStudying')}</FormLabel>
-                    </>
+                    <FormItem className="flex-row items-center">
+                      <FormControl>
+                        <Checkbox
+                          id="still-studying"
+                          checked={field.value}
+                          onCheckedChange={(checked) => {
+                            field.onChange(!!checked);
+                            if (checked) {
+                              form.setValue('endMonth', '');
+                              form.setValue('endYear', '');
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel htmlFor="still-studying">
+                        {fp('stillStudying')}
+                      </FormLabel>
+                    </FormItem>
                   )}
                 />
               </div>

@@ -13,6 +13,7 @@ const VerifyIdentity = ({ user }) => {
   const fp = (key) => t(`identity.${key}`);
   const [isDisabled, setIsDisabled] = useState(false);
   const status = user?.id_verified?.status;
+  const label = user?.id_verified?.label;
 
   useEffect(() => {
     if (status == 0 || status == 1) {
@@ -56,7 +57,7 @@ const VerifyIdentity = ({ user }) => {
             disabled={isDisabled}
             onClick={handleIdentityBtn}
           >
-            {fp('identityBtn')}
+            {isDisabled ? label : fp('identityBtn')}
           </Button>
         </div>
       </div>

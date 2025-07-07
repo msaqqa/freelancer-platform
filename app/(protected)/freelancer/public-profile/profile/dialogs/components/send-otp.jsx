@@ -4,6 +4,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { z } from 'zod';
 import { sendOtp } from '@/services/freelancer/profile';
@@ -33,16 +34,17 @@ export const MobileSchema = (t) => {
   return z.object({
     mobile: z
       .string()
+      .regex(/^\d+$/, { message: t('mobileDigits') })
       .min(1, { message: t('mobileRequired') })
-      .max(15, { message: t('mobileLength') })
-      .regex(/^[0-9]{1,15}$/, { message: t('mobileDigits') }),
+      .max(15, { message: t('mobileLength') }),
   });
 };
 
 export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
+  const { t: tv } = useTranslation('validation');
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(MobileSchema(v)),
+    resolver: zodResolver(MobileSchema(tv)),
     defaultValues: {
       country: '1',
       mobile: '',

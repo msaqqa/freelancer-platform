@@ -30,15 +30,16 @@ import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
 import { SkillsSchema } from './forms';
 
-export const SkillsDialog = ({ open, closeDialog, skills }) => {
+export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`skills.${key}`);
 
   // get skills data from api
   const { data: skillsData } = useQuery({
-    queryKey: ['skills'],
-    queryFn: getSkills,
+    queryKey: ['skills', categoryId],
+    queryFn: () => getSkills(categoryId),
+    enabled: !!categoryId,
   });
   const skillsSelect = skillsData?.data ?? [];
 
