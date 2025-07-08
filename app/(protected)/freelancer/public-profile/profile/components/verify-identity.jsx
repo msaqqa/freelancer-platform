@@ -16,15 +16,15 @@ const VerifyIdentity = ({ user }) => {
   const label = user?.id_verified?.label;
 
   useEffect(() => {
-    // if (status == 0 || status == 1) {
-    //   setIsDisabled(true);
-    // }
+    if (status == 0 || status == 1) {
+      setIsDisabled(true);
+    }
   }, [user]);
 
   const handleIdentityBtn = () => {
-    // if (status == 2 || status == null) {
-    // }
-    setOpenDialog(true);
+    if (status == 2 || status == null) {
+      setOpenDialog(true);
+    }
   };
   return (
     <Card className="shadow-none p-4">
