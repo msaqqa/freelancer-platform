@@ -37,22 +37,6 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-summary'] });
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const handleRemoveImage = (imageId) => {

@@ -100,21 +100,6 @@ const ClientPersonalDetails = () => {
       // redirect to client main dashboard
       router.replace('/client');
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const onSubmit = (values) => {

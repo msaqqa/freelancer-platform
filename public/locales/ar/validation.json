@@ -12,6 +12,7 @@
   "linkRequired": "الرابط مطلوب",
   "languageRequired": "اللغة مطلوبة",
   "levelRequired": "المستوى مطلوب",
+  "languageDuplicate": "تم إضافة هذه اللغة مسبقًا، الرجاء اختيار لغة مختلفة",
 
   "firstNameRequired": "الاسم الأول مطلوب",
   "fatherNameRequired": "اسم الأب مطلوب",
@@ -32,6 +33,7 @@
   "endMonthRequired": "شهر النهاية مطلوبة عند اختيار سنة النهاية",
   "endYearRequired": "سنة النهاية مطلوبة عند اختيار شهر النهاية",
   "endYearAfterStartYear": "يجب أن يكون تاريخ الانتهاء تاريخًا بعد تاريخ البدء أو يساويه",
+  "noFutureDatesAllowed": "لا يمكن اختيار تاريخ في المستقبل",
 
   "photoRequired": "يرجى رفع صورة.",
   "photoSize": "يجب ألا يتجاوز حجم الصورة 800×800 بكسل.",

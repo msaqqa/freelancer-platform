@@ -33,7 +33,8 @@
     },
     "skills": {
         "skillsTitle": "Skills",
-        "skillsDesc": "Add key skills that reflect your strengths and expertise.",
+        "skillsDesc": "Add key skills that reflect your strengths and expertise.", 
+        "skillsHolder": "Select your skills",
         "addBtn": "Add New Skills"
     },
     "socials": {
@@ -56,7 +57,7 @@
         "studyLabel": "Field of Study",
         "studyHolder": "e.g. Computer Science, Design, Business",
         "gradeLabel": "Academic Grade",
-        "gradeHolder": "e.g. Excellent, Very Good, Good (optional)",
+        "gradeHolder": "e.g. Excellent, Very Good, Good",
         "startDateLabel": "Start Date",
         "endDateLabel": "End Date",
         "month": "Month",

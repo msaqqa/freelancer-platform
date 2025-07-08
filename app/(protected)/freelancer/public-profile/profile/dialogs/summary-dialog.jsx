@@ -110,23 +110,6 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
       });
       closeDialog();
     },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   // Derive the loading state from the mutation status

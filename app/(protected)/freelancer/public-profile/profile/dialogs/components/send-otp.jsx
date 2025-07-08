@@ -74,21 +74,6 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
         },
       );
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const isProcessing = mutation.isPending || false;

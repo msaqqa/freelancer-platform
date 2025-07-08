@@ -70,21 +70,6 @@ export const AvatarDialog = ({ open, closeDialog, user }) => {
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       closeDialog();
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const onSubmit = (values) => {

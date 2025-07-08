@@ -1,12 +1,12 @@
 import axios from 'axios';
 import Cookies from 'js-cookie';
+import { handleApiError } from '@/lib/error-handler';
 
 const createAxiosInstance = (baseURL) => {
   const instance = axios.create({
     baseURL,
     headers: {
       'Content-Type': 'application/json',
-      // 'Content-Type': 'multipart/form-data',
     },
   });
 
@@ -38,20 +38,9 @@ const createAxiosInstance = (baseURL) => {
   instance.interceptors.response.use(
     (response) => response,
     (error) => {
-      // handle expired token (401)
-      if (error.response?.status === 401) {
-        // Clear token and language
-        Cookies.remove('token');
-        Cookies.remove('language');
-
-        // redirect to login page (adjust the path as needed)
-        window.location.replace = '/signin';
-
-        // optionally, you can show a message or log it
-        console.warn('Session expired. Logging out...');
-      }
-
-      return Promise.reject(error);
+      const showNotification = error.config?.showNotification !== false;
+      const errorResponse = handleApiError(error, { showNotification });
+      return Promise.reject(errorResponse);
     },
   );
 

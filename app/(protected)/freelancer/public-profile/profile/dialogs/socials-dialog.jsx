@@ -127,22 +127,6 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
       });
       closeDialog();
     },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
   const submitLoading = mutation.status === 'pending';
 

@@ -90,23 +90,6 @@ export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
       });
       closeDialog();
     },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   // Derive the loading state from the mutation status
@@ -137,7 +120,7 @@ export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{fp('skills')}</FormLabel>
+                  <FormLabel>{fp('skillsTitle')}</FormLabel>
                   <div className="flex flex-col flex-grow">
                     <FormControl>
                       <MultiSelect
@@ -146,7 +129,7 @@ export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
                         onChange={field.onChange}
                         getOptionLabel={(e) => e.name}
                         getOptionValue={(e) => e.id}
-                        placeholder={'skillsHolder'}
+                        placeholder={fp('skillsHolder')}
                         className=" min-h-[100px]"
                       />
                     </FormControl>

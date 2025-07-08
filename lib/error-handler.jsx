@@ -1,3 +1,8 @@
+import { RiErrorWarningFill } from '@remixicon/react';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
+import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
+
 /**
  * Error codes and their corresponding messages
  */
@@ -35,10 +40,7 @@ const DEFAULT_MESSAGES = {
  * @param {string} options.notificationDuration - Duration of the notification in seconds
  * @returns {Object} Formatted error object
  */
-export const handleApiError = (
-  error,
-  options = { showNotification: true, notificationDuration: 5 },
-) => {
+export const handleApiError = (error, options = { showNotification: true }) => {
   let errorResponse = {
     status: error.response?.status,
     message:
@@ -75,10 +77,11 @@ export const handleApiError = (
   // Handle specific error codes
   switch (errorResponse.status) {
     case ERROR_CODES.UNAUTHORIZED:
-      //   localStorage.removeItem(AUTH_CONFIG.tokenKey);
+      Cookies.remove('token');
+      Cookies.remove('language');
       // Only redirect if we're not already on the login page
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+      if (!window.location.pathname.includes('/signin')) {
+        window.location.href = '/signin';
       }
       break;
 
@@ -109,15 +112,26 @@ export const handleApiError = (
   }
 
   // Show notification if enabled
-  //   if (options.showNotification) {
-  //     notification.error({
-  //       message: 'Error',
-  //       description: (
-  //         <div style={{ whiteSpace: 'pre-line' }}>{errorResponse.message}</div>
-  //       ),
-  //       duration: 5,
-  //     });
-  //   }
+  if (
+    options.showNotification &&
+    errorResponse.status >= 400 &&
+    errorResponse.status < 500
+  ) {
+    toast.custom(
+      () => (
+        <Alert variant="mono" icon="destructive">
+          <AlertIcon>
+            <RiErrorWarningFill />
+          </AlertIcon>
+          <AlertTitle>{errorResponse.message}</AlertTitle>
+        </Alert>
+      ),
+
+      {
+        position: 'top-center',
+      },
+    );
+  }
 
   return errorResponse;
 };

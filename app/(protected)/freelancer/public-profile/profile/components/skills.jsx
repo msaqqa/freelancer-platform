@@ -13,7 +13,7 @@ import { SkillsDialog } from '../dialogs';
 const Skills = ({ user, isLoading }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const skills = user?.skills || [];
-  const categoryId = user?.category.id;
+  const categoryId = user?.category?.id;
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`skills.${key}`);
 

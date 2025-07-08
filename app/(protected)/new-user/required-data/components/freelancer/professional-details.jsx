@@ -35,7 +35,6 @@ const ProfessionalDetails = ({ isProcessing }) => {
   const handleBioChange = (e) => {
     const val = e.target.value;
     const charLength = val.length;
-    console.log('charLength', e.target.value);
     setBioCahr(charLength);
   };
 
@@ -60,7 +59,7 @@ const ProfessionalDetails = ({ isProcessing }) => {
 
   const { data: skillsData, isLoading: skillsLoading } = useQuery({
     queryKey: ['skills', categoryId],
-    queryFn: () => getSkills(categoryId),
+    queryFn: () => getSkills(Number(categoryId)),
     enabled: !!categoryId,
   });
   const skills = skillsData?.data ?? [];

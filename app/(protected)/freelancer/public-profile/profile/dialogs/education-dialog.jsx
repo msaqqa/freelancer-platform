@@ -119,7 +119,11 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         startYear: startDate?.year,
         endMonth: endDate?.month,
         endYear: endDate?.year,
-        stillStudying: education?.end_date ? false : true,
+        stillStudying: educationId
+          ? education?.end_date
+            ? false
+            : true
+          : false,
       });
     }
   }, [form, open, educationId, educationLoading]);
@@ -156,23 +160,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         });
       closeDialog();
     },
-    onError: (error) => {
-      const message = error?.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   // Derive the loading state from the mutation status
@@ -186,7 +173,9 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       startCombinedValue = `${startMonth}-${startYear}`;
     }
     if (endMonth && endYear) {
-      endCombinedValue = `${endMonth}-${endYear}`;
+      if (!form.watch('stillStudying')) {
+        endCombinedValue = `${endMonth}-${endYear}`;
+      }
     }
 
     const updateValues = {
@@ -352,7 +341,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 <FormLabel className="inline-block mb-2">
                   {fp('startDateLabel')}
                 </FormLabel>
-                <div className="flex flex-col md:flex-row items-center gap-2.5">
+                <div className="flex flex-col md:flex-row gap-2.5">
                   {/* Month Select */}
                   <FormField
                     control={form.control}
@@ -364,6 +353,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('startMonth');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -402,6 +392,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('startYear');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -448,7 +439,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
-                              form.setValue('stillStudying', false);
                               form.trigger('endMonth');
                             }}
                             onOpenChange={(isOpen) => {
@@ -456,6 +446,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                                 form.trigger('endMonth');
                               }
                             }}
+                            disabled={form.watch('stillStudying')}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder={fp('month')} />
@@ -488,7 +479,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
-                              form.setValue('stillStudying', false);
                               form.trigger('endYear');
                             }}
                             onOpenChange={(isOpen) => {
@@ -496,6 +486,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                                 form.trigger('endYear');
                               }
                             }}
+                            disabled={form.watch('stillStudying')}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder={fp('year')} />
@@ -533,8 +524,6 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                           onCheckedChange={(checked) => {
                             field.onChange(!!checked);
                             if (checked) {
-                              form.setValue('endMonth', '');
-                              form.setValue('endYear', '');
                               form.clearErrors(['endYear', 'endMonth']);
                             }
                           }}

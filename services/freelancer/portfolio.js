@@ -9,7 +9,7 @@ export async function addFreelancerPortfolio(portfolioData) {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -25,7 +25,7 @@ export async function updateFreelancerPortfolioById(
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -35,7 +35,7 @@ export async function getFreelancerPortfolios() {
     const response = await apiTaqat.get('/freelancer/portfolio');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -45,6 +45,6 @@ export async function getFreelancerPortfolioById(portfolioId) {
     const response = await apiTaqat.get(`/freelancer/portfolio/${portfolioId}`);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }

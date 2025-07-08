@@ -14,7 +14,6 @@ import {
 
 export function ProfileDefaultContent({ user, isLoading }) {
   const status = user?.id_verified?.status;
-  console.log('status', status);
   return (
     <div className="grid grid-cols-1 xl:grid-cols-3 gap-5 lg:gap-7.5">
       <div className="col-span-1">
@@ -30,7 +29,7 @@ export function ProfileDefaultContent({ user, isLoading }) {
       <div className="col-span-2">
         <div className="flex flex-col gap-5 lg:gap-7.5">
           <div className="flex flex-col gap-5 lg:gap-7.5">
-            {status !== 2 && <VerifyIdentity user={user} />}
+            {status != 1 && <VerifyIdentity user={user} />}
             <VerifyBadge />
             <Summary />
           </div>

@@ -6,6 +6,6 @@ export const addRequiredDataFreelancer = async (data) => {
     const response = await apiTaqat.post('/freelancer/save-data', data);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };

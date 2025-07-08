@@ -12,6 +12,7 @@
     "linkRequired": "Link is required",
     "languageRequired": "Language is required",
     "levelRequired": "Level is required",
+    "languageDuplicate": "This language has already been added. Please choose a different one",
 
     "firstNameRequired": "First name is required",
     "fatherNameRequired": "Father name is required",
@@ -32,6 +33,7 @@
     "endMonthRequired": "End month is required when end year is selected",
     "endYearRequired": "End year is required when end month is selected",
     "endYearAfterStartYear": "The end year must be a date after or equal to start year",
+    "noFutureDatesAllowed": "Future dates are not allowed",
 
     "photoRequired": "Please upload a photo.",
     "photoSize": "The photo size must not exceed 800x800 pixels.",
