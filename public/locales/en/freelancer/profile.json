@@ -137,7 +137,7 @@
     "cancelBtn":"Cancel",
     "saveBtn":"Save",
     "addPhotos": "Add Photos",
-    "addID": "passport, national ID",
+    "addID": "passport or national ID",
     "maxImages": "Max 6 images",
     "imageType": "JPG or PNG, max size: 5MB",
     "edit": "Edit",

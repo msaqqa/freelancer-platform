@@ -1,7 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
@@ -75,15 +75,15 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                 <img
                   src={toAbsoluteUrl('/media/icons/gallery-light.svg')}
                   alt="Add Image"
-                  className="dark:hidden mx-auto"
+                  className="inline-block dark:hidden mx-auto mb-2"
                   MaxImages
                 />
                 <img
                   src={toAbsoluteUrl('/media/icons/gallery-dark.svg')}
                   alt="Add Image"
-                  className="light:hidden mx-auto"
+                  className="inline-block light:hidden mx-auto mb-2"
                 />
-                <div className="text-sm font-medium mb-2">{t('AddPhoto')}</div>
+                <div className="text-sm font-medium mb-4">{t('AddPhoto')}</div>
                 <ul
                   className={`flex w-full ${multiple ? 'flex-col justify-center' : 'list-disc flex-row justify-around'} text-center text-xs`}
                 >

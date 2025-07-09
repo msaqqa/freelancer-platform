@@ -11,16 +11,15 @@ function NewUserlayout({ children }) {
 
   useEffect(() => {
     if (isLoading) return;
-    if (!user || isError) {
-      router.push('/signin');
+    if (!user || isError) router.push('/signin');
+    if (!user?.save_data) {
+      if (user?.type) {
+        router.push('/new-user/required-data');
+      } else {
+        router.push('/new-user/account-type');
+      }
     }
-    if (user?.type && !user?.save_data) {
-      router.push('/new-user/required-data');
-    } else if (!user?.type && !user?.save_data) {
-      router.push('/new-user/account-type');
-    } else {
-      notFound();
-    }
+    if (user?.save_data && user?.type) notFound();
   }, [isLoading, user, router]);
 
   if (isLoading) {

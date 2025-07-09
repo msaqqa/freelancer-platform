@@ -1,4 +1,5 @@
 import { RiErrorWarningFill } from '@remixicon/react';
+import i18n from 'i18next';
 import Cookies from 'js-cookie';
 import { toast } from 'sonner';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -20,17 +21,19 @@ export const ERROR_CODES = {
 /**
  * Default error messages for different scenarios
  */
+const t = (key) => {
+  return i18n.isInitialized ? i18n.t(`${key}`, { ns: 'errorMessages' }) : key;
+};
 const DEFAULT_MESSAGES = {
-  [ERROR_CODES.UNAUTHORIZED]: 'Your session has expired. Please login again.',
-  [ERROR_CODES.FORBIDDEN]: 'You do not have permission to perform this action.',
-  [ERROR_CODES.NOT_FOUND]: 'The requested resource was not found.',
-  [ERROR_CODES.VALIDATION_ERROR]: 'Please check your input and try again.',
-  [ERROR_CODES.INTERNAL_SERVER_ERROR]: 'An internal server error occurred.',
-  [ERROR_CODES.SERVICE_UNAVAILABLE]: 'The service is currently unavailable.',
-  [ERROR_CODES.NETWORK_ERROR]:
-    'Unable to connect to the server. Please check your internet connection.',
-  [ERROR_CODES.TIMEOUT_ERROR]: 'The request timed out. Please try again.',
-  DEFAULT: 'An unexpected error occurred.',
+  [ERROR_CODES.UNAUTHORIZED]: t('errors.unauthorized'),
+  [ERROR_CODES.FORBIDDEN]: t('errors.forbidden'),
+  [ERROR_CODES.NOT_FOUND]: t('errors.notFound'),
+  [ERROR_CODES.VALIDATION_ERROR]: t('errors.validationError'),
+  [ERROR_CODES.INTERNAL_SERVER_ERROR]: t('errors.internalServerError'),
+  [ERROR_CODES.SERVICE_UNAVAILABLE]: t('errors.serviceUnavailable'),
+  [ERROR_CODES.NETWORK_ERROR]: t('errors.networkError'),
+  [ERROR_CODES.TIMEOUT_ERROR]: t('errors.timeoutError'),
+  DEFAULT: t('errors.default'),
 };
 
 /**

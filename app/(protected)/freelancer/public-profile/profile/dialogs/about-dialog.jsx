@@ -168,19 +168,11 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
                     {fp('readyWork')}
                   </FormLabel>
                   <FormControl>
-                    <div className="flex items-center gap-2">
-                      <FormLabel
-                        htmlFor="auto-update"
-                        className="text-foreground text-sm"
-                      >
-                        {fp('availableHire')}
-                      </FormLabel>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        size="sm"
-                      />
-                    </div>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      size="sm"
+                    />
                   </FormControl>
                 </FormItem>
               )}

@@ -27,6 +27,15 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
   const { t: tv } = useTranslation('validation');
   const queryClient = useQueryClient();
 
+  // useEffect(() => {
+  //   const scrollAreaContent = document.querySelector(
+  //     '.styles_Viewport > div > div',
+  //   );
+  //   if (scrollAreaContent) {
+  //     scrollAreaContent.style.display = 'block';
+  //   }
+  // }, []);
+
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerIdentitySchema(tv)),
@@ -114,7 +123,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
         className="space-y-6 py-0 ps-6 pb-5 flex flex-col justify-center flex-grow min-h-0"
       >
         {step === 4 && (
-          <ScrollArea className="pe-3 me-3 flex-1 flex-grow min-h-0">
+          <div className="overflow-auto styles_Viewport pe-3 me-3 flex-1 flex-grow min-h-0">
             <Steps currentStep={1} t={t} />
             <div>
               <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-10">
@@ -269,10 +278,10 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                 </div>
               </div>
             </div>
-          </ScrollArea>
+          </div>
         )}
         {step === 5 && (
-          <ScrollArea className="pe-3 me-3 flex-1 flex-grow min-h-0">
+          <div className="overflow-auto pe-3 me-3 flex-1 flex-grow min-h-0">
             <Steps currentStep={2} t={t} />
             <div>
               <div className="flex flex-col items-center gap-y-2.5 space-y-px w-full md:w-[80%] mx-auto mb-5">
@@ -306,7 +315,7 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                 )}
               />
             </div>
-          </ScrollArea>
+          </div>
         )}
         {(step === 4 || step === 5) && (
           <div className="pe-6 flex flex-col md:flex-row md:justify-end gap-2.5">
