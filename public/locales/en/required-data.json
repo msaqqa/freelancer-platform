@@ -34,8 +34,8 @@
     "description": "Description ( bio )",
     "descriptionHolder": "Enter Description ",
     "hourlyRate": "Hourly Rate",
-    "availability": "Availability",
-    "availabilityHolder": "Availabe to hire",
+    "availability": "Ready To Work",
+    "availabilityHolder": "Ready To Work",
 
     "alertSuccess": "Data saved successfully",
     "loading": "Loading...",

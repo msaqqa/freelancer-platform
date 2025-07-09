@@ -47,9 +47,10 @@ function useSignin() {
       }
     },
     onError: (error) => {
-      if (error?.data?.data) {
-        const is_verified = error?.data?.data?.is_verified;
-        setIsVerified(is_verified);
+      const hasIsVerified = 'is_verified' in (error?.data?.data || {});
+      const verified = error.data.data.is_verified;
+      if (hasIsVerified) {
+        setIsVerified(verified);
       }
     },
   });

@@ -32,8 +32,8 @@
     "description": "الوصف (السيرة الذاتية)",
     "descriptionHolder": "أدخل الوصف",
     "hourlyRate": "الأجر بالساعة",
-    "availability": "التوفر",
-    "availabilityHolder": "متاح للتوظيف",
+    "availability": "جاهز للعمل",
+    "availabilityHolder": "جاهز للعمل",
 
     "alertSuccess": "تم حفظ البيانات بنجاح",
     "loading": "جاري التحميل...",
