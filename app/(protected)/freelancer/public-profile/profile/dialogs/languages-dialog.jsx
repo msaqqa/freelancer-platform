@@ -70,13 +70,18 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
 
   // Reset form values when dialog is opened
   useEffect(() => {
-    const langFormat = languages.map((item) => ({
-      language_id: item?.id?.toString(),
-      level: item?.level,
-    }));
+    let languageFieldsData;
+    if (languages.length > 0) {
+      languageFieldsData = languages.map((item) => ({
+        language_id: item?.id?.toString(),
+        level: item?.level,
+      }));
+    } else {
+      languageFieldsData[{ language_id: '', level: '' }];
+    }
     if (open) {
       form.reset({
-        languageFields: langFormat || [],
+        languageFields: languageFieldsData,
       });
     }
   }, [form, open, languages]);

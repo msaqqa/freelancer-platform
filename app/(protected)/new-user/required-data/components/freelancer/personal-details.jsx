@@ -264,7 +264,7 @@ const PersonalDetails = ({ setActiveSection }) => {
 
         <div className="flex justify-end pt-2.5">
           <Button type="button" onClick={handleClickBtn}>
-            {t('saveBtn')}
+            {t('continueBtn')}
           </Button>
         </div>
       </CardContent>

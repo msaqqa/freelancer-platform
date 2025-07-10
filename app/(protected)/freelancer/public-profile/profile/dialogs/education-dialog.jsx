@@ -577,14 +577,18 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 />
               </div>
 
-              <DialogFooter className="flex flex-col-reverse sm:flex-row justify-start sm:justify-between pt-5 gap-2.5">
-                <Button
-                  variant="destructive"
-                  type="button"
-                  onClick={() => setOpenDeleteDialog(true)}
-                >
-                  {fp('deleteEducation')}
-                </Button>
+              <DialogFooter
+                className={`flex flex-col-reverse sm:flex-row justify-start  ${educationId ? 'sm:justify-between' : 'sm:justify-end'} pt-5 gap-2.5`}
+              >
+                {educationId && (
+                  <Button
+                    variant="destructive"
+                    type="button"
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    {fp('deleteEducation')}
+                  </Button>
+                )}
                 <div className="flex flex-col-reverse sm:flex-row gap-2.5">
                   <Button type="button" variant="outline" onClick={closeDialog}>
                     {t('cancelBtn')}

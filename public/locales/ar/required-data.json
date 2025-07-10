@@ -9,10 +9,11 @@
     "accountTypeClient": "أريد توظيف مواهب جديدة.",
     "accountTypeFreelancer": "أريد إيجاد فرص عمل جديدة.",
     "saveBtn": "حفظ التعديلات",
+    "continueBtn": "متابعة",
 
     "personalDetailsTitle": "التفاصيل الشخصية",
     "photo": "الصورة",
-    "name": "الاسم",
+    "name": "الإسم",
     "nameHolder": "أدخل اسمك",
     "birthDate": "تاريخ الميلاد",
     "dateHolder": "اختر تاريخًا",
@@ -42,8 +43,8 @@
     "clientPersonalDetails": {
     "personalDetailsTitle": "التفاصيل الشخصية",
     "photo": "الصورة",
-    "name": "اسم العرض",
-    "nameHolder": "أدخل اسم العرض",
+    "name": "إسم العرض",
+    "nameHolder": "أدخل اسمك",
     "bio": "نبذة قصيرة/وصف",
     "bioHolder": "قدّم خبرتك في بضع جمل (اختياري)",
     "country": "الموقع",
