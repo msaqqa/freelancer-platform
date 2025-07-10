@@ -122,11 +122,9 @@ export async function getAuthUserData() {
 }
 
 // change the user language preference via the API
-export async function changeLang(languageCode) {
+export async function changeLang(lang) {
   try {
-    const response = await apiTaqat.post('/lang', {
-      language: languageCode,
-    });
+    const response = await apiTaqat.post('/lang', lang);
     return response.data;
   } catch (error) {
     throw error;

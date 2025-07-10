@@ -43,7 +43,7 @@ export function UserDropdownMenu({ trigger }) {
 
   const handleLanguage = async (lang) => {
     changeLanguage(lang);
-    await changeLang(lang);
+    await changeLang({ lang });
   };
 
   const handleThemeToggle = (checked) => {
