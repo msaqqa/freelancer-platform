@@ -63,7 +63,14 @@
         "month": "Month",
         "year": "Year",
         "stillStudying": " I’m still studying",
-        "present": "Present"
+        "present": "Present",
+
+        "deleteEducation": "Delete Education",
+        "educationDeleteConfirm": "Confirm Delete",
+        "educationDeleteDesc": "Are you sure you want to delete the education ?",
+        "educationDeleteCancelBtn" : "Cancel",
+        "educationDeleteBtn" : "Delete"
+
     },
     "summary" : {
         "summaryTitle": "Summary",

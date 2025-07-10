@@ -63,7 +63,13 @@
     "month": "شهر",
     "year": "سنة",
     "stillStudying": "ما زلت أدرس",
-    "present": "قيد الدراسة"
+    "present": "قيد الدراسة",
+    "deleteEducation": "حذف التعليم",
+    
+    "educationDeleteConfirm": "تأكيد الحذف",
+    "educationDeleteDesc": "هل أنت متأكد أنك تريد حذف التعليم؟",
+    "educationDeleteCancelBtn": "إلغاء",
+    "educationDeleteBtn": "حذف"
   },
   "summary": {
     "summaryTitle": "الملخص",

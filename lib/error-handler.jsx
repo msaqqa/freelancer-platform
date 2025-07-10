@@ -25,15 +25,15 @@ const t = (key) => {
   return i18n.isInitialized ? i18n.t(`${key}`, { ns: 'errorMessages' }) : key;
 };
 const DEFAULT_MESSAGES = {
-  [ERROR_CODES.UNAUTHORIZED]: t('errors.unauthorized'),
-  [ERROR_CODES.FORBIDDEN]: t('errors.forbidden'),
-  [ERROR_CODES.NOT_FOUND]: t('errors.notFound'),
-  [ERROR_CODES.VALIDATION_ERROR]: t('errors.validationError'),
-  [ERROR_CODES.INTERNAL_SERVER_ERROR]: t('errors.internalServerError'),
-  [ERROR_CODES.SERVICE_UNAVAILABLE]: t('errors.serviceUnavailable'),
-  [ERROR_CODES.NETWORK_ERROR]: t('errors.networkError'),
-  [ERROR_CODES.TIMEOUT_ERROR]: t('errors.timeoutError'),
-  DEFAULT: t('errors.default'),
+  [ERROR_CODES.UNAUTHORIZED]: t('unauthorized'),
+  [ERROR_CODES.FORBIDDEN]: t('forbidden'),
+  [ERROR_CODES.NOT_FOUND]: t('notFound'),
+  [ERROR_CODES.VALIDATION_ERROR]: t('validationError'),
+  [ERROR_CODES.INTERNAL_SERVER_ERROR]: t('internalServerError'),
+  [ERROR_CODES.SERVICE_UNAVAILABLE]: t('serviceUnavailable'),
+  [ERROR_CODES.NETWORK_ERROR]: t('networkError'),
+  [ERROR_CODES.TIMEOUT_ERROR]: t('timeoutError'),
+  DEFAULT: t('default'),
 };
 
 /**

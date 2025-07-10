@@ -195,8 +195,8 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
                         {...field}
                       />
                       <img
-                        src={toAbsoluteUrl('/media/app/dollar-square.svg')}
-                        className="bg-background h-[20px]"
+                        src={toAbsoluteUrl('/media/icons/dollar-light.svg')}
+                        className="h-[20px]"
                         alt="image"
                       />
                     </InputWrapper>

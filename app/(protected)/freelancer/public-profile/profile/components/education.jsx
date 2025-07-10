@@ -60,7 +60,7 @@ const Education = () => {
             variant="ghost"
             onClick={() => {
               setOpenDialog(true);
-              setEducationId(null);
+              setEducationId(undefined);
             }}
           >
             <Plus size={16} className="text-accent-foreground" /> {t('add')}
@@ -80,7 +80,10 @@ const Education = () => {
               light: '/media/icons/education-light.svg',
               dark: '/media/icons/education-dark.svg',
             }}
-            openDialog={() => setOpenDialog(true)}
+            openDialog={() => {
+              setOpenDialog(true);
+              setEducationId(undefined);
+            }}
           />
         )}
       </CardContent>

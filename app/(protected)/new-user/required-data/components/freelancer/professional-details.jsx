@@ -15,7 +15,7 @@ import {
   FormLabel,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+import { Input, InputWrapper } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import {
   Select,
@@ -245,22 +245,21 @@ const ProfessionalDetails = ({ isProcessing }) => {
                 {t('hourlyRate')}
               </FormLabel>
               <div className="flex flex-col flex-grow">
-                <div className="relative">
-                  <FormControl>
+                <FormControl>
+                  <InputWrapper>
                     <Input
                       type="text"
                       id="hourlyRate"
-                      placeholder="0.00"
+                      placeholder={t('hourlyRateHolder')}
                       className="focus-visible:ring-0"
                       {...field}
                     />
-                  </FormControl>
-                  <img
-                    src={toAbsoluteUrl('/media/app/dollar-square.svg')}
-                    className="bg-background absolute right-0 top-1/2 transform -translate-1/2 text-sm text-muted-foreground h-[20px]"
-                    alt=""
-                  />
-                </div>
+                    <img
+                      src={toAbsoluteUrl('/media/icons/dollar-light.svg')}
+                      className="h-[20px]"
+                    />
+                  </InputWrapper>
+                </FormControl>
                 <FormMessage className="mt-1" />
               </div>
             </FormItem>

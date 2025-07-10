@@ -9,7 +9,7 @@ export const ClientCompanyDataSchema = (t) => {
 
     photo: z
       .instanceof(File, { message: t('photoRequired') })
-      .refine((file) => file.size <= 800 * 800, {
+      .refine((file) => file.size <= 5 * 1024 * 1024, {
         message: t('photoSize'),
       })
       .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {

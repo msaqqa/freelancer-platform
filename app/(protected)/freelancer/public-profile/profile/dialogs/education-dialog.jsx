@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -42,11 +42,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinners';
+import EducationDeleteDialog from './education-delete-dialog';
 import { FreelancerEducationSchema } from './forms';
 
 // get freelancer education by id
 export const EducationDialog = ({ open, closeDialog, educationId }) => {
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { t } = useTranslation('freelancerProfile');
   const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`education.${key}`);
@@ -94,9 +97,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // Reset form values when dialog is opened
   useEffect(() => {
-    const startDate = formatDate(education?.start_date);
-    const endDate = formatDate(education?.end_date);
-    if (open) {
+    if (open && !educationId) {
       form.reset({
         university: '',
         study: '',
@@ -109,7 +110,10 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         stillStudying: false,
       });
     }
+
     if (open && education && !educationLoading) {
+      const startDate = formatDate(education?.start_date);
+      const endDate = formatDate(education?.end_date);
       form.reset({
         university: education?.university,
         study: education?.field_of_study,
@@ -188,6 +192,42 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
     };
     console.log('updateValues', updateValues);
     mutation.mutate(updateValues);
+  };
+
+  const Loading = () => {
+    return (
+      <>
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="flex-1 w-full space-y-2">
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-10 w-full rounded-md" />
+          </div>
+        ))}
+        {[...Array(2)].map((_, index) => (
+          <div className="flex flex-col md:flex-row gap-2.5">
+            <div key={index} className="flex-1 w-full space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+            <div key={index} className="flex-1 w-full space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </div>
+        ))}
+        <div className="flex items-center space-x-2">
+          <Skeleton className="h-4 w-4 rounded-sm" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <div className="flex flex-col-reverse sm:flex-row justify-start sm:justify-between pt-5 gap-2.5">
+          <Skeleton className="h-10 w-36" />
+          <div className="flex flex-col-reverse sm:flex-row gap-2.5">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-28" />
+          </div>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -537,21 +577,38 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 />
               </div>
 
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={closeDialog}>
-                  {t('cancelBtn')}
-                </Button>
+              <DialogFooter className="flex flex-col-reverse sm:flex-row justify-start sm:justify-between pt-5 gap-2.5">
                 <Button
-                  type="submit"
-                  disabled={isLoading || !form.formState.isDirty}
+                  variant="destructive"
+                  type="button"
+                  onClick={() => setOpenDeleteDialog(true)}
                 >
-                  {isLoading && <Spinner className="animate-spin" />}
-                  {t('saveBtn')}
+                  {fp('deleteEducation')}
                 </Button>
+                <div className="flex flex-col-reverse sm:flex-row gap-2.5">
+                  <Button type="button" variant="outline" onClick={closeDialog}>
+                    {t('cancelBtn')}
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !form.formState.isDirty}
+                  >
+                    {isLoading && <Spinner className="animate-spin" />}
+                    {t('saveBtn')}
+                  </Button>
+                </div>
               </DialogFooter>
             </form>
           </Form>
         </ScrollArea>
+        <EducationDeleteDialog
+          open={openDeleteDialog}
+          closeDialog={() => {
+            setOpenDeleteDialog(false);
+            closeDialog();
+          }}
+          educationId={educationId}
+        />
       </DialogContent>
     </Dialog>
   );

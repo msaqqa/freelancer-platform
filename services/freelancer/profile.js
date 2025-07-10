@@ -154,6 +154,18 @@ export async function updateFreelancerEducationById(
   }
 }
 
+// delete a freelancer education (by ID)
+export async function deleteFreelancerEducationById(educationId) {
+  try {
+    const response = await apiTaqat.delete(
+      `/freelancer/educations/${educationId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+}
+
 // get the list of freelancer educations
 export async function getFreelancerEducations() {
   try {
