@@ -57,7 +57,7 @@ export const CLIENT_MENU_SIDEBAR = [
     children: [
       {
         title: 'Profile',
-        path: '/client/public-profile/profiles/default',
+        path: '/client/public-profile/profile',
       },
       {
         title: 'Projects',
@@ -709,7 +709,7 @@ export const CLIENT_MENU_MEGA_MOBILE = [
           {
             title: 'Default',
             icon: Badge,
-            path: '/client/public-profile/profiles/default',
+            path: '/client/public-profile/profile',
           },
           {
             title: 'Creator',

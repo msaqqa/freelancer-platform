@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { Pencil, SquarePen } from 'lucide-react';
+import { Pencil } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { getFreelancerSummary } from '@/services/freelancer/profile';
@@ -52,6 +52,24 @@ const Summary = () => {
   const summary = summaryData?.data ?? {};
   const items = summary?.images_urls ?? [];
 
+  function checkContentObject(obj) {
+    for (const key in obj) {
+      if (obj.hasOwnProperty(key)) {
+        const value = obj[key];
+        if (
+          value !== null &&
+          value !== '' &&
+          (Array.isArray(value) ? value.length > 0 : true)
+        ) {
+          return true;
+        }
+      }
+    }
+
+    return false;
+  }
+  const isSummaryFill = checkContentObject(summary);
+
   const renderItem = (item, index) => {
     return (
       <div
@@ -70,19 +88,19 @@ const Summary = () => {
         <h2 className="text-xl font-semibold leading-none tracking-tight">
           {fp('summaryTitle')}
         </h2>
-        {Object.keys(summary).length > 0 && (
+        {isSummaryFill && (
           <Button variant="ghost" onClick={() => setOpenDialog(true)}>
             <Pencil size={16} className="text-accent-foreground" /> {t('edit')}
           </Button>
         )}
       </CardHeader>
 
-      <div className="grid gap-5 mb-5 px-7.5">
+      <div className="px-7.5 mb-5 ">
         {isLoading ? (
           <Loading />
-        ) : Object.keys(summary).length ? (
+        ) : isSummaryFill ? (
           <>
-            <p className="text-sm text-foreground leading-5.5">
+            <p className="text-sm text-foreground leading-5.5 mb-10">
               {summary?.bio}
             </p>
             <h4 className="text-base font-semibold leading-none tracking-tight mb-5">

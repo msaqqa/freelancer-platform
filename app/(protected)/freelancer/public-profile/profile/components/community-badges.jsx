@@ -28,7 +28,7 @@ const CommunityBadges = ({ user, isLoading }) => {
 
   const renderItem = (item) => {
     return (
-      <div className="flex items-center gap-x-2.5">
+      <div key={item?.id} className="flex items-center gap-x-2.5">
         <img
           src={toAbsoluteUrl(item?.icon)}
           className="size-[20px]"

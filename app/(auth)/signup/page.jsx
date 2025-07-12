@@ -240,7 +240,7 @@ export default function Page() {
           </div>
 
           <div className="text-sm text-muted-foreground text-center">
-            {t('haveAccount')}
+            {t('haveAccount')}{' '}
             <Link
               href="/signin"
               className="text-sm text-sm font-semibold text-foreground hover:text-primary"

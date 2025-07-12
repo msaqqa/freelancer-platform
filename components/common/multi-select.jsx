@@ -16,12 +16,21 @@ const MultiSelect = ({
   ...props
 }) => {
   const { theme } = useTheme();
-  const [systemTheme, setSystemTheme] = useState('light');
+  const [systemTheme, setSystemTheme] = useState(() => {
+    if (theme === 'system') {
+      return window.matchMedia('(prefers-color-scheme: dark)').matches
+        ? 'dark'
+        : 'light';
+    }
+    return theme;
+  });
 
   useEffect(() => {
     if (theme === 'system') {
       const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       setSystemTheme(mediaQuery.matches ? 'dark' : 'light');
+    } else {
+      setSystemTheme(theme);
     }
   }, [theme]);
 
@@ -35,8 +44,11 @@ const MultiSelect = ({
       getOptionValue={getOptionValue}
       placeholder={placeholder}
       isLoading={isLoading}
-      className="bg-background border border-input rounded-md text-sm h-8.5 text-foreground text-[0.8125rem]"
+      className={`bg-background border border-input rounded-md text-sm min-h-8.5 text-foreground text-[0.8125rem] ${className}`}
       styles={{
+        indicatorContainer: (base) => ({
+          display: none,
+        }),
         control: (base) => ({
           ...base,
           height: '100%',

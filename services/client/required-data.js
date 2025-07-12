@@ -6,6 +6,6 @@ export const saveClientRequiredData = async (data) => {
     const response = await apiTaqat.post('/client/save-data', data);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };

@@ -1,0 +1,11 @@
+{
+    "unauthorized": "Your session has expired. Please login again.",
+    "forbidden": "You do not have permission to perform this action.",
+    "notFound": "The requested resource was not found.",
+    "validationError": "Please check your input and try again.",
+    "internalServerError": "An internal server error occurred.",
+    "serviceUnavailable": "The service is currently unavailable.",
+    "networkError": "Unable to connect to the server. Please check your internet connection.",
+    "timeoutError": "The request timed out. Please try again.",
+    "default": "An unexpected error occurred."
+}

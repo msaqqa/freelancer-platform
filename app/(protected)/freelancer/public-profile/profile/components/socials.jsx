@@ -31,9 +31,9 @@ const Socials = ({ user, isLoading }) => {
     );
   };
 
-  const renderItems = (item) => {
+  const renderItems = (item, index) => {
     return (
-      <div key={item.id} className="flex items-center gap-2.5">
+      <div key={index} className="flex items-center gap-2.5">
         <div dangerouslySetInnerHTML={{ __html: item.icon }} />
         <Link
           href={item.link}
@@ -60,8 +60,8 @@ const Socials = ({ user, isLoading }) => {
           <Loading />
         ) : socials?.length > 0 ? (
           <div className="grid gap-y-5">
-            {socials.map((item) => {
-              return renderItems(item);
+            {socials.map((item, index) => {
+              return renderItems(item, index);
             })}
           </div>
         ) : (

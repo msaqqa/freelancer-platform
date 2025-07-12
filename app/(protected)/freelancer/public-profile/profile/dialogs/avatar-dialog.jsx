@@ -28,7 +28,7 @@ import { Spinner } from '@/components/ui/spinners';
 import { AvatarInput } from '@/app/components/partials/common/avatar-input';
 import { AvatarSchema } from './forms';
 
-export const AvatarDialog = ({ open, closeDialog }) => {
+export const AvatarDialog = ({ open, closeDialog, user }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation('freelancerProfile');
   const { t: tv } = useTranslation('validation');
@@ -70,21 +70,6 @@ export const AvatarDialog = ({ open, closeDialog }) => {
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       closeDialog();
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const onSubmit = (values) => {
@@ -117,6 +102,7 @@ export const AvatarDialog = ({ open, closeDialog }) => {
                   </span>
                   <FormControl>
                     <AvatarInput
+                      defaultImg={user?.photo}
                       value={field.value}
                       onChange={(val) => {
                         field.onChange(val);

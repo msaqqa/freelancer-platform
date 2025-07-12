@@ -9,7 +9,9 @@ export const FreelancerRequiredDataSchema = (t) => {
 
     photo: z
       .instanceof(File, { message: t('photoRequired') })
-      .refine((file) => file.size <= 800 * 800, { message: t('photoSize') })
+      .refine((file) => file.size <= 5 * 1024 * 1024, {
+        message: t('photoSize'),
+      })
       .refine((file) => ['image/jpeg', 'image/png'].includes(file.type), {
         message: t('photoType'),
       }),
@@ -26,12 +28,6 @@ export const FreelancerRequiredDataSchema = (t) => {
     }),
 
     country: z.string().min(1, { message: t('countryRequired') }),
-
-    mobile: z
-      .string()
-      .min(1, { message: t('mobileRequired') })
-      .max(15, { message: t('mobileLength') })
-      .regex(/^[0-9]{1,15}$/, { message: t('mobileDigits') }),
 
     category: z.string().min(1, { message: t('categoryRequired') }),
 

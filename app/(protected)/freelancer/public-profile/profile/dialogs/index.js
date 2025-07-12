@@ -7,3 +7,4 @@ export * from './socials-dialog';
 export * from './summary-dialog';
 export * from './verify-badge-dialog';
 export * from './education-dialog';
+export * from './education-delete-dialog';

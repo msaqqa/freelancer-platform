@@ -26,4 +26,57 @@ function Progress({ className, indicatorClassName, value, ...props }) {
   );
 }
 
-export { Progress };
+function CircularProgress({
+  value = 0,
+  size = 128,
+  strokeWidth = 8,
+  strokeColor = '#D9D9D9',
+  trailColor = '#00803A',
+  valueSize = 'xl',
+}) {
+  const radius = (size - strokeWidth) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const strokeDashoffset = circumference - (value / 100) * circumference;
+  return (
+    <div
+      className="relative flex items-center justify-center"
+      style={{ width: size, height: size }}
+    >
+      {/* Circle Progress*/}
+      <svg
+        className="absolute"
+        width={size}
+        height={size}
+        viewBox={`0 0 ${size} ${size}`}
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={strokeColor}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+        />
+        <circle
+          cx={size / 2}
+          cy={size / 2}
+          r={radius}
+          stroke={trailColor}
+          strokeWidth={strokeWidth}
+          fill="transparent"
+          strokeDasharray={circumference}
+          strokeDashoffset={strokeDashoffset}
+          style={{ transition: 'stroke-dashoffset 0.5s ease 0s' }}
+        />
+      </svg>
+
+      {/* Circle value */}
+      <span
+        className={`text-${valueSize} font-semibold text-mono`}
+      >{`%${value}`}</span>
+    </div>
+  );
+}
+
+export { Progress, CircularProgress };

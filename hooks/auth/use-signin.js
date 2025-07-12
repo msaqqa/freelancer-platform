@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/stores/user-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
@@ -14,7 +13,6 @@ function useSignin() {
   const { t } = useTranslation('auth');
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [isVerified, setIsVerified] = useState(true);
-  const { setUser } = useUserStore();
 
   const form = useForm({
     resolver: zodResolver(getSigninSchema(t)),
@@ -26,15 +24,9 @@ function useSignin() {
     mode: 'onBlur',
   });
 
-  const onSubmit = (values) => {
-    setIsVerified(true);
-    mutation.mutate(values);
-  };
-
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data) => {
-      setUser(data?.data);
       // store token in the cookies
       if (form.getValues('rememberMe')) {
         Cookies.set('token', data?.data?.token, { expires: 30 }); // 30 days
@@ -55,13 +47,18 @@ function useSignin() {
       }
     },
     onError: (error) => {
-      if (error?.data?.is_verified) {
-        setIsVerified(false);
+      const hasIsVerified = 'is_verified' in (error?.data?.data || {});
+      const verified = error.data.data.is_verified;
+      if (hasIsVerified) {
+        setIsVerified(verified);
       }
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
     },
   });
+
+  const onSubmit = (values) => {
+    setIsVerified(true);
+    mutation.mutate(values);
+  };
 
   const handleGoogleSignin = async () => {
     await getGoogleOAuthUrl();

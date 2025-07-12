@@ -2,7 +2,7 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -25,6 +25,17 @@ import { GalleryInput, Steps } from './';
 
 export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
   const { t: tv } = useTranslation('validation');
+  const queryClient = useQueryClient();
+
+  // useEffect(() => {
+  //   const scrollAreaContent = document.querySelector(
+  //     '.styles_Viewport > div > div',
+  //   );
+  //   if (scrollAreaContent) {
+  //     scrollAreaContent.style.display = 'block';
+  //   }
+  // }, []);
+
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerIdentitySchema(tv)),
@@ -55,7 +66,6 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
       return response;
     },
     onSuccess: (data) => {
-      handleNextStep();
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
@@ -69,21 +79,8 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
           position: 'top-center',
         },
       );
-    },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      handleNextStep();
     },
   });
 
@@ -120,133 +117,38 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
   };
 
   return (
-    <ScrollArea className="py-0 mb-5 ps-6 pe-3 me-3 flex-1">
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="space-y-6 h-full flex flex-col justify-center"
-        >
-          {step === 4 && (
-            <>
-              <Steps currentStep={1} t={t} />
-              <div>
-                <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-10">
-                  <h2 className="text-xl font-semibold text-mono">
-                    {t('stepPersonalTitle')}
-                  </h2>
-                  <p className="text-sm text-secondary-foreground leading-5.5 text-center">
-                    {t('stepPersonalDesc')}
-                  </p>
-                </div>
-                <div className="flex flex-col gap-4.5">
-                  <div className="flex flex-col md:flex-row gap-2.5">
-                    {/* First Name */}
-                    <div className="flex-1 w-full">
-                      <FormField
-                        control={form.control}
-                        name="firstName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{t('nameLabel')}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                id="firstName"
-                                placeholder={t('nameHolder')}
-                                className="focus-visible:ring-0"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    {/* Father’s Name */}
-                    <div className="flex-1 w-full">
-                      <FormField
-                        control={form.control}
-                        name="fatherName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{t('fatherLabel')}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                id="fatherName"
-                                placeholder={t('fatherHolder')}
-                                className="focus-visible:ring-0"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-                  <div className="flex flex-col md:flex-row gap-2.5">
-                    {/* Grandfather Name */}
-                    <div className="flex-1 w-full">
-                      <FormField
-                        control={form.control}
-                        name="grandfatherName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{t('grandfatherLabel')}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                id="grandfatherName"
-                                placeholder={t('grandfatherHolder')}
-                                className="focus-visible:ring-0"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-
-                    {/* Family Name */}
-                    <div className="flex-1 w-full">
-                      <FormField
-                        control={form.control}
-                        name="familyName"
-                        render={({ field }) => (
-                          <FormItem>
-                            <FormLabel>{t('familyLabel')}</FormLabel>
-                            <FormControl>
-                              <Input
-                                type="text"
-                                id="familyName"
-                                placeholder={t('familyHolder')}
-                                className="focus-visible:ring-0"
-                                {...field}
-                              />
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        )}
-                      />
-                    </div>
-                  </div>
-
-                  {/* ID number */}
+    <Form {...form}>
+      <form
+        onSubmit={form.handleSubmit(handleSubmit)}
+        className="space-y-6 py-0 ps-6 pb-5 flex flex-col justify-center flex-grow min-h-0"
+      >
+        {step === 4 && (
+          <div className="overflow-auto styles_Viewport pe-3 me-3 flex-1 flex-grow min-h-0">
+            <Steps currentStep={1} t={t} />
+            <div>
+              <div className="flex flex-col items-center gap-y-2.5 w-full md:w-[80%] mx-auto mb-10">
+                <h2 className="text-xl font-semibold text-mono">
+                  {t('stepPersonalTitle')}
+                </h2>
+                <p className="text-sm text-secondary-foreground leading-5.5 text-center">
+                  {t('stepPersonalDesc')}
+                </p>
+              </div>
+              <div className="flex flex-col gap-4.5">
+                <div className="flex flex-col md:flex-row gap-2.5">
+                  {/* First Name */}
                   <div className="flex-1 w-full">
                     <FormField
                       control={form.control}
-                      name="IDNumber"
+                      name="firstName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t('idLabel')}</FormLabel>
+                          <FormLabel>{t('nameLabel')}</FormLabel>
                           <FormControl>
                             <Input
                               type="text"
-                              id="IDNumber"
-                              placeholder={t('idHolder')}
+                              id="firstName"
+                              placeholder={t('nameHolder')}
                               className="focus-visible:ring-0"
                               {...field}
                             />
@@ -257,19 +159,19 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                     />
                   </div>
 
-                  {/* Full address */}
+                  {/* Father’s Name */}
                   <div className="flex-1 w-full">
                     <FormField
                       control={form.control}
-                      name="fullAddress"
+                      name="fatherName"
                       render={({ field }) => (
                         <FormItem>
-                          <FormLabel>{t('addressLabel')}</FormLabel>
+                          <FormLabel>{t('fatherLabel')}</FormLabel>
                           <FormControl>
                             <Input
                               type="text"
-                              id="fullAddress"
-                              placeholder={t('addressHolder')}
+                              id="fatherName"
+                              placeholder={t('fatherHolder')}
                               className="focus-visible:ring-0"
                               {...field}
                             />
@@ -280,69 +182,166 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
                     />
                   </div>
                 </div>
-              </div>
-            </>
-          )}
-          {step === 5 && (
-            <>
-              <Steps currentStep={2} t={t} />
-              <div>
-                <div className="flex flex-col items-center gap-y-2.5 space-y-px w-full md:w-[80%] mx-auto mb-5">
-                  <h2 className="text-xl font-semibold text-mono">
-                    {t('stepIdTitle')}
-                  </h2>
-                  <p className="text-sm text-secondary-foreground leading-5.5 text-center">
-                    {t('stepIdDesc')}
-                  </p>
+                <div className="flex flex-col md:flex-row gap-2.5">
+                  {/* Grandfather Name */}
+                  <div className="flex-1 w-full">
+                    <FormField
+                      control={form.control}
+                      name="grandfatherName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t('grandfatherLabel')}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="grandfatherName"
+                              placeholder={t('grandfatherHolder')}
+                              className="focus-visible:ring-0"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
+
+                  {/* Family Name */}
+                  <div className="flex-1 w-full">
+                    <FormField
+                      control={form.control}
+                      name="familyName"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{t('familyLabel')}</FormLabel>
+                          <FormControl>
+                            <Input
+                              type="text"
+                              id="familyName"
+                              placeholder={t('familyHolder')}
+                              className="focus-visible:ring-0"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                 </div>
-                {/* Gallery */}
-                <FormField
-                  control={form.control}
-                  name="image"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel className="text-muted-foreground text-center mb-5">
-                        {t('idPhotoLabel')}
-                      </FormLabel>
-                      <FormControl>
-                        <GalleryInput
-                          multiple={false}
-                          onChange={(val) => {
-                            field.onChange(val);
-                            form.trigger('image');
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage className="mt-1" />
-                    </FormItem>
-                  )}
-                />
+
+                {/* ID number */}
+                <div className="flex-1 w-full">
+                  <FormField
+                    control={form.control}
+                    name="IDNumber"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('idLabel')}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            maxLength="9"
+                            id="IDNumber"
+                            placeholder={t('idHolder')}
+                            className="focus-visible:ring-0"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                {/* Full address */}
+                <div className="flex-1 w-full">
+                  <FormField
+                    control={form.control}
+                    name="fullAddress"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('addressLabel')}</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="text"
+                            id="fullAddress"
+                            placeholder={t('addressHolder')}
+                            className="focus-visible:ring-0"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
               </div>
-            </>
-          )}
-
-          {(step === 4 || step === 5) && (
-            <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
-              <Button type="button" variant="outline" onClick={handleBackStep}>
-                {t('backBtn')}
-              </Button>
-
-              {step === 4 && (
-                <Button type="button" onClick={handleContinueBtn}>
-                  {t('continueBtn')}
-                </Button>
-              )}
-
-              {step === 5 && (
-                <Button disabled={isProcessing}>
-                  {isProcessing && <Spinner className="animate-spin" />}
-                  {t('submitBtn')}
-                </Button>
-              )}
             </div>
-          )}
-        </form>
-      </Form>
-    </ScrollArea>
+          </div>
+        )}
+        {step === 5 && (
+          <div className="overflow-auto pe-3 me-3 flex-1 flex-grow min-h-0">
+            <Steps currentStep={2} t={t} />
+            <div>
+              <div className="flex flex-col items-center gap-y-2.5 space-y-px w-full md:w-[80%] mx-auto mb-5">
+                <h2 className="text-xl font-semibold text-mono">
+                  {t('stepIdTitle')}
+                </h2>
+                <p className="text-sm text-secondary-foreground leading-5.5 text-center">
+                  {t('stepIdDesc')}
+                </p>
+              </div>
+              {/* Gallery */}
+              <FormField
+                control={form.control}
+                name="image"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-muted-foreground text-center mb-5">
+                      {t('idPhotoLabel')}
+                    </FormLabel>
+                    <FormControl>
+                      <GalleryInput
+                        multiple={false}
+                        onChange={(val) => {
+                          field.onChange(val);
+                          form.trigger('image');
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage className="mt-1" />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+        )}
+        {(step === 4 || step === 5) && (
+          <div className="pe-6 flex flex-col md:flex-row md:justify-end gap-2.5">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => handleBackStep(step === 4 ? 2 : 1)}
+            >
+              {t('backBtn')}
+            </Button>
+
+            {step === 4 && (
+              <Button type="button" onClick={handleContinueBtn}>
+                {t('continueBtn')}
+              </Button>
+            )}
+
+            {step === 5 && (
+              <Button disabled={isProcessing}>
+                {isProcessing && <Spinner className="animate-spin" />}
+                {t('submitBtn')}
+              </Button>
+            )}
+          </div>
+        )}
+      </form>
+    </Form>
   );
 };

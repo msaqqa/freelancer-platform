@@ -69,7 +69,7 @@ function DialogContent({
       >
         {children}
         {close && (
-          <DialogClose className="cursor-pointer outline-0 absolute end-5 top-5 rounded-sm opacity-60 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+          <DialogClose className="cursor-pointer outline-0 absolute end-5 top-6 rounded-sm opacity-60 ring-offset-background transition-opacity hover:opacity-100 focus:outline-hidden disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
             <X className="size-4" />
             <span className="sr-only">Close</span>
           </DialogClose>
@@ -96,7 +96,7 @@ const DialogFooter = ({ className, ...props }) => (
   <div
     data-slot="dialog-footer"
     className={cn(
-      'flex flex-col-reverse sm:flex-row sm:justify-end pt-5 sm:space-x-2.5',
+      'flex flex-col-reverse sm:flex-row sm:justify-end pt-5 gap-2.5',
       className,
     )}
     {...props}
