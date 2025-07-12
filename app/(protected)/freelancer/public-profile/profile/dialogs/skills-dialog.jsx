@@ -30,15 +30,16 @@ import { Spinner } from '@/components/ui/spinners';
 import MultiSelect from '@/components/common/multi-select';
 import { SkillsSchema } from './forms';
 
-export const SkillsDialog = ({ open, closeDialog, skills }) => {
+export const SkillsDialog = ({ open, closeDialog, skills, categoryId }) => {
   const queryClient = useQueryClient();
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`skills.${key}`);
 
   // get skills data from api
   const { data: skillsData } = useQuery({
-    queryKey: ['skills'],
-    queryFn: getSkills,
+    queryKey: ['skills', categoryId],
+    queryFn: () => getSkills(categoryId),
+    enabled: !!categoryId,
   });
   const skillsSelect = skillsData?.data ?? [];
 
@@ -84,24 +85,10 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
 
@@ -133,7 +120,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
               name="skills"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{fp('skills')}</FormLabel>
+                  <FormLabel>{fp('skillsTitle')}</FormLabel>
                   <div className="flex flex-col flex-grow">
                     <FormControl>
                       <MultiSelect
@@ -142,7 +129,7 @@ export const SkillsDialog = ({ open, closeDialog, skills }) => {
                         onChange={field.onChange}
                         getOptionLabel={(e) => e.name}
                         getOptionValue={(e) => e.id}
-                        placeholder={'skillsHolder'}
+                        placeholder={fp('skillsHolder')}
                         className=" min-h-[100px]"
                       />
                     </FormControl>

@@ -45,33 +45,33 @@ function TypeComponent({
           {options.map((option) => {
             return (
               <div
-                key={option.value}
-                onClick={() => handleChange(option.value)}
+                key={option?.value}
+                onClick={() => handleChange(option?.value)}
                 className={`flex justify-between items-center p-8 rounded-lg cursor-pointer transition border ${
-                  option.active ? 'border-primary' : 'border-input'
+                  option?.active ? 'border-primary' : 'border-input'
                 }`}
               >
                 <div className="flex justify-between items-center">
                   <div className="flex items-center gap-4">
                     <img
-                      src={toAbsoluteUrl(option.lightImg)}
+                      src={toAbsoluteUrl(option?.lightImg)}
                       className="dark:hidden max-h-[140px]"
                       alt="image"
                     />
 
                     <img
-                      src={toAbsoluteUrl(option.darkImg)}
+                      src={toAbsoluteUrl(option?.darkImg)}
                       className="light:hidden max-h-[140px]"
                       alt="image"
                     />
-                    <Label variant="primary">{option.name}</Label>
+                    <Label variant="primary">{option?.name}</Label>
                   </div>
                 </div>
                 <div
                   className={`h-5 w-5 rounded-full flex items-center justify-center
-                        ${option.active ? 'bg-blue-500 text-white' : 'bg-transparent border border-gray-400'}`}
+                        ${option?.active ? 'bg-blue-500 text-white' : 'bg-transparent border border-gray-400'}`}
                 >
-                  {option.active && <Check size={12} strokeWidth={3} />}
+                  {option?.active && <Check size={12} strokeWidth={3} />}
                 </div>
               </div>
             );

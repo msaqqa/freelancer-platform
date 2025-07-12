@@ -6,8 +6,6 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
-  // const res = await redirectUserHandler();
-
   const { data: user, isLoading, isError } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -41,7 +39,7 @@ export default function ProtectedLayout({ children }) {
       }
     }
 
-    if (!user?.save_data) {
+    if (user && !user?.save_data) {
       if (user?.type) {
         router.push('/new-user/required-data');
         return;

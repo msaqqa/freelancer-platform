@@ -105,24 +105,10 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-summary'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
 
@@ -210,7 +196,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           field.onChange(val);
                           form.trigger('images');
                         }}
-                        imagesUrls={summary?.images_urls || []}
+                        imagesUrls={summary?.images_urls}
                       />
                     </FormControl>
                     <FormMessage />

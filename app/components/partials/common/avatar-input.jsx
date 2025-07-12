@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ImageInput } from '@/components/image-input';
 
-export function AvatarInput({ onChange }) {
+export function AvatarInput({ onChange, defaultImg }) {
   const [avatar, setAvatar] = useState(null);
 
   const handleImageUpload = (selectedAvatar) => {
@@ -53,7 +53,7 @@ export function AvatarInput({ onChange }) {
           <div
             className="kt-image-input-placeholder border-2 border-green-500 kt-image-input-empty:border-input"
             style={{
-              backgroundImage: `url(${toAbsoluteUrl(`/media/avatars/blank.png`)})`,
+              backgroundImage: `url(${toAbsoluteUrl(defaultImg ? defaultImg : `/media/avatars/blank.png`)})`,
             }}
           >
             {avatar?.length > 0 && <img src={avatar[0].dataURL} alt="avatar" />}

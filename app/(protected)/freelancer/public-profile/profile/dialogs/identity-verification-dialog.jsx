@@ -21,7 +21,6 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
   const [mobile, setMobile] = useState('');
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`identity.${key}`);
-  const iv = (key) => t(`identity.validation${key}`);
 
   useEffect(() => {
     setStep(1);
@@ -31,8 +30,8 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
     setStep(step + 1);
   };
 
-  const handleBackStep = () => {
-    setStep(step - 1);
+  const handleBackStep = (backNum) => {
+    setStep(step - backNum);
   };
 
   return (
@@ -51,7 +50,6 @@ export const IdentityVerificationDialog = ({ open, closeDialog }) => {
             closeDialog={closeDialog}
             setMobile={setMobile}
             t={fp}
-            v={iv}
           />
         )}
         {step === 3 && (

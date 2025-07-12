@@ -6,3 +6,4 @@ export * from './languages-schema';
 export * from './social-schema';
 export * from './summary-schema';
 export * from './skills-schema';
+export * from './mobile-schema';

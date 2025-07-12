@@ -1,3 +1,9 @@
+import { RiErrorWarningFill } from '@remixicon/react';
+import i18n from 'i18next';
+import Cookies from 'js-cookie';
+import { toast } from 'sonner';
+import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
+
 /**
  * Error codes and their corresponding messages
  */
@@ -15,17 +21,19 @@ export const ERROR_CODES = {
 /**
  * Default error messages for different scenarios
  */
+const t = (key) => {
+  return i18n.isInitialized ? i18n.t(`${key}`, { ns: 'errorMessages' }) : key;
+};
 const DEFAULT_MESSAGES = {
-  [ERROR_CODES.UNAUTHORIZED]: 'Your session has expired. Please login again.',
-  [ERROR_CODES.FORBIDDEN]: 'You do not have permission to perform this action.',
-  [ERROR_CODES.NOT_FOUND]: 'The requested resource was not found.',
-  [ERROR_CODES.VALIDATION_ERROR]: 'Please check your input and try again.',
-  [ERROR_CODES.INTERNAL_SERVER_ERROR]: 'An internal server error occurred.',
-  [ERROR_CODES.SERVICE_UNAVAILABLE]: 'The service is currently unavailable.',
-  [ERROR_CODES.NETWORK_ERROR]:
-    'Unable to connect to the server. Please check your internet connection.',
-  [ERROR_CODES.TIMEOUT_ERROR]: 'The request timed out. Please try again.',
-  DEFAULT: 'An unexpected error occurred.',
+  [ERROR_CODES.UNAUTHORIZED]: t('unauthorized'),
+  [ERROR_CODES.FORBIDDEN]: t('forbidden'),
+  [ERROR_CODES.NOT_FOUND]: t('notFound'),
+  [ERROR_CODES.VALIDATION_ERROR]: t('validationError'),
+  [ERROR_CODES.INTERNAL_SERVER_ERROR]: t('internalServerError'),
+  [ERROR_CODES.SERVICE_UNAVAILABLE]: t('serviceUnavailable'),
+  [ERROR_CODES.NETWORK_ERROR]: t('networkError'),
+  [ERROR_CODES.TIMEOUT_ERROR]: t('timeoutError'),
+  DEFAULT: t('default'),
 };
 
 /**
@@ -35,10 +43,7 @@ const DEFAULT_MESSAGES = {
  * @param {string} options.notificationDuration - Duration of the notification in seconds
  * @returns {Object} Formatted error object
  */
-export const handleApiError = (
-  error,
-  options = { showNotification: true, notificationDuration: 5 },
-) => {
+export const handleApiError = (error, options = { showNotification: true }) => {
   let errorResponse = {
     status: error.response?.status,
     message:
@@ -75,10 +80,11 @@ export const handleApiError = (
   // Handle specific error codes
   switch (errorResponse.status) {
     case ERROR_CODES.UNAUTHORIZED:
-      //   localStorage.removeItem(AUTH_CONFIG.tokenKey);
+      Cookies.remove('token');
+      Cookies.remove('language');
       // Only redirect if we're not already on the login page
-      if (!window.location.pathname.includes('/login')) {
-        window.location.href = '/login';
+      if (!window.location.pathname.includes('/signin')) {
+        window.location.href = '/signin';
       }
       break;
 
@@ -109,15 +115,26 @@ export const handleApiError = (
   }
 
   // Show notification if enabled
-  //   if (options.showNotification) {
-  //     notification.error({
-  //       message: 'Error',
-  //       description: (
-  //         <div style={{ whiteSpace: 'pre-line' }}>{errorResponse.message}</div>
-  //       ),
-  //       duration: 5,
-  //     });
-  //   }
+  if (
+    options.showNotification &&
+    errorResponse.status >= 400 &&
+    errorResponse.status < 500
+  ) {
+    toast.custom(
+      () => (
+        <Alert variant="mono" icon="destructive">
+          <AlertIcon>
+            <RiErrorWarningFill />
+          </AlertIcon>
+          <AlertTitle>{errorResponse.message}</AlertTitle>
+        </Alert>
+      ),
+
+      {
+        position: 'top-center',
+      },
+    );
+  }
 
   return errorResponse;
 };

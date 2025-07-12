@@ -29,6 +29,7 @@ export default function ProfileDefaultPage() {
         <AvatarDialog
           open={openDialog}
           closeDialog={() => setOpenDialog(false)}
+          user={user}
         />
       </Container>
     </Fragment>

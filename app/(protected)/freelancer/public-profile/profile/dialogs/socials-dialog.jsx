@@ -38,6 +38,7 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
   const { t } = useTranslation('freelancerProfile');
   const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`socials.${key}`);
+  const [addedSocials, setAddedSocials] = useState([]);
 
   // get socials data from API
   const { data: socialsData } = useQuery({
@@ -56,10 +57,18 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
         return social;
       });
       setMergedData(data);
+      setAddedSocials(
+        data
+          .filter((social) => social.link)
+          .map((social) => ({
+            link: social.link,
+            social_id: social.id,
+          })),
+      );
     } else {
       setMergedData(socialsDataFields);
     }
-  }, [socialsData]);
+  }, [socialsData, socials]);
 
   // Form initialization with React Hook Form
   const form = useForm({
@@ -74,9 +83,18 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
 
   // Reset form values when dialog is opened
   useEffect(() => {
+    const customSocials = socials
+      .filter((social) => social.id === null)
+      .map((social) => ({
+        link: social.link,
+        title: social.name,
+      }));
+    const customSocialsData =
+      customSocials.length > 0 ? customSocials : [{ title: '', link: '' }];
     if (open) {
       form.reset({
         socials: socials || [],
+        otherSocialFields: customSocialsData,
       });
     }
   }, [form, open, socials]);
@@ -104,36 +122,20 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
   const submitLoading = mutation.status === 'pending';
 
   const handleSubmit = (values) => {
-    const socialsFields = values.socials.filter(
-      (field) => field?.social_id && field?.link,
-    );
     const customFields = values.otherSocialFields.filter(
       (field) => field.title && field.link,
     );
     const updateValues = {
-      socials: socialsFields,
+      socials: addedSocials,
       custom: customFields,
     };
     console.log('updateValues', updateValues);
@@ -195,10 +197,35 @@ export const SocialsDialog = ({ open, closeDialog, socials }) => {
                               value={field.value}
                               onChange={(e) => {
                                 field.onChange(e);
-                                form.setValue(
-                                  `socials[${item.id}].social_id`,
-                                  item.id,
-                                );
+                                setAddedSocials((prevData) => {
+                                  if (e.target.value === '') {
+                                    // If the link is empty, remove the item
+                                    return prevData.filter(
+                                      (social) => social.social_id !== item.id,
+                                    );
+                                  }
+                                  const existingItem = prevData.find(
+                                    (social) => social.social_id === item.id,
+                                  );
+
+                                  if (existingItem) {
+                                    // If the item exists, update only the link
+                                    return prevData.map((social) =>
+                                      social.social_id === item.id
+                                        ? { ...social, link: e.target.value }
+                                        : social,
+                                    );
+                                  } else {
+                                    // If the item doesn't exist, add it
+                                    return [
+                                      ...prevData,
+                                      {
+                                        social_id: item.id,
+                                        link: e.target.value,
+                                      },
+                                    ];
+                                  }
+                                });
                               }}
                             />
                           </InputWrapper>

@@ -128,23 +128,6 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       closeDialog();
     },
-    onError: (error) => {
-      const message = error?.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   // Derive the loading state from the mutation status
@@ -153,7 +136,7 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
   // Handle form submission
   const handleSubmit = (values) => {
     const updateValues = {
-      available_hire: values.availability ? 1 : 0,
+      available_hire: values.availability,
       hourly_rate: values.hourlyRate,
       category_id: values.category,
       sub_category_id: values.subcategory,
@@ -185,19 +168,11 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
                     {fp('readyWork')}
                   </FormLabel>
                   <FormControl>
-                    <div className="flex items-center gap-2">
-                      <FormLabel
-                        htmlFor="auto-update"
-                        className="text-foreground text-sm"
-                      >
-                        {fp('availableHire')}
-                      </FormLabel>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                        size="sm"
-                      />
-                    </div>
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      size="sm"
+                    />
                   </FormControl>
                 </FormItem>
               )}
@@ -220,8 +195,8 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
                         {...field}
                       />
                       <img
-                        src={toAbsoluteUrl('/media/app/dollar-square.svg')}
-                        className="bg-background h-[20px]"
+                        src={toAbsoluteUrl('/media/icons/dollar-light.svg')}
+                        className="h-[20px]"
                         alt="image"
                       />
                     </InputWrapper>

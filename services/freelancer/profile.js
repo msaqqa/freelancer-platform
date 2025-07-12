@@ -6,7 +6,7 @@ export const saveFreelancerAbout = async (payload) => {
     const response = await apiTaqat.post('/freelancer/about', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -16,7 +16,7 @@ export const saveFreelancerSkills = async (payload) => {
     const response = await apiTaqat.post('/freelancer/skills', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -26,7 +26,7 @@ export const saveFreelancerLanguages = async (payload) => {
     const response = await apiTaqat.post('/freelancer/languages', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -36,7 +36,7 @@ export const saveFreelancerSocials = async (payload) => {
     const response = await apiTaqat.post('/freelancer/socials', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -46,7 +46,7 @@ export const sendOtp = async (payload) => {
     const response = await apiTaqat.post('/freelancer/send-otp', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -56,7 +56,7 @@ export const verifyOtp = async (payload) => {
     const response = await apiTaqat.post('/freelancer/verify-otp', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -69,7 +69,7 @@ export const updateIdentity = async (payload) => {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -79,7 +79,7 @@ export const getFreelancerSummary = async () => {
     const response = await apiTaqat.get('/freelancer/summary');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -89,7 +89,7 @@ export const postFreelancerSummary = async (payload) => {
     const response = await apiTaqat.post('/freelancer/summary', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -101,7 +101,7 @@ export const deleteFreelancerImage = async (imageId) => {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -111,7 +111,7 @@ export const getFreelancerProfileComplete = async () => {
     const response = await apiTaqat.get('/freelancer/profile-complete');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };
 
@@ -121,7 +121,7 @@ export async function updateFreelancerPhoto(photoData) {
     const response = await apiTaqat.post('/freelancer/update-photo', photoData);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -134,7 +134,7 @@ export async function addFreelancerEducation(educationData) {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -150,7 +150,19 @@ export async function updateFreelancerEducationById(
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
+  }
+}
+
+// delete a freelancer education (by ID)
+export async function deleteFreelancerEducationById(educationId) {
+  try {
+    const response = await apiTaqat.delete(
+      `/freelancer/educations/${educationId}`,
+    );
+    return response.data;
+  } catch (error) {
+    throw error;
   }
 }
 
@@ -160,7 +172,7 @@ export async function getFreelancerEducations() {
     const response = await apiTaqat.get('/freelancer/educations');
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -172,7 +184,7 @@ export async function getFreelancerEducationById(educationId) {
     );
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 }
 
@@ -182,6 +194,6 @@ export const resendMobileCode = async (payload) => {
     const response = await apiTaqat.post('/freelancer/resend-otp', payload);
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };

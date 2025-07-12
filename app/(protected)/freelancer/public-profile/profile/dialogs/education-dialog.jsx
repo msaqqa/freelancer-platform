@@ -1,8 +1,8 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
@@ -42,11 +42,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Spinner } from '@/components/ui/spinners';
+import EducationDeleteDialog from './education-delete-dialog';
 import { FreelancerEducationSchema } from './forms';
 
 // get freelancer education by id
 export const EducationDialog = ({ open, closeDialog, educationId }) => {
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { t } = useTranslation('freelancerProfile');
   const { t: tv } = useTranslation('validation');
   const fp = (key) => t(`education.${key}`);
@@ -54,7 +57,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // get getEducationDegree data from api
   const { data: educationData, isLoading: educationLoading } = useQuery({
-    queryKey: ['educationById', educationId],
+    queryKey: ['freelancer-educationById', educationId],
     queryFn: () => getFreelancerEducationById(educationId),
     enabled: !!educationId,
   });
@@ -77,6 +80,9 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
   // Form initialization
   const form = useForm({
     resolver: zodResolver(FreelancerEducationSchema(tv)),
+    defaultValues: {
+      stillStudying: false,
+    },
     mode: 'onBlur',
   });
 
@@ -91,9 +97,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
 
   // Reset form values when dialog is opened
   useEffect(() => {
-    const startDate = formatDate(education?.start_date);
-    const endDate = formatDate(education?.end_date);
-    if (open) {
+    if (open && !educationId) {
       form.reset({
         university: '',
         study: '',
@@ -106,17 +110,24 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         stillStudying: false,
       });
     }
+
     if (open && education && !educationLoading) {
+      const startDate = formatDate(education?.start_date);
+      const endDate = formatDate(education?.end_date);
       form.reset({
-        university: education?.university ?? '',
-        study: education?.field_of_study ?? '',
-        degree: education?.degree?.id?.toString() ?? '',
-        grade: education?.grade?.id?.toString() ?? '',
-        startMonth: startDate?.month ?? '',
-        startYear: startDate?.year ?? '',
-        endMonth: endDate?.month ?? '',
-        endYear: endDate?.year ?? '',
-        stillStudying: education?.still_studying ?? false,
+        university: education?.university,
+        study: education?.field_of_study,
+        degree: education?.degree?.id?.toString(),
+        grade: education?.grade?.id?.toString(),
+        startMonth: startDate?.month,
+        startYear: startDate?.year,
+        endMonth: endDate?.month,
+        endYear: endDate?.year,
+        stillStudying: educationId
+          ? education?.end_date
+            ? false
+            : true
+          : false,
       });
     }
   }, [form, open, educationId, educationLoading]);
@@ -147,24 +158,11 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-educations'] });
+      educationId &&
+        queryClient.invalidateQueries({
+          queryKey: ['freelancer-educationById', educationId],
+        });
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error?.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
 
@@ -179,8 +177,11 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       startCombinedValue = `${startMonth}-${startYear}`;
     }
     if (endMonth && endYear) {
-      endCombinedValue = `${endMonth}-${endYear}`;
+      if (!form.watch('stillStudying')) {
+        endCombinedValue = `${endMonth}-${endYear}`;
+      }
     }
+
     const updateValues = {
       university: values.university,
       field_of_study: values.study,
@@ -188,10 +189,45 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
       education_level_id: values.degree,
       start_date: startCombinedValue,
       end_date: endCombinedValue,
-      still_studying: values.stillStudying,
     };
     console.log('updateValues', updateValues);
     mutation.mutate(updateValues);
+  };
+
+  const Loading = () => {
+    return (
+      <>
+        {[...Array(4)].map((_, index) => (
+          <div key={index} className="flex-1 w-full space-y-2">
+            <Skeleton className="h-4 w-1/3" />
+            <Skeleton className="h-10 w-full rounded-md" />
+          </div>
+        ))}
+        {[...Array(2)].map((_, index) => (
+          <div className="flex flex-col md:flex-row gap-2.5">
+            <div key={index} className="flex-1 w-full space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+            <div key={index} className="flex-1 w-full space-y-2">
+              <Skeleton className="h-4 w-1/3" />
+              <Skeleton className="h-10 w-full rounded-md" />
+            </div>
+          </div>
+        ))}
+        <div className="flex items-center space-x-2">
+          <Skeleton className="h-4 w-4 rounded-sm" />
+          <Skeleton className="h-4 w-32" />
+        </div>
+        <div className="flex flex-col-reverse sm:flex-row justify-start sm:justify-between pt-5 gap-2.5">
+          <Skeleton className="h-10 w-36" />
+          <div className="flex flex-col-reverse sm:flex-row gap-2.5">
+            <Skeleton className="h-10 w-24" />
+            <Skeleton className="h-10 w-28" />
+          </div>
+        </div>
+      </>
+    );
   };
 
   return (
@@ -345,7 +381,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 <FormLabel className="inline-block mb-2">
                   {fp('startDateLabel')}
                 </FormLabel>
-                <div className="flex flex-col md:flex-row items-center gap-2.5">
+                <div className="flex flex-col md:flex-row gap-2.5">
                   {/* Month Select */}
                   <FormField
                     control={form.control}
@@ -357,6 +393,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('startMonth');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -395,6 +432,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('startYear');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
@@ -429,7 +467,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 <FormLabel className="inline-block mb-2">
                   {fp('endDateLabel')}
                 </FormLabel>
-                <div className="flex flex-col md:flex-row items-center gap-2.5">
+                <div className="flex flex-col md:flex-row gap-2.5">
                   {/* Month Select */}
                   <FormField
                     control={form.control}
@@ -441,12 +479,14 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('endMonth');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
-                                form.trigger('startMonth');
+                                form.trigger('endMonth');
                               }
                             }}
+                            disabled={form.watch('stillStudying')}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder={fp('month')} />
@@ -479,12 +519,14 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                             value={field.value}
                             onValueChange={(val) => {
                               field.onChange(val);
+                              form.trigger('endYear');
                             }}
                             onOpenChange={(isOpen) => {
                               if (!isOpen) {
-                                form.trigger('startYear');
+                                form.trigger('endYear');
                               }
                             }}
+                            disabled={form.watch('stillStudying')}
                           >
                             <SelectTrigger>
                               <SelectValue placeholder={fp('year')} />
@@ -508,38 +550,69 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                 </div>
               </div>
 
+              {/* Still Studying */}
               <div className="flex items-center space-x-2">
                 <FormField
                   control={form.control}
-                  name=" stillStudying"
+                  name="stillStudying"
                   render={({ field }) => (
-                    <>
-                      <Checkbox
-                        id="remember-me"
-                        checked={field.value}
-                        onCheckedChange={(checked) => field.onChange(!!checked)}
-                      />
-                      <FormLabel className="">{fp('stillStudying')}</FormLabel>
-                    </>
+                    <FormItem className="flex-row items-center">
+                      <FormControl>
+                        <Checkbox
+                          id="still-studying"
+                          checked={field.value}
+                          onCheckedChange={(checked) => {
+                            field.onChange(!!checked);
+                            if (checked) {
+                              form.clearErrors(['endYear', 'endMonth']);
+                            }
+                          }}
+                        />
+                      </FormControl>
+                      <FormLabel htmlFor="still-studying">
+                        {fp('stillStudying')}
+                      </FormLabel>
+                    </FormItem>
                   )}
                 />
               </div>
 
-              <DialogFooter>
-                <Button type="button" variant="outline" onClick={closeDialog}>
-                  {t('cancelBtn')}
-                </Button>
-                <Button
-                  type="submit"
-                  disabled={isLoading || !form.formState.isDirty}
-                >
-                  {isLoading && <Spinner className="animate-spin" />}
-                  {t('saveBtn')}
-                </Button>
+              <DialogFooter
+                className={`flex flex-col-reverse sm:flex-row justify-start  ${educationId ? 'sm:justify-between' : 'sm:justify-end'} pt-5 gap-2.5`}
+              >
+                {educationId && (
+                  <Button
+                    variant="destructive"
+                    type="button"
+                    onClick={() => setOpenDeleteDialog(true)}
+                  >
+                    {fp('deleteEducation')}
+                  </Button>
+                )}
+                <div className="flex flex-col-reverse sm:flex-row gap-2.5">
+                  <Button type="button" variant="outline" onClick={closeDialog}>
+                    {t('cancelBtn')}
+                  </Button>
+                  <Button
+                    type="submit"
+                    disabled={isLoading || !form.formState.isDirty}
+                  >
+                    {isLoading && <Spinner className="animate-spin" />}
+                    {t('saveBtn')}
+                  </Button>
+                </div>
               </DialogFooter>
             </form>
           </Form>
         </ScrollArea>
+        <EducationDeleteDialog
+          open={openDeleteDialog}
+          closeDialog={() => {
+            setOpenDeleteDialog(false);
+            closeDialog();
+          }}
+          educationId={educationId}
+        />
       </DialogContent>
     </Dialog>
   );

@@ -6,6 +6,6 @@ export const selecttUserType = async (type) => {
     });
     return response.data;
   } catch (error) {
-    throw error.response?.data || error;
+    throw error;
   }
 };

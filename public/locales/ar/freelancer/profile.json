@@ -2,6 +2,7 @@
   "about": {
     "aboutTitle": "نبذة عني",
     "available": "متاح",
+    "notAvailable":"غير متاح",
     "verified": "موثق",
     "readyWork": "جاهز للعمل",
     "hourlyRate": "الأجر بالساعة",
@@ -19,7 +20,7 @@
   },
   "badges": {
     "badgesTitle": "شارات المجتمع",
-    "badgesDesc": "أضف الشارات التي تتحدث بها ومستوى الطلاقة لديك."
+    "badgesDesc": "ابدأ العمل للحصول على شارتك الأولى."
   },
   "languages": {
     "languagesTitle": "اللغات",
@@ -33,6 +34,7 @@
   "skills": {
     "skillsTitle": "المهارات",
     "skillsDesc": "أضف المهارات الأساسية التي تعكس قوتك وخبراتك.",
+    "skillsHolder": "اختر مهاراتك",
     "addBtn": "أضف مهارة جديدة"
   },
   "socials": {
@@ -55,13 +57,19 @@
     "studyLabel": "مجال الدراسة",
     "studyHolder": "مثال: علوم الحاسوب، التصميم، الأعمال",
     "gradeLabel": "التقدير الأكاديمي",
-    "gradeHolder": "مثال: ممتاز، جيد جداً، جيد (اختياري)",
+    "gradeHolder": "مثال: ممتاز، جيد جداً، جيد",
     "startDateLabel": "تاريخ البدء",
     "endDateLabel": "تاريخ الانتهاء",
     "month": "شهر",
     "year": "سنة",
     "stillStudying": "ما زلت أدرس",
-    "present": "قيد الدراسة"
+    "present": "قيد الدراسة",
+    "deleteEducation": "حذف التعليم",
+    
+    "educationDeleteConfirm": "تأكيد الحذف",
+    "educationDeleteDesc": "هل أنت متأكد أنك تريد حذف التعليم؟",
+    "educationDeleteCancelBtn": "إلغاء",
+    "educationDeleteBtn": "حذف"
   },
   "summary": {
     "summaryTitle": "الملخص",
@@ -134,8 +142,10 @@
   "loading": "جارٍ التحميل...",
   "cancelBtn": "إلغاء",
   "saveBtn": "حفظ",
-  "AddPhoto": "أضف صورة",
-  "MaxImages": "الحد الأقصى 6 صور",
+  "addPhotos": "أضف صورة",
+  "maxImages": "الحد الأقصى 6 صور",
+  "addID": "الهوية أو جواز السفر",
+  "imageType": "JPG أو PNG، الحد الأقصى للحجم: 5 ميجابايت",
   "edit": "تعديل",
   "add": "إضافة"
 }

@@ -36,12 +36,12 @@ const About = ({ user, isLoading }) => {
           variant={user?.available_hire ? 'success' : 'destructive'}
           appearance="outline"
         >
-          {fp('available')}
+          {user?.available_hire ? fp('available') : fp('notAvailable')}
         </Badge>
       ),
     },
     {
-      status: `${fp('readyWork')}:`,
+      status: `${fp('hourlyRate')}:`,
       info: `$${user?.hourly_rate}/${fp('hr')}`,
     },
     { status: fp('totalJobs'), info: user?.total_jobs || 0 },
@@ -50,7 +50,7 @@ const About = ({ user, isLoading }) => {
       info: (
         <span className="flex items-center gap-px">
           {user?.id_verified?.label}
-          {user?.id_verified?.label === 'verified' && <ShieldCheck size={16} />}
+          {user?.id_verified?.status == 2 && <ShieldCheck size={16} />}
         </span>
       ),
     },

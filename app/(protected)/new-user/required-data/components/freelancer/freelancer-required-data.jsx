@@ -70,23 +70,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
         },
       );
       // redirect to freelancer profile
-      console.log('onSuccess', data);
       router.replace('/freelancer/public-profile/profile');
-    },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
 

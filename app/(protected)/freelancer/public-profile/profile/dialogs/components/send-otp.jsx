@@ -4,8 +4,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { sendOtp } from '@/services/freelancer/profile';
 import { getCountries } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -27,27 +27,20 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
+import { MobileSchema } from '../forms';
 import { Steps } from './';
 
-export const MobileSchema = (t) => {
-  return z.object({
-    mobile: z
-      .string()
-      .min(1, { message: t('mobileRequired') })
-      .max(15, { message: t('mobileLength') })
-      .regex(/^[0-9]{1,15}$/, { message: t('mobileDigits') }),
-  });
-};
+export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
+  const { t: tv } = useTranslation('validation');
 
-export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
   // Form initialization
   const form = useForm({
-    resolver: zodResolver(MobileSchema(v)),
+    resolver: zodResolver(MobileSchema(tv)),
     defaultValues: {
       country: '1',
       mobile: '',
     },
-    mode: 'onSubmit',
+    mode: 'onBlur',
   });
   const { errors } = form?.formState;
 
@@ -74,21 +67,6 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t, v }) => {
               <RiCheckboxCircleFill />
             </AlertIcon>
             <AlertTitle>{data?.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
           </Alert>
         ),
         {

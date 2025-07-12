@@ -48,9 +48,6 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
       setTimeLeft(300);
       clearInterval(timer);
     },
-    onError: (error) => {
-      throw error?.response?.data?.message || error.message;
-    },
   });
 
   const isResendLodaing = resendOtpMutation.isPending || false;
@@ -74,21 +71,6 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
               <RiCheckboxCircleFill />
             </AlertIcon>
             <AlertTitle>{data?.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
           </Alert>
         ),
         {
@@ -172,7 +154,11 @@ export const VerifyOtp = ({ handleNextStep, handleBackStep, mobile, t }) => {
         </div>
 
         <div className="flex flex-col md:flex-row md:justify-end gap-2.5">
-          <Button type="button" variant="outline" onClick={handleBackStep}>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => handleBackStep(1)}
+          >
             {t('backBtn')}
           </Button>
 

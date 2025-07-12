@@ -7,28 +7,40 @@ import Cookies from 'js-cookie';
 export default function AuthCallbackPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const token = searchParams.get('token');
 
   const handleCallback = async () => {
-    const token = searchParams.get('token');
     const type = searchParams.get('user_type');
     const requiredData = searchParams.get('save_data');
+
     if (token) {
       Cookies.set('token', token);
     }
 
-    if (type === 'client' && requiredData) {
-      router.push('/client');
-    } else if (type === 'freelancer' && requiredData) {
-      router.push('/freelancer');
-    } else if (type && !requiredData) {
-      router.push('/new-user/required-data');
-    } else {
-      router.push('/new-user/account-type');
+    if (requiredData) {
+      if (type === 'client') {
+        router.push('/client');
+        return;
+      }
+      if (type === 'freelancer') {
+        router.push('/freelancer');
+        return;
+      }
+    }
+
+    if (!requiredData) {
+      if (type) {
+        router.push('/new-user/required-data');
+        return;
+      } else {
+        router.push('/new-user/account-type');
+        return;
+      }
     }
   };
 
   useEffect(() => {
-    if (searchParams.get('token')) {
+    if (token) {
       handleCallback();
     }
   }, [searchParams]);

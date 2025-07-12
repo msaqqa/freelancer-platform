@@ -41,21 +41,6 @@ export default function AccountType() {
       // redirect to required-data page
       router.replace(`/new-user/required-data`);
     },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
-    },
   });
 
   const handleSubmit = async () => {

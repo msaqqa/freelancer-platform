@@ -37,6 +37,7 @@ export function DropdownMenuUser({ trigger }) {
   const { data: session, signout } = useAuth();
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const type = session?.type;
 
   const handleLanguage = (lang) => {
     changeLanguage(lang.code);
@@ -63,13 +64,13 @@ export function DropdownMenuUser({ trigger }) {
 
             <div className="flex flex-col">
               <Link
-                href="/account/home/get-started"
+                href={`/${type}/account/home/get-started`}
                 className="text-sm text-mono hover:text-primary font-semibold"
               >
                 {session?.user?.name || ''}
               </Link>
               <Link
-                href="mailto:c.fisher@gmail.com"
+                href={`/${type}mailto:c.fisher@gmail.com`}
                 className="text-xs text-muted-foreground hover:text-primary"
               >
                 {session?.user?.email || ''}
@@ -86,7 +87,7 @@ export function DropdownMenuUser({ trigger }) {
         {/* Menu Items */}
         <DropdownMenuItem asChild>
           <Link
-            href="/public-profile/profile"
+            href={`/${type}/public-profile/profile"/profile`}
             className="flex items-center gap-2"
           >
             <UserCircle />
@@ -95,7 +96,7 @@ export function DropdownMenuUser({ trigger }) {
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link
-            href="/account/home/user-profile"
+            href={`/${type}/account/home/user-profile`}
             className="flex items-center gap-2"
           >
             <User />
@@ -112,7 +113,7 @@ export function DropdownMenuUser({ trigger }) {
           <DropdownMenuSubContent className="w-48">
             <DropdownMenuItem asChild>
               <Link
-                href="/account/home/get-started"
+                href={`/${type}/account/home/get-started`}
                 className="flex items-center gap-2"
               >
                 <Coffee />
@@ -121,7 +122,7 @@ export function DropdownMenuUser({ trigger }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
-                href="/account/home/user-profile"
+                href={`/${type}/account/home/user-profile`}
                 className="flex items-center gap-2"
               >
                 <FileText />
@@ -130,7 +131,7 @@ export function DropdownMenuUser({ trigger }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
-                href="/account/billing/basic"
+                href={`/${type}/account/billing/basic`}
                 className="flex items-center gap-2"
               >
                 <CreditCard />
@@ -139,7 +140,7 @@ export function DropdownMenuUser({ trigger }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
-                href="/account/security/overview"
+                href={`/${type}/account/security/overview`}
                 className="flex items-center gap-2"
               >
                 <Shield />
@@ -148,7 +149,7 @@ export function DropdownMenuUser({ trigger }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
-                href="/account/members/teams"
+                href={`/${type}/account/members/teams`}
                 className="flex items-center gap-2"
               >
                 <Users />
@@ -157,7 +158,7 @@ export function DropdownMenuUser({ trigger }) {
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
-                href="/account/integrations"
+                href={`/${type}/account/integrations`}
                 className="flex items-center gap-2"
               >
                 <BetweenHorizontalStart />
@@ -169,7 +170,7 @@ export function DropdownMenuUser({ trigger }) {
 
         <DropdownMenuItem asChild>
           <Link
-            href="https://devs.keenthemes.com"
+            href={`/${type}https://devs.keenthemes.com`}
             className="flex items-center gap-2"
           >
             <FileText />

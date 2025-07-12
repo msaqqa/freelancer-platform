@@ -70,13 +70,18 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
 
   // Reset form values when dialog is opened
   useEffect(() => {
-    const langFormat = languages.map((item) => ({
-      language_id: item?.id?.toString(),
-      level: item?.level,
-    }));
+    let languageFieldsData;
+    if (languages.length > 0) {
+      languageFieldsData = languages.map((item) => ({
+        language_id: item?.id?.toString(),
+        level: item?.level,
+      }));
+    } else {
+      languageFieldsData[{ language_id: '', level: '' }];
+    }
     if (open) {
       form.reset({
-        languageFields: langFormat || [],
+        languageFields: languageFieldsData,
       });
     }
   }, [form, open, languages]);
@@ -88,7 +93,9 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
 
   // Handle adding new language fields
   const handleAddField = () => {
-    append({ language_id: '', level: '' });
+    if (fields.length < languagesOptions.length) {
+      append({ language_id: '', level: '' });
+    }
   };
 
   // Handle removing language fields
@@ -114,23 +121,10 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
   const submitLoading = mutation.status === 'pending';
@@ -265,17 +259,19 @@ export const LanguagesDialog = ({ open, closeDialog, languages }) => {
               ))}
 
               {/* Add button */}
-              <Button
-                className="text-blue-500 hover:text-blue-600"
-                type="button"
-                variant="dim"
-                onClick={handleAddField}
-              >
-                <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
-                  <Plus size={16} />
-                </span>
-                {fp('addBtn')}
-              </Button>
+              {fields.length < languagesOptions.length && (
+                <Button
+                  className="text-blue-500 hover:text-blue-600"
+                  type="button"
+                  variant="dim"
+                  onClick={handleAddField}
+                >
+                  <span className="p-px border border-blue-500 group-hover:border-blue-600 rounded-md">
+                    <Plus size={16} />
+                  </span>
+                  {fp('addBtn')}
+                </Button>
+              )}
 
               <DialogFooter>
                 <Button type="button" variant="outline" onClick={closeDialog}>

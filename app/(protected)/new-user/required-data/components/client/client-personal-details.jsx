@@ -98,24 +98,7 @@ const ClientPersonalDetails = () => {
         },
       );
       // redirect to client main dashboard
-      setTimeout(() => {
-        router.replace('/client');
-      }, 1000);
-    },
-    onError: (error) => {
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{error.message}</AlertTitle>
-          </Alert>
-        ),
-        {
-          position: 'top-center',
-        },
-      );
+      router.replace('/client');
     },
   });
 
@@ -201,9 +184,9 @@ const ClientPersonalDetails = () => {
               control={control}
               name="bio"
               render={({ field }) => (
-                <FormItem className="w-full flex flex-row items-baseline flex-wrap lg:flex-nowrap gap-2.5">
+                <FormItem className="w-full flex flex-row items-start flex-wrap lg:flex-nowrap gap-2.5">
                   <FormLabel className="flex w-full items-center gap-1 max-w-56">
-                    {t('bio')}
+                    {cpd('bio')}
                   </FormLabel>
                   <div className="flex flex-col flex-grow">
                     <div className="relative">

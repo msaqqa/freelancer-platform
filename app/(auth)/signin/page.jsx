@@ -75,7 +75,7 @@ export default function Page() {
               {!isVerified && (
                 <Link
                   href={`/verify-email?email=${encodeURIComponent(email)}`}
-                  className="text-accent hover:text-primary-darker underline"
+                  className="pt-2 text-accent hover:text-muted-foreground underline"
                 >
                   {t('verifyEmail')}
                 </Link>

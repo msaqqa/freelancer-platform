@@ -25,7 +25,7 @@ const Education = () => {
 
   const renderTable = (item) => {
     return (
-      <div key={item.id} className="flex flex-col gap-2.5 mb-5">
+      <div key={item.id} className="flex flex-col gap-1.5 mb-5">
         <div className="flex justify-between items-center gap-2.5">
           <div className="text-sm text-mono">{item.university}</div>
           <Button
@@ -38,9 +38,9 @@ const Education = () => {
             <Pencil size={16} className="text-accent-foreground" /> {t('edit')}
           </Button>
         </div>
-        <div className="flex flex-col gap-1.5 text-sm text-secondary-foreground">
+        <div className="flex flex-col gap-1 text-sm text-secondary-foreground">
+          <div>{item.degree?.name}</div>
           <div>{item.field_of_study}</div>
-          <div>{item.degree.anme}</div>
           <div>
             {`${item.start_date?.split('-')[1]} - ${
               item.end_date ? item.end_date?.split('-')[1] : fp('present')
@@ -60,7 +60,7 @@ const Education = () => {
             variant="ghost"
             onClick={() => {
               setOpenDialog(true);
-              setEducationId(null);
+              setEducationId(undefined);
             }}
           >
             <Plus size={16} className="text-accent-foreground" /> {t('add')}
@@ -80,7 +80,10 @@ const Education = () => {
               light: '/media/icons/education-light.svg',
               dark: '/media/icons/education-dark.svg',
             }}
-            openDialog={() => setOpenDialog(true)}
+            openDialog={() => {
+              setOpenDialog(true);
+              setEducationId(undefined);
+            }}
           />
         )}
       </CardContent>

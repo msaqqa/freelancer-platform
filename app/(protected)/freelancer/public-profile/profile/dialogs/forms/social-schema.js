@@ -38,7 +38,7 @@ export const SocialsSchema = (t) => {
       .optional()
       .refine(
         (fields) => {
-          return fields.every((item) => {
+          return fields?.every((item) => {
             return (item.title && item.link) || (!item.title && !item.link);
           });
         },

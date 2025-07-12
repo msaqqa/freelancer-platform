@@ -4,6 +4,7 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { I18N_LANGUAGES } from '@/i18n/config';
 import initI18 from '@/i18n/initI18';
 import { DirectionProvider as RadixDirectionProvider } from '@radix-ui/react-direction';
+import { useQueryClient } from '@tanstack/react-query';
 import i18next from 'i18next';
 import Cookies from 'js-cookie';
 import { I18nextProvider } from 'react-i18next';
@@ -12,6 +13,7 @@ const LanguageContext = createContext(undefined);
 
 function I18nProvider({ lang = 'ar', children }) {
   const [languageCode, setLanguageCode] = useState(lang);
+  const queryClient = useQueryClient();
 
   // Find the current language configuration based on the language code
   const language =
@@ -31,6 +33,7 @@ function I18nProvider({ lang = 'ar', children }) {
   const changeLanguage = (code) => {
     setLanguageCode(code);
     i18next.changeLanguage(code);
+    queryClient.invalidateQueries();
     if (typeof window !== 'undefined') {
       Cookies.set('language', code);
     }

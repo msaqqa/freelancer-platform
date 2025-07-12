@@ -2,6 +2,7 @@
     "about": {
         "aboutTitle": "About",
         "available":"Available",
+        "notAvailable":"Not Available",
         "verified": "Verified",
         "readyWork": "Ready To Work",
         "hourlyRate": "Hourly rate",
@@ -19,7 +20,7 @@
     },
     "badges": {
         "badgesTitle": "Community Badges",
-        "badgesDesc": "Add the badges you speak and your fluency level."
+        "badgesDesc": "Start working to earn your first badge."
     },
     "languages": {
         "languagesTitle": "Languages",
@@ -32,7 +33,8 @@
     },
     "skills": {
         "skillsTitle": "Skills",
-        "skillsDesc": "Add key skills that reflect your strengths and expertise.",
+        "skillsDesc": "Add key skills that reflect your strengths and expertise.", 
+        "skillsHolder": "Select your skills",
         "addBtn": "Add New Skills"
     },
     "socials": {
@@ -55,13 +57,20 @@
         "studyLabel": "Field of Study",
         "studyHolder": "e.g. Computer Science, Design, Business",
         "gradeLabel": "Academic Grade",
-        "gradeHolder": "e.g. Excellent, Very Good, Good (optional)",
+        "gradeHolder": "e.g. Excellent, Very Good, Good",
         "startDateLabel": "Start Date",
         "endDateLabel": "End Date",
         "month": "Month",
         "year": "Year",
         "stillStudying": " I’m still studying",
-        "present": "Present"
+        "present": "Present",
+
+        "deleteEducation": "Delete Education",
+        "educationDeleteConfirm": "Confirm Delete",
+        "educationDeleteDesc": "Are you sure you want to delete the education ?",
+        "educationDeleteCancelBtn" : "Cancel",
+        "educationDeleteBtn" : "Delete"
+
     },
     "summary" : {
         "summaryTitle": "Summary",
@@ -103,7 +112,7 @@
         "nameHolder":"Enter your first name",
         "fatherLabel":"Father’s Name",
         "fatherHolder":"Enter your father’s name",
-        "grandfatherLabel":"Enter your grandfather’s name",
+        "grandfatherLabel":"Grandfather’s Name",
         "grandfatherHolder":"Enter your father’s name",
         "familyLabel":"Family Name",
         "familyHolder":"Enter your family name",
@@ -134,8 +143,10 @@
     "loading": "Loading...",
     "cancelBtn":"Cancel",
     "saveBtn":"Save",
-    "AddPhoto": "Add Photo",
-    "MaxImages": "Max 6 images",
+    "addPhotos": "Add Photos",
+    "addID": "passport or national ID",
+    "maxImages": "Max 6 images",
+    "imageType": "JPG or PNG, max size: 5MB",
     "edit": "Edit",
     "add": "Add"
 }
