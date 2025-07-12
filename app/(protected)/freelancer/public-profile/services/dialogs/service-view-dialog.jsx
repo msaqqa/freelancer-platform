@@ -12,14 +12,14 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Tags } from '../components';
 
-const ProjectViewDialog = ({ open, closeDialog }) => {
-  const project = {
+const ServiceViewDialog = ({ open, closeDialog }) => {
+  const service = {
     title: 'E-commerce Landing Page - Cartique',
     fields: [
       { type: 'image', value: '/media/images/600x400/3.jpg' },
-      { type: 'text', value: 'Available for the new project' },
+      { type: 'text', value: 'Available for the new service' },
       { type: 'image', value: '/media/images/600x400/25.jpg' },
-      { type: 'text', value: 'Available for the new project' },
+      { type: 'text', value: 'Available for the new service' },
     ],
     details: 'Posted Jun 10, 2025',
     tags: [
@@ -41,13 +41,13 @@ const ProjectViewDialog = ({ open, closeDialog }) => {
         className="w-full max-w-[800px] mx-auto"
       >
         <DialogHeader className="pb-5 border-b border-border">
-          <DialogTitle>View Project</DialogTitle>
+          <DialogTitle>View service</DialogTitle>
         </DialogHeader>
         <ScrollArea className="grow pe-3 -me-3">
           <h2 className="text-lg text-foreground font-semibold mb-5">
-            {project?.title}
+            {service?.title}
           </h2>
-          {project?.fields.map((field) => (
+          {service?.fields.map((field) => (
             <div key={field.id} className="relative mb-5">
               {field.type === 'text' ? (
                 <p className="text-sm text-foreground mb-5">{field?.value}</p>
@@ -65,12 +65,12 @@ const ProjectViewDialog = ({ open, closeDialog }) => {
           <div className="flex flex-col gap-2.5 mb-5">
             <span className="text-base font-semibold text-mono">Details</span>
             <span className="text-sm font-normal text-foreground">
-              {project?.details}
+              {service?.details}
             </span>
           </div>
           <div className="flex flex-col gap-2.5">
             <span className="text-base font-semibold text-mono">Tags</span>
-            <Tags tags={project?.tags} />
+            <Tags tags={service?.tags} />
           </div>
         </ScrollArea>
         <DialogFooter>
@@ -83,4 +83,4 @@ const ProjectViewDialog = ({ open, closeDialog }) => {
   );
 };
 
-export default ProjectViewDialog;
+export default ServiceViewDialog;

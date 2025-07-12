@@ -1,9 +1,9 @@
 'use client';
 
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
+import { deleteFreelancerService } from '@/services/freelancer/services';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -16,36 +16,20 @@ import {
 } from '@/components/ui/dialog';
 import { Spinner } from '@/components/ui/spinners';
 
-const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
+const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
   const queryClient = useQueryClient();
 
-  // Define the mutation for deleting the project
+  // Define the mutation for deleting the service
   const mutation = useMutation({
-    mutationFn: async () => {
-      const response = await apiFetch(
-        `/api/user-management/projects/${project.id}`,
-        {
-          method: 'DELETE',
-        },
-      );
-
-      if (!response.ok) {
-        const { message } = await response.json();
-        throw new Error(message);
-      }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      const message = 'project deleted successfully';
-
+    mutationFn: deleteFreelancerService,
+    onSuccess: (data) => {
       toast.custom(
         () => (
           <Alert variant="mono" icon="success">
             <AlertIcon>
               <RiCheckboxCircleFill />
             </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
+            <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
 
@@ -53,26 +37,8 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
           position: 'top-center',
         },
       );
-
-      queryClient.invalidateQueries({ queryKey: ['user-projects'] }); // Refetch projects list
+      queryClient.invalidateQueries({ queryKey: ['freelancer-services'] }); // Refetch services list
       closeDialog();
-    },
-    onError: (error) => {
-      const message = error.message;
-      toast.custom(
-        () => (
-          <Alert variant="mono" icon="destructive">
-            <AlertIcon>
-              <RiErrorWarningFill />
-            </AlertIcon>
-            <AlertTitle>{message}</AlertTitle>
-          </Alert>
-        ),
-
-        {
-          position: 'top-center',
-        },
-      );
     },
   });
 
@@ -83,7 +49,7 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
           <DialogTitle>Confirm Delete</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Are you sure you want to delete the project ?
+          Are you sure you want to delete the service ?
         </DialogDescription>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>
@@ -105,4 +71,4 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
   );
 };
 
-export default ProjectDeleteDialog;
+export default ServiceDeleteDialog;

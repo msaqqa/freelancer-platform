@@ -27,3 +27,5 @@ export * from './card-user-social';
 export * from './card-user-social-row';
 export * from './card-work';
 export * from './card-work-row';
+export * from './card-service';
+export * from './card-portfolio';

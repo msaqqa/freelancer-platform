@@ -6,12 +6,12 @@ import { EllipsisVertical } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ServiceAddDialog from '@/app/(protected)/freelancer/public-profile/services/dialogs/service-add-dialog';
-import ServiceDeleteDialog from '@/app/(protected)/freelancer/public-profile/services/dialogs/service-delete-dialog';
-import ServiceViewDialog from '@/app/(protected)/freelancer/public-profile/services/dialogs/service-view-dialog';
+import ProjectAddDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-add-dialog';
+import ProjectDeleteDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-delete-dialog';
+import ProjectViewDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
-const CardWork = ({ image, title }) => {
+const CardPortfolio = ({ image, title }) => {
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -65,16 +65,16 @@ const CardWork = ({ image, title }) => {
           {title}
         </Link>
       </div>
-      <ServiceViewDialog
+      <ProjectViewDialog
         open={openViewDialog}
         closeDialog={() => setOpenViewDialog(false)}
       />
-      <ServiceAddDialog
+      <ProjectAddDialog
         open={openEditDialog}
         closeDialog={() => setOpenEditDialog(false)}
         project={project}
       />
-      <ServiceDeleteDialog
+      <ProjectDeleteDialog
         open={openDeleteDialog}
         closeDialog={() => setOpenDeleteDialog(false)}
       />
@@ -82,4 +82,4 @@ const CardWork = ({ image, title }) => {
   );
 };
 
-export { CardWork };
+export { CardPortfolio };

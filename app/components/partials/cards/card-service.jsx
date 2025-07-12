@@ -11,7 +11,7 @@ import ServiceDeleteDialog from '@/app/(protected)/freelancer/public-profile/ser
 import ServiceViewDialog from '@/app/(protected)/freelancer/public-profile/services/dialogs/service-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
-const CardWork = ({ image, title }) => {
+const CardService = ({ image, title }) => {
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
@@ -82,4 +82,4 @@ const CardWork = ({ image, title }) => {
   );
 };
 
-export { CardWork };
+export { CardService };

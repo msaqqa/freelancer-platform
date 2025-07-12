@@ -13,7 +13,7 @@ import { cn } from '@/lib/utils';
 import {
   addFreelancerPortfolio,
   getFreelancerPortfolioById,
-  updateFreelancerPortfolioById,
+  updateFreelancerPortfolio,
 } from '@/services/freelancer/portfolio';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Badge, BadgeButton } from '@/components/ui/badge';
@@ -146,10 +146,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
 
       let response;
       portfolioId
-        ? (response = await updateFreelancerPortfolioById(
-            portfolioId,
-            formData,
-          ))
+        ? (response = await updateFreelancerPortfolio(portfolioId, formData))
         : (response = await addFreelancerPortfolio(formData));
       return response;
     },

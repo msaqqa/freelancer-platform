@@ -2,41 +2,25 @@
 
 import { Fragment } from 'react';
 import { UserHero } from '@/partials/common/user-hero';
-import { DropdownMenu9 } from '@/partials/dropdown-menu/dropdown-menu-9';
-import { Navbar, NavbarActions } from '@/partials/navbar/navbar';
-import { EllipsisVertical, MessagesSquare, Users } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Navbar } from '@/partials/navbar/navbar';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { Container } from '@/components/common/container';
 import { PageMenu } from '@/app/(protected)/freelancer/public-profile/page-menu';
-import { Works } from './components';
+import { Services } from './components';
 
-export default function ProfileWorksPage() {
+export default function ProfileServicesPage() {
+  const { data: user, isLoading } = useAuth();
+
   return (
     <Fragment>
-      <UserHero />
-
+      <UserHero user={user} isLoading={isLoading} />
       <Container>
         <Navbar>
           <PageMenu />
-          <NavbarActions>
-            <Button>
-              <Users /> Connect
-            </Button>
-            <Button variant="outline" mode="icon">
-              <MessagesSquare />
-            </Button>
-            <DropdownMenu9
-              trigger={
-                <Button variant="outline" mode="icon">
-                  <EllipsisVertical />
-                </Button>
-              }
-            />
-          </NavbarActions>
         </Navbar>
       </Container>
       <Container>
-        <Works />
+        <Services />
       </Container>
     </Fragment>
   );

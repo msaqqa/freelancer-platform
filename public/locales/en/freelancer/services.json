@@ -1,0 +1,11 @@
+{
+    "title":"Title",
+    "industry":"Industry",
+    "industryHolder":"Design, Development, Writing",
+    "specialty":"Specialty",
+    "specialtyHolder":"Select Specialty",
+    "tags" : "Tags",
+    "tagsHolder": "Help clients find your project.",
+    "serviceAttributes":"Service attributes",
+    "loading": "loading..."
+}
