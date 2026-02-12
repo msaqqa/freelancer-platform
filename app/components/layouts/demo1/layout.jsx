@@ -51,9 +51,7 @@ export function Demo1Layout({ children }) {
 
   return (
     <>
-      {!isMobile && <Sidebar />}
-
-      <div className="wrapper flex grow flex-col">
+      <div className="flex grow flex-col">
         <Header />
 
         <main className="grow pt-5" role="content">

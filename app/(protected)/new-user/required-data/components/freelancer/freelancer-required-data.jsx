@@ -70,7 +70,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
         },
       );
       // redirect to freelancer profile
-      router.replace('/freelancer/public-profile/profile');
+      router.replace('/freelancerprofile');
     },
   });
 

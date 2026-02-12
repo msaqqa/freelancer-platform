@@ -35,19 +35,15 @@ function useResetPassword() {
     onSuccess: () => {
       router.push('/signin');
     },
-    onError: (error) => {
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
-    },
   });
 
   return {
     t,
     form,
-    error: mutation?.error?.message,
+    onSubmit,
     isProcessing: mutation.isPending,
     success: mutation.isSuccess,
-    onSubmit,
+    error: mutation.error,
   };
 }
 

@@ -12,7 +12,7 @@ import {
 } from '@/components/ui/tooltip';
 import { ImageInput } from '@/components/image-input';
 
-export function AvatarInput({ onChange, defaultImg }) {
+export function AvatarInput({ onChange, defaultImg, onRemove }) {
   const [avatar, setAvatar] = useState(null);
 
   const handleImageUpload = (selectedAvatar) => {
@@ -42,6 +42,7 @@ export function AvatarInput({ onChange, defaultImg }) {
                   onClick={(e) => {
                     e.stopPropagation();
                     setAvatar(null);
+                    onRemove();
                   }}
                 >
                   <X className="size-3.25!" />

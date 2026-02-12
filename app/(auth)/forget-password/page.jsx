@@ -15,23 +15,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
-import { RecaptchaPopover } from '@/components/common/recaptcha-popover';
 import useForgetPassword from '../../../hooks/auth/use-forgot-password';
 
 export default function Page() {
-  const {
-    t,
-    form,
-    showRecaptcha,
-    setShowRecaptcha,
-    error,
-    isProcessing,
-    success,
-    handleSubmit,
-    handleVerifiedSubmit,
-    onSubmit,
-  } = useForgetPassword();
-  const email = form.getValues('email');
+  const { t, form, onSubmit, isProcessing, success, error } =
+    useForgetPassword();
 
   if (success) {
     return (
@@ -65,7 +53,7 @@ export default function Page() {
               <AlertIcon>
                 <AlertCircle />
               </AlertIcon>
-              <AlertTitle>{error}</AlertTitle>
+              <AlertTitle>{error.message}</AlertTitle>
             </Alert>
           )}
 
@@ -96,26 +84,6 @@ export default function Page() {
               </FormItem>
             )}
           />
-
-          {/* <div className="flex flex-col gap-2.5">
-            <RecaptchaPopover
-              open={showRecaptcha}
-              onOpenChange={(open) => {
-                if (!open) {
-                  setShowRecaptcha(false);
-                }
-              }}
-              onVerify={handleVerifiedSubmit}
-              trigger={
-                <Button type="submit" disabled={isProcessing}>
-                  {isProcessing ? (
-                    <Spinner className="size-4 animate-spin" />
-                  ) : null}
-                  {t('submit')}
-                </Button>
-              }
-            />
-          </div> */}
 
           <div className="flex flex-col gap-2.5">
             <Button type="submit" disabled={isProcessing}>

@@ -22,7 +22,8 @@ export default function Page() {
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
     useState(false);
 
-  const { t, form, error, isProcessing, onSubmit } = useResetPassword();
+  const { t, form, onSubmit, isProcessing, success, error } =
+    useResetPassword();
 
   return (
     <Form {...form}>
@@ -45,7 +46,7 @@ export default function Page() {
               <AlertIcon>
                 <AlertCircle />
               </AlertIcon>
-              <AlertTitle>{error}</AlertTitle>
+              <AlertTitle>{error.message}</AlertTitle>
             </Alert>
           </div>
         )}

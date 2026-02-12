@@ -17,8 +17,8 @@ const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400', '700'] });
 
 export const metadata = {
   title: {
-    template: '%s | Taqat',
-    default: 'Taqat Freelancer Platform',
+    template: '%s | Bight Gaza',
+    default: 'Bight Gaza Freelancer Platform',
   },
   icons: {
     icon: '/media/app/favicon.png',
@@ -44,7 +44,9 @@ export default async function RootLayout({ children }) {
               <I18nProvider lang={lang}>
                 <TooltipsProvider>
                   <ModulesProvider>
-                    <Suspense>{children}</Suspense>
+                    <Suspense>
+                      <div className="w-full">{children}</div>
+                    </Suspense>
                     <Toaster />
                   </ModulesProvider>
                 </TooltipsProvider>

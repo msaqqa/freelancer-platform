@@ -1,13 +1,13 @@
 'use client';
 
 import Link from 'next/link';
-import { Coffee } from 'lucide-react';
+import { Briefcase } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { TimelineItem } from './timeline-item';
 
 const ActivitiesFollowersMilestone = () => {
   return (
-    <TimelineItem icon={Coffee} line={true}>
+    <TimelineItem icon={Briefcase} line={true}>
       <div className="flex flex-col">
         <div className="text-sm text-mono">
           Reaching the milestone of{' '}

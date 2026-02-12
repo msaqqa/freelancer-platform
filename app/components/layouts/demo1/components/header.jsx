@@ -57,6 +57,9 @@ export function Header() {
         'header fixed top-0 z-10 start-0 flex items-stretch shrink-0 border-b border-transparent bg-background end-0 pe-[var(--removed-body-scroll-bar-size,0px)]',
         headerSticky && 'border-b border-border',
       )}
+      ref={(el) =>
+        el && el.style.setProperty('inset-inline-start', '0', 'important')
+      }
     >
       <Container className="flex justify-between items-stretch lg:gap-4">
         {/* HeaderLogo */}

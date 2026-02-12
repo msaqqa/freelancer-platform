@@ -18,7 +18,6 @@ import {
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import { Icons } from '@/components/common/icons';
-import { RecaptchaPopover } from '@/components/common/recaptcha-popover';
 
 export default function Page() {
   const {
@@ -30,15 +29,13 @@ export default function Page() {
     setPasswordConfirmationVisible,
     showRecaptcha,
     setShowRecaptcha,
-    errors,
+    error,
     isProcessing,
     handleSubmit,
     handleVerifiedSubmit,
     handleGoogleSignin,
     onSubmit,
   } = useSignup();
-
-  const error = errors?.message;
 
   return (
     <Suspense>
@@ -79,7 +76,7 @@ export default function Page() {
               <AlertIcon>
                 <AlertCircle />
               </AlertIcon>
-              <AlertTitle>{error}</AlertTitle>
+              <AlertTitle>{error.message}</AlertTitle>
             </Alert>
           )}
 
@@ -210,26 +207,6 @@ export default function Page() {
             />
           </div>
 
-          {/* <div className="flex flex-col gap-2.5">
-            <RecaptchaPopover
-              open={showRecaptcha}
-              onOpenChange={(open) => {
-                if (!open) {
-                  setShowRecaptcha(false);
-                }
-              }}
-              onVerify={handleVerifiedSubmit}
-              trigger={
-                <Button type="submit" disabled={isProcessing}>
-                  {isProcessing ? (
-                    <Spinner className="size-4 animate-spin" />
-                  ) : null}
-                  {t('signup')}
-                </Button>
-              }
-            />
-          </div> */}
-
           <div className="flex flex-col gap-2.5">
             <Button type="submit" disabled={isProcessing}>
               {isProcessing ? (
@@ -243,7 +220,7 @@ export default function Page() {
             {t('haveAccount')}{' '}
             <Link
               href="/signin"
-              className="text-sm text-sm font-semibold text-foreground hover:text-primary"
+              className="text-sm font-semibold text-foreground hover:text-primary"
             >
               {t('signin')}
             </Link>

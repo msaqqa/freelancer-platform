@@ -2,9 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { MegaMenuSubAccount } from '@/partials/mega-menu/mega-menu-sub-account';
-import { MegaMenuSubNetwork } from '@/partials/mega-menu/mega-menu-sub-network';
-import { MegaMenuSubProfiles } from '@/partials/mega-menu/mega-menu-sub-profiles';
 import { CLIENT_MENU_MEGA } from '@/config/client-menu.config';
 import { FREELANCER_MENU_MEGA } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
@@ -12,13 +9,10 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { useMenu } from '@/hooks/use-menu';
 import {
   NavigationMenu,
-  NavigationMenuContent,
   NavigationMenuItem,
   NavigationMenuLink,
   NavigationMenuList,
-  NavigationMenuTrigger,
 } from '@/components/ui/navigation-menu';
-import { MegaMenuSubApps } from '@/app/components/partials/mega-menu/mega-menu-sub-apps';
 
 export function MegaMenu() {
   const { data: user } = useAuth();
@@ -27,10 +21,10 @@ export function MegaMenu() {
   const pathname = usePathname();
   const { isActive, hasActiveChild } = useMenu(pathname);
   const homeItem = MENU_MEGA[0];
-  const publicProfilesItem = MENU_MEGA[1];
-  const myAccountItem = MENU_MEGA[2];
-  const networkItem = MENU_MEGA[3];
-  const appsStore = MENU_MEGA[4];
+  const profileItem = MENU_MEGA[1];
+  const servicesItem = MENU_MEGA[2];
+  const experienceItem = MENU_MEGA[3];
+  const workHistoryItem = MENU_MEGA[4];
 
   const linkClass = `
     text-sm text-secondary-foreground font-medium 
@@ -56,60 +50,56 @@ export function MegaMenu() {
           </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Public Profiles Item */}
+        {/* Profile Item */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={cn(linkClass)}
-            data-active={
-              hasActiveChild(publicProfilesItem.children) || undefined
-            }
-          >
-            {publicProfilesItem.title}
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-0">
-            <MegaMenuSubProfiles items={MENU_MEGA} />
-          </NavigationMenuContent>
+          <NavigationMenuLink asChild>
+            <Link
+              href={profileItem.path}
+              className={cn(linkClass)}
+              data-active={isActive(profileItem.path) || undefined}
+            >
+              {profileItem.title}
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* My Account Item */}
+        {/* Services Item */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={cn(linkClass)}
-            data-active={hasActiveChild(myAccountItem.children) || undefined}
-          >
-            {myAccountItem.title}
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-0">
-            <MegaMenuSubAccount items={MENU_MEGA} />
-          </NavigationMenuContent>
+          <NavigationMenuLink asChild>
+            <Link
+              href={servicesItem.path}
+              className={cn(linkClass)}
+              data-active={isActive(servicesItem.path) || undefined}
+            >
+              {servicesItem.title}
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Network Item */}
+        {/* Experience Item */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={cn(linkClass)}
-            data-active={
-              hasActiveChild(networkItem.children || []) || undefined
-            }
-          >
-            {networkItem.title}
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-0">
-            <MegaMenuSubNetwork items={MENU_MEGA} />
-          </NavigationMenuContent>
+          <NavigationMenuLink asChild>
+            <Link
+              href={experienceItem.path}
+              className={cn(linkClass)}
+              data-active={isActive(experienceItem.path) || undefined}
+            >
+              {experienceItem.title}
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
 
-        {/* Apps Item */}
+        {/* WorkHistory Item */}
         <NavigationMenuItem>
-          <NavigationMenuTrigger
-            className={cn(linkClass)}
-            data-active={hasActiveChild(appsStore.children || []) || undefined}
-          >
-            {appsStore.title}
-          </NavigationMenuTrigger>
-          <NavigationMenuContent className="p-0">
-            <MegaMenuSubApps items={MENU_MEGA} />
-          </NavigationMenuContent>
+          <NavigationMenuLink asChild>
+            <Link
+              href={workHistoryItem.path}
+              className={cn(linkClass)}
+              data-active={isActive(workHistoryItem.path) || undefined}
+            >
+              {workHistoryItem.title}
+            </Link>
+          </NavigationMenuLink>
         </NavigationMenuItem>
       </NavigationMenuList>
     </NavigationMenu>

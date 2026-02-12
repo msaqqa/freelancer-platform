@@ -48,8 +48,6 @@ export default function AccountType() {
     mutation.mutate({ type: typeNum });
   };
 
-  const isProcessing = mutation.isPending || false;
-
   const accountTypeOptions = [
     {
       name: t('accountTypeClient'),
@@ -79,7 +77,7 @@ export default function AccountType() {
         options={accountTypeOptions}
         handleChange={handleChange}
         handleSubmit={handleSubmit}
-        isProcessing={isProcessing}
+        isProcessing={mutation.isPending}
       />
     </div>
   );

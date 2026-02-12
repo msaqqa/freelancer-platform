@@ -12,27 +12,22 @@ function useSignin() {
   const router = useRouter();
   const { t } = useTranslation('auth');
   const [passwordVisible, setPasswordVisible] = useState(false);
-  const [isVerified, setIsVerified] = useState(true);
 
   const form = useForm({
     resolver: zodResolver(getSigninSchema(t)),
-    defaultValues: {
-      email: '',
-      password: '',
-      rememberMe: false,
-    },
     mode: 'onBlur',
   });
+
+  const onSubmit = (values) => {
+    console.log('values', values);
+    mutation.mutate(values);
+  };
 
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data) => {
       // store token in the cookies
-      if (form.getValues('rememberMe')) {
-        Cookies.set('token', data?.data?.token, { expires: 30 }); // 30 days
-      } else {
-        Cookies.set('token', data?.data?.token); // 1 session
-      }
+      Cookies.set('token', data?.data?.token);
       // redirect to main dashboard
       const type = data?.data?.type || null;
       const requiredData = data?.data?.save_data || null;
@@ -46,19 +41,7 @@ function useSignin() {
         router.push('/new-user/account-type');
       }
     },
-    onError: (error) => {
-      const hasIsVerified = 'is_verified' in (error?.data?.data || {});
-      const verified = error.data.data.is_verified;
-      if (hasIsVerified) {
-        setIsVerified(verified);
-      }
-    },
   });
-
-  const onSubmit = (values) => {
-    setIsVerified(true);
-    mutation.mutate(values);
-  };
 
   const handleGoogleSignin = async () => {
     await getGoogleOAuthUrl();
@@ -69,11 +52,10 @@ function useSignin() {
     form,
     passwordVisible,
     setPasswordVisible,
-    errors: mutation.error,
+    error: mutation.error,
     isProcessing: mutation.isPending,
     onSubmit,
     handleGoogleSignin,
-    isVerified,
   };
 }
 

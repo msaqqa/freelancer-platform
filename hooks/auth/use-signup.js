@@ -17,28 +17,10 @@ function useSignup() {
 
   const form = useForm({
     resolver: zodResolver(getSignupSchema(t)),
-    defaultValues: {
-      email: '',
-      password: '',
-      passwordConfirmation: '',
-      accept: false,
-    },
     mode: 'onBlur',
   });
 
   const onSubmit = (values) => {
-    mutation.mutate(values);
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const result = await form.trigger();
-    if (!result) return;
-    setShowRecaptcha(true);
-  };
-
-  const handleVerifiedSubmit = async () => {
-    const values = form.getValues();
     mutation.mutate(values);
   };
 
@@ -47,10 +29,6 @@ function useSignup() {
     onSuccess: () => {
       const email = form.getValues('email');
       router.push(`/verify-email?email=${encodeURIComponent(email)}`);
-    },
-    onError: (error) => {
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
     },
   });
 
@@ -67,10 +45,8 @@ function useSignup() {
     setPasswordConfirmationVisible,
     showRecaptcha,
     setShowRecaptcha,
-    errors: mutation.error,
+    error: mutation.error,
     isProcessing: mutation.isPending,
-    handleSubmit,
-    handleVerifiedSubmit,
     handleGoogleSignin,
     onSubmit,
   };

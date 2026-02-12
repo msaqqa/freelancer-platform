@@ -14,7 +14,6 @@ function useVerifyEmail() {
   const searchParams = useSearchParams();
   const emailParam = searchParams.get('email');
   const email = decodeURIComponent(emailParam);
-  const [errors, setErrors] = useState(null);
   const [timeLeft, setTimeLeft] = useState(300);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -43,15 +42,9 @@ function useVerifyEmail() {
       setTimeLeft(300);
       clearInterval(timer);
     },
-    onError: (error) => {
-      throw error?.response?.data?.message || error.message;
-    },
   });
 
-  const isResendLodaing = resendOtpMutation.isPending || false;
-
   const handleResetOtp = () => {
-    setErrors(null);
     resendOtpMutation.mutate({ email });
   };
 
@@ -68,11 +61,10 @@ function useVerifyEmail() {
   });
 
   const onSubmit = (values) => {
-    setErrors(null);
-    verifyOtpMutation.mutate({ ...values, email });
+    mutation.mutate({ ...values, email });
   };
 
-  const verifyOtpMutation = useMutation({
+  const mutation = useMutation({
     mutationFn: verifyEmailOtp,
     onSuccess: (data) => {
       // store token
@@ -80,24 +72,19 @@ function useVerifyEmail() {
       // redirect to main dashboard
       router.push('/new-user/account-type');
     },
-    onError: (error) => {
-      setErrors(error);
-      console.error('error', error);
-      throw error?.response?.data?.message || error.message;
-    },
   });
 
   return {
     t,
     form,
-    errors,
-    isProcessing: verifyOtpMutation.isPending,
+    onSubmit,
+    isProcessing: mutation.isPending,
+    error: mutation.error,
     minutes,
     seconds,
     isButtonDisabled,
-    isResendLodaing,
-    onSubmit,
     handleResetOtp,
+    isResendLodaing: resendOtpMutation.isPending,
   };
 }
 

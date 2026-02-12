@@ -6,9 +6,9 @@ import { EllipsisVertical } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ProjectAddDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-add-dialog';
-import ProjectDeleteDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-delete-dialog';
-import ProjectViewDialog from '@/app/(protected)/freelancer/public-profile/portfolio/dialogs/project-view-dialog';
+import ProjectAddDialog from '@/app/(protected)/freelancer/portfolio/dialogs/project-add-dialog';
+import ProjectDeleteDialog from '@/app/(protected)/freelancer/portfolio/dialogs/project-delete-dialog';
+import ProjectViewDialog from '@/app/(protected)/freelancer/portfolio/dialogs/project-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
 const CardPortfolio = ({ image, title }) => {

@@ -20,16 +20,16 @@ export default function Page() {
   const {
     t,
     form,
-    errors,
+    onSubmit,
     isProcessing,
+    error,
     minutes,
     seconds,
     isButtonDisabled,
-    isResendLodaing,
-    onSubmit,
     handleResetOtp,
+    isResendLodaing,
   } = useVerifyEmail();
-  const error = errors?.message;
+
   return (
     <Suspense>
       <div className="w-full space-y-6">
@@ -39,16 +39,7 @@ export default function Page() {
             <AlertIcon>
               <AlertCircle />
             </AlertIcon>
-            <AlertTitle>{error}</AlertTitle>
-          </Alert>
-        )}
-
-        {isProcessing && (
-          <Alert>
-            <AlertIcon>
-              <Spinner className="size-4 animate-spin stroke-muted-foreground" />
-            </AlertIcon>
-            <AlertTitle>{t('verifying')}</AlertTitle>
+            <AlertTitle>{error.message}</AlertTitle>
           </Alert>
         )}
 
@@ -68,11 +59,17 @@ export default function Page() {
                   </FormControl>
                   <FormMessage />
                   <div className="flex justify-between items-center space-x-2">
-                    <div>
-                      <span className="text-sm font-medium text-foreground">
+                    <div
+                      className={
+                        isButtonDisabled
+                          ? 'text-foreground'
+                          : 'text-muted-foreground'
+                      }
+                    >
+                      <span className="text-sm font-medium">
                         {t('notReceivedOTP')}
                       </span>
-                      <span className="text-sm font-semibold text-foreground ms-2">
+                      <span className="text-sm font-semibold ms-2">
                         {minutes}:{seconds < 10 ? `0${seconds}` : seconds}
                       </span>
                     </div>
@@ -82,6 +79,7 @@ export default function Page() {
                       underlined="solid"
                       disabled={isButtonDisabled || isResendLodaing}
                       onClick={handleResetOtp}
+                      className={`text-sm ${isButtonDisabled ? 'text-muted-foreground' : 'text-foreground'} hover:text-primary`}
                     >
                       {t('resendCode')}{' '}
                       {isResendLodaing && <Spinner className="animate-spin" />}

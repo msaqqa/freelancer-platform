@@ -24,15 +24,11 @@ export default function Page() {
     form,
     passwordVisible,
     setPasswordVisible,
-    errors,
+    error,
     isProcessing,
     onSubmit,
     handleGoogleSignin,
-    isVerified,
   } = useSignin();
-
-  const error = errors?.message;
-  const email = form.getValues('email');
 
   return (
     <Form {...form}>
@@ -69,18 +65,7 @@ export default function Page() {
             <AlertIcon>
               <AlertCircle />
             </AlertIcon>
-            <AlertTitle>
-              {error}
-              <br />
-              {!isVerified && (
-                <Link
-                  href={`/verify-email?email=${encodeURIComponent(email)}`}
-                  className="pt-2 text-accent hover:text-muted-foreground underline"
-                >
-                  {t('verifyEmail')}
-                </Link>
-              )}
-            </AlertTitle>
+            <AlertTitle>{error.message}</AlertTitle>
           </Alert>
         )}
 

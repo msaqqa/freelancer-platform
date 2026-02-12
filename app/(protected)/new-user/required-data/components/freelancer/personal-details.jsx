@@ -84,6 +84,10 @@ const PersonalDetails = ({ setActiveSection }) => {
                         field.onChange(val);
                         trigger('photo');
                       }}
+                      onRemove={() => {
+                        setValue('photo', null);
+                        trigger('photo');
+                      }}
                     />
                   </FormControl>
                   <FormMessage />
