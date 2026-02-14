@@ -7,38 +7,29 @@ export const FREELANCER_MENU_SIDEBAR_FUNCTION = () => {
   };
   const menu = [
     {
-      title: t('dashboards'),
+      title: t('postJob'),
       icon: LayoutGrid,
-      children: [
-        { title: t('lightSidebar'), path: '/freelancer' },
-        { title: t('darkSidebar'), path: '/freelancer/dark-sidebar' },
-      ],
+      path: '#',
     },
     {
-      title: t('profile'),
+      title: t('findTalent'),
       icon: UserCircle,
-      children: [
-        {
-          title: t('profile'),
-          path: '/freelancer/profile',
-        },
-        {
-          title: t('portfolio'),
-          path: '/freelancer/portfolio',
-        },
-        {
-          title: t('services'),
-          path: '/freelancer/services',
-        },
-        {
-          title: t('experience'),
-          path: '/freelancer/experience',
-        },
-        {
-          title: t('workHistory'),
-          path: '/freelancer/work-history',
-        },
-      ],
+      path: '#',
+    },
+    {
+      title: t('findService'),
+      icon: UserCircle,
+      path: '#',
+    },
+    {
+      title: t('findJobs'),
+      icon: UserCircle,
+      path: '#',
+    },
+    {
+      title: t('myDashboard'),
+      icon: UserCircle,
+      path: '/freelancer',
     },
   ];
   return menu;
@@ -46,18 +37,20 @@ export const FREELANCER_MENU_SIDEBAR_FUNCTION = () => {
 
 export const FREELANCER_MENU_SIDEBAR = FREELANCER_MENU_SIDEBAR_FUNCTION();
 
-export const FREELANCER_MENU_MEGA = [
-  { title: 'Profile', path: '/freelancer/profile' },
-  { title: 'Portfolio', path: '/freelancer/portfolio' },
-  { title: 'Services', path: '/freelancer/services' },
-  { title: 'Experience', path: '/freelancer/experience' },
-  { title: 'Work History', path: '/freelancer/work-history' },
-];
+export const FREELANCER_MENU_MEGA_FUNCTION = () => {
+  const t = (key) => {
+    return i18n.isInitialized ? i18n.t(`${key}`, { ns: 'menuSidebar' }) : key;
+  };
+  const menu = [
+    { title: t('postJob'), path: '#' },
+    { title: t('findTalent'), path: '#' },
+    { title: t('findService'), path: '#' },
+    { title: t('findJobs'), path: '#' },
+    { title: t('myDashboard'), path: '/freelancer' },
+  ];
+  return menu;
+};
 
-export const FREELANCER_MENU_MEGA_MOBILE = [
-  { title: 'Profile', path: '/freelancer/profile' },
-  { title: 'Portfolio', path: '/freelancer/portfolio' },
-  { title: 'Services', path: '/freelancer/services' },
-  { title: 'Experience', path: '/freelancer/experience' },
-  { title: 'Work History', path: '/freelancer/work-history' },
-];
+export const FREELANCER_MENU_MEGA = FREELANCER_MENU_MEGA_FUNCTION();
+
+export const FREELANCER_MENU_MEGA_MOBILE = FREELANCER_MENU_MEGA_FUNCTION();

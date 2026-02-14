@@ -1,4 +1,10 @@
 {
+    "postJob": "Post a Job",
+    "findTalent": "Find Talent",
+    "findService": "Find Service",
+    "findJobs": "Find Jobs",
+    "myDashboard": "My Dashboard",
+    
     "dashboards": "لوحات التحكم",
     "lightSidebar": "الشريط الجانبي الفاتح",
     "darkSidebar": "الشريط الجانبي الداكن",

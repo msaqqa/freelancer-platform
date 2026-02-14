@@ -49,55 +49,39 @@ import {
   Zap,
 } from 'lucide-react';
 
-export const MENU_SIDEBAR_CUSTOM = [
+export const MENU_SIDEBAR = [
   {
-    title: 'Store - Client',
-    icon: Users,
+    title: 'Dashboards',
+    icon: LayoutGrid,
+    path: '/',
+  },
+  {
+    title: 'Public Profile',
+    icon: UserCircle,
     children: [
-      { title: 'Home', path: '/store-client/home' },
       {
-        title: 'Search Results',
+        title: 'Profiles',
         children: [
+          { title: 'Default', path: '/public-profile/profiles/default' },
+          { title: 'Creator', path: '/public-profile/profiles/creator' },
+          { title: 'Company', path: '/public-profile/profiles/company' },
+          { title: 'NFT', path: '/public-profile/profiles/nft' },
+          { title: 'Blogger', path: '/public-profile/profiles/blogger' },
+          { title: 'CRM', path: '/public-profile/profiles/crm' },
           {
-            title: 'Search Results - Grid',
-            path: '/store-client/search-results-grid',
-          },
-          {
-            title: 'Search Results - List',
-            path: '/store-client/search-results-list',
+            title: 'More',
+            collapse: true,
+            collapseTitle: 'Show less',
+            expandTitle: 'Show 4 more',
+            children: [
+              { title: 'Gamer', path: '/public-profile/profiles/gamer' },
+              { title: 'Feeds', path: '/public-profile/profiles/feeds' },
+              { title: 'Plain', path: '/public-profile/profiles/plain' },
+              { title: 'Modal', path: '/public-profile/profiles/modal' },
+            ],
           },
         ],
       },
-      {
-        title: 'Overlays',
-        children: [
-          { title: 'Product Details', path: '/store-client/product-details' },
-          { title: 'Wishlist', path: '/store-client/wishlist' },
-        ],
-      },
-      {
-        title: 'Checkout',
-        children: [
-          {
-            title: 'Order Summary',
-            path: '/store-client/checkout/order-summary',
-          },
-          {
-            title: 'Shipping Info',
-            path: '/store-client/checkout/shipping-info',
-          },
-          {
-            title: 'Payment Method',
-            path: '/store-client/checkout/payment-method',
-          },
-          {
-            title: 'Order Placed',
-            path: '/store-client/checkout/order-placed',
-          },
-        ],
-      },
-      { title: 'My Orders', path: '/store-client/my-orders' },
-      { title: 'Order Receipt', path: '/store-client/order-receipt' },
     ],
   },
 ];
@@ -109,7 +93,7 @@ export const MENU_SIDEBAR_COMPACT = [
     path: '/',
   },
   {
-    title: 'Public Profile',
+    title: 'Profile',
     icon: UserCircle,
     children: [
       {

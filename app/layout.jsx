@@ -17,9 +17,10 @@ const tajawal = Tajawal({ subsets: ['arabic'], weight: ['400', '700'] });
 
 export const metadata = {
   title: {
-    template: '%s | Bight Gaza',
     default: 'Bight Gaza Freelancer Platform',
+    template: '%s | Bight Gaza',
   },
+  description: 'Bight Gaza Freelancer Platform.',
   icons: {
     icon: '/media/app/favicon.png',
   },

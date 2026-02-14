@@ -6,9 +6,9 @@ import { EllipsisVertical } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ServiceAddDialog from '@/app/(protected)/freelancer/services/dialogs/service-add-dialog';
-import ServiceDeleteDialog from '@/app/(protected)/freelancer/services/dialogs/service-delete-dialog';
-import ServiceViewDialog from '@/app/(protected)/freelancer/services/dialogs/service-view-dialog';
+import ServiceAddDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-add-dialog';
+import ServiceDeleteDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-delete-dialog';
+import ServiceViewDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
 const CardWork = ({ image, title }) => {

@@ -1,28 +1,27 @@
 'use client';
 
 // import { useEffect } from 'react';
-// import { notFound, useRouter } from 'next/navigation';
+// import { notFound, useRouter, redirect } from 'next/navigation';
 // import { useAuth } from '@/hooks/auth/use-auth';
 // import { ScreenLoader } from '@/components/common/screen-loader';
-import { Demo1Layout } from '../../components/layouts/demo1/layout';
+import { Layout } from '../../components/layouts/layout';
 
 export default function FreelancerLayout({ children }) {
   // const { data: user, isLoading, isError } = useAuth();
   // const router = useRouter();
 
   // useEffect(() => {
-  //   if (isLoading) return;
-  //   if (!user || isError) router.push('/signin');
+  //   if (!user || isError) redirect('/signin');
   //   if (user?.type !== 'freelancer') notFound();
-  // }, [isLoading, user, router]);
+  // }, [user, router]);
 
   // if (isLoading) {
   //   return <ScreenLoader />;
   // }
 
   return (
-    <Demo1Layout>
-      <div className="pt-[16px] md:pt-[32px] lg:pt-[60px]">{children}</div>
-    </Demo1Layout>
+    <Layout>
+      <div className="pt-15">{children}</div>
+    </Layout>
   );
 }

@@ -1,5 +1,6 @@
 'use client';
 
+import { Edit, Pencil } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
@@ -56,9 +57,7 @@ export function UserHero({ user, isLoading, openDialog }) {
   const photo = openDialog ? (
     <div className="relative">
       <img
-        src={toAbsoluteUrl(
-          isLoading ? '/media/avatars/blank.png' : user?.photo,
-        )}
+        src={toAbsoluteUrl(user?.photo || '/media/avatars/blank.png')}
         className="rounded-full border-3 border-primary size-[100px] shrink-0"
         alt="image"
       />
@@ -66,16 +65,12 @@ export function UserHero({ user, isLoading, openDialog }) {
         className="absolute bottom-0 end-0 size-[40px] flex justify-center items-center cursor-pointer bg-background rounded-full border-3 border-primary"
         onClick={openDialog}
       >
-        <img
-          src={toAbsoluteUrl('/media/icons/edit-light.svg')}
-          className="size-[20px] shrink-0"
-          alt="image"
-        />
+        <Edit size={16} className="text-accent-foreground" />
       </div>
     </div>
   ) : (
     <img
-      src={toAbsoluteUrl(isLoading ? '/media/avatars/blank.png' : user?.photo)}
+      src={toAbsoluteUrl(user?.photo || '/media/avatars/blank.png')}
       className="rounded-full border-3 border-primary size-[100px] shrink-0"
       alt="image"
     />

@@ -26,7 +26,7 @@ export function useAuth() {
   };
 
   return {
-    data: data?.data || null,
+    data: data?.data,
     isLoading,
     isError,
     refetch,
