@@ -1,104 +1,152 @@
-import { apiTaqat } from '../api';
+import { createClient } from '@/lib/supabase/client';
 
-// signup a new user with credentials
+const supabase = createClient();
+
+// Helper: surface Supabase auth errors the same way axios errors were thrown.
+const unwrap = ({ data, error }) => {
+  if (error) throw error;
+  return data;
+};
+
+// signup a new user with credentials. Supabase sends an email OTP for
+// confirmation (template must use {{ .Token }}).
 export const signupWithCredentials = async (userData) => {
-  const response = await apiTaqat.post('/register', userData, {
-    showNotification: false,
-  });
-  return response.data;
-};
-
-// signin the user with credentials
-export const signinWithCredentials = async (credentials) => {
-  const response = await apiTaqat.post('/login', credentials, {
-    showNotification: false,
-  });
-  return response.data;
-};
-
-// get the google Oauth URL from the api
-export const getGoogleOAuthUrl = async () => {
-  const googleUrl = 'https://dev.taqatportal.com/api/auth/google';
-  window.location.href = googleUrl;
-};
-
-export const handleGoogleCallback = () => {
-  const urlParams = new URLSearchParams(window.location.search);
-  let token = urlParams.get('token');
-  if (!token && window.location.hash) {
-    const hashParams = new URLSearchParams(window.location.hash.substring(1));
-    token = hashParams.get('token');
-  }
-  if (token) {
-    Cookies.set('token', token);
-  }
-};
-
-// user forget password using email, OTP
-export const forgetPassword = async (email) => {
-  const response = await apiTaqat.post('/forget-password', email, {
-    showNotification: false,
-  });
-  return response.data;
-};
-
-// user change password
-export const resetPassword = async (payload) => {
-  const response = await apiTaqat.post(
-    '/reset-password',
-    {
-      ...payload,
-      password: payload?.newPassword,
-      password_confirmation: payload?.confirmPassword,
-    },
-    {
-      showNotification: false,
-    },
-  );
-  return response.data;
-};
-
-// verify the OTP sent to the user email
-export const verifyEmailOtp = async ({ email, otpCode }) => {
-  const response = await apiTaqat.post(
-    '/verify-otp',
-    {
+  const { email, password, name, full_name } = userData;
+  return unwrap(
+    await supabase.auth.signUp({
       email,
-      otp_code: otpCode,
-    },
-    {
-      showNotification: false,
-    },
+      password,
+      options: { data: { full_name: full_name ?? name } },
+    }),
   );
-  return response.data;
 };
 
-// resend OTP code to the user email
+// signin the user with email + password
+export const signinWithCredentials = async (credentials) => {
+  const { email, password } = credentials;
+  const auth = unwrap(
+    await supabase.auth.signInWithPassword({ email, password }),
+  );
+
+  // Pull the profile so callers can route by user_type / completion state.
+  const { data: profile } = await supabase
+    .from('profiles')
+    .select('user_type, profile_complete')
+    .eq('id', auth.user.id)
+    .single();
+
+  return { ...auth, profile };
+};
+
+// start Google OAuth via Supabase
+export const getGoogleOAuthUrl = async () => {
+  return unwrap(
+    await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${window.location.origin}/auth/callback` },
+    }),
+  );
+};
+
+// Supabase handles the OAuth code exchange in the /callback route; kept as a
+// no-op so existing imports don't break.
+export const handleGoogleCallback = () => {};
+
+// user forgot password — sends a recovery email (OTP / link)
+export const forgetPassword = async (payload) => {
+  const email = typeof payload === 'string' ? payload : payload?.email;
+  return unwrap(
+    await supabase.auth.resetPasswordForEmail(email, {
+      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+    }),
+  );
+};
+
+// set a new password for the currently recovered session
+export const resetPassword = async (payload) => {
+  return unwrap(
+    await supabase.auth.updateUser({
+      password: payload?.newPassword ?? payload?.password,
+    }),
+  );
+};
+
+// verify the email OTP sent on signup
+export const verifyEmailOtp = async ({ email, otpCode }) => {
+  return unwrap(
+    await supabase.auth.verifyOtp({ email, token: otpCode, type: 'email' }),
+  );
+};
+
+// resend the signup confirmation OTP
 export const resendVerificationCode = async (contact) => {
-  const response = await apiTaqat.post('/resend-otp', contact);
-  return response.data;
+  const email = typeof contact === 'string' ? contact : contact?.email;
+  return unwrap(await supabase.auth.resend({ type: 'signup', email }));
 };
 
-// get the user data from the api
+// get the current user's profile
 export async function getAuthUserData() {
-  const response = await apiTaqat.get('/profile');
-  return response.data;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) return null;
+
+  const { data: profile, error } = await supabase
+    .from('profiles')
+    .select('*')
+    .eq('id', user.id)
+    .single();
+  if (error) throw error;
+
+  // Alias to the field names the existing UI reads (type / save_data).
+  return {
+    data: {
+      ...profile,
+      email: user.email,
+      type: profile.user_type,
+      save_data: profile.profile_complete,
+    },
+  };
 }
 
-// change the user language preference via the API
+// change the user's language preference
 export async function changeLang(lang) {
-  const response = await apiTaqat.post('/lang', lang);
-  return response.data;
+  const value = typeof lang === 'string' ? lang : lang?.lang;
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  return unwrap(
+    await supabase
+      .from('profiles')
+      .update({ lang: value })
+      .eq('id', user.id)
+      .select()
+      .single(),
+  );
 }
 
 // signout the user
-export const signoutUser = async (credentials) => {
-  const response = await apiTaqat.post('/logout', credentials);
-  return response.data;
+export const signoutUser = async () => {
+  return unwrap(await supabase.auth.signOut());
 };
 
-// set the account type data
+// choose whether the user is a client or a freelancer.
+// The onboarding screen sends type 1 (client) or 2 (freelancer).
 export const submitAccountType = async (payload) => {
-  const response = await apiTaqat.post('/account-type', payload);
-  return response.data;
+  const userType =
+    payload?.type === 1 || payload?.type === 'client'
+      ? 'client'
+      : 'freelancer';
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  const row = unwrap(
+    await supabase
+      .from('profiles')
+      .update({ user_type: userType })
+      .eq('id', user.id)
+      .select()
+      .single(),
+  );
+  return { message: 'Account type saved', data: row };
 };

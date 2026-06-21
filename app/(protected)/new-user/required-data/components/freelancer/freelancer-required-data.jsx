@@ -40,21 +40,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
   });
 
   const mutation = useMutation({
-    mutationFn: async (values) => {
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === 'photo' && values.photo instanceof File) {
-          formData.append('photo', values.photo);
-        }
-        if (key === 'skills') {
-          formData.append('skills', JSON.stringify(values.skills));
-        } else if (key !== 'photo') {
-          formData.append(key, values[key]);
-        }
-      });
-      const response = addRequiredDataFreelancer(formData);
-      return response;
-    },
+    mutationFn: (values) => addRequiredDataFreelancer(values),
     onSuccess: async (data) => {
       toast.custom(
         () => (
@@ -69,8 +55,8 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
           position: 'top-center',
         },
       );
-      // redirect to freelancer profile
-      router.replace('/freelancerprofile');
+      // redirect to freelancer dashboard
+      router.replace('/freelancer');
     },
   });
 

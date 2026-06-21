@@ -1,63 +1,73 @@
-import { apiTaqat } from '../api';
+import { createClient } from '@/lib/supabase/client';
+
+const supabase = createClient();
+
+// Every getter returns { data: rows } to match the shape the UI already reads.
+const unwrap = ({ data, error }) => {
+  if (error) throw error;
+  return { data };
+};
 
 // get the list of countries
 export async function getCountries() {
-  const response = await apiTaqat.get('/countries');
-  return response.data;
+  return unwrap(await supabase.from('countries').select('*').order('name'));
 }
 
 // get list of categories
 export async function getCategories() {
-  const response = await apiTaqat.get('/categories');
-  return response.data;
+  return unwrap(await supabase.from('categories').select('*').order('name'));
 }
 
-// get list of subcategories
+// get list of subcategories for a category
 export async function getSubcategories(categoryId) {
-  const response = await apiTaqat.get(`/subcategories/${categoryId}`);
-  return response.data;
+  return unwrap(
+    await supabase
+      .from('subcategories')
+      .select('*')
+      .eq('category_id', categoryId)
+      .order('name'),
+  );
 }
 
-// Get list of skills
+// Get list of skills (optionally filtered by category)
 export async function getSkills(categoryId) {
-  const url =
-    typeof categoryId === 'number' ? `/skills/${categoryId}` : '/skills';
-  const response = await apiTaqat.get(url);
-  return response.data;
+  let query = supabase.from('skills').select('*').order('name');
+  if (typeof categoryId === 'number' && !Number.isNaN(categoryId)) {
+    query = query.eq('category_id', categoryId);
+  }
+  return unwrap(await query);
 }
 
 // get privacy policy content
 export async function getPrivacyPolicy() {
-  const response = await apiTaqat.get('/policies');
-  return response.data;
+  return unwrap(await supabase.from('policies').select('*'));
 }
 
 // Get list of socials
 export async function getSocials() {
-  const response = await apiTaqat.get('/social');
-  return response.data;
+  return unwrap(await supabase.from('socials').select('*').order('name'));
 }
 
 // get the list of languages
 export async function getLanguages() {
-  const response = await apiTaqat.get('/languages');
-  return response.data;
+  return unwrap(await supabase.from('languages').select('*').order('name'));
 }
 
 // get the list of language levels
 export async function getLanguageLevels() {
-  const response = await apiTaqat.get('/languages_levels');
-  return response.data;
+  return unwrap(
+    await supabase.from('language_levels').select('*').order('rank'),
+  );
 }
 
-// get the list of education Degree
+// get the list of education degrees
 export async function getEducationDegree() {
-  const response = await apiTaqat.get('/education-levels');
-  return response.data;
+  return unwrap(
+    await supabase.from('education_levels').select('*').order('name'),
+  );
 }
 
 // get the list of grades
 export async function getEducationGrades() {
-  const response = await apiTaqat.get('/grade');
-  return response.data;
+  return unwrap(await supabase.from('grades').select('*').order('name'));
 }

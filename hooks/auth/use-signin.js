@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import Cookies from 'js-cookie';
 import { useTranslation } from 'next-i18next';
 import { useForm } from 'react-hook-form';
 import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
@@ -19,18 +18,15 @@ function useSignin() {
   });
 
   const onSubmit = (values) => {
-    console.log('values', values);
     mutation.mutate(values);
   };
 
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data) => {
-      // store token in the cookies
-      Cookies.set('token', data?.data?.token);
-      // redirect to main dashboard
-      const type = data?.data?.type || null;
-      const requiredData = data?.data?.save_data || null;
+      // Supabase manages the session cookie; just route by profile state.
+      const type = data?.profile?.user_type || null;
+      const requiredData = data?.profile?.profile_complete || null;
       if (type === 'client' && requiredData) {
         router.push('/client');
       } else if (type === 'freelancer' && requiredData) {

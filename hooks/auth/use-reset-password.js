@@ -1,5 +1,4 @@
-import { useEffect } from 'react';
-import { redirect, useRouter, useSearchParams } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -10,24 +9,15 @@ import { getChangePasswordSchema } from '@/app/(auth)/forms/change-password-sche
 function useResetPassword() {
   const { t } = useTranslation('auth');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const emailParam = searchParams.get('email');
-  const emailFormat = decodeURIComponent(emailParam);
-  const tokenParam = searchParams.get('token');
 
-  useEffect(() => {
-    if (!tokenParam || !emailParam) {
-      redirect('/forget-password');
-    }
-    return;
-  });
-
+  // The recovery session is already established by /auth/callback before the
+  // user lands here, so we only collect the new password.
   const form = useForm({
     resolver: zodResolver(getChangePasswordSchema(t)),
   });
 
   const onSubmit = (values) => {
-    mutation.mutate({ ...values, email: emailFormat, token: tokenParam });
+    mutation.mutate(values);
   };
 
   const mutation = useMutation({

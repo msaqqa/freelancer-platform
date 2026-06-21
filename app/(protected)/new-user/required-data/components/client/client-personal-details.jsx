@@ -71,18 +71,7 @@ const ClientPersonalDetails = () => {
   const countries = data?.data ?? [];
 
   const mutation = useMutation({
-    mutationFn: async (values) => {
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === 'photo' && values.photo instanceof File) {
-          formData.append('photo', values.photo);
-        } else if (key !== 'photo') {
-          formData.append(key, values[key]);
-        }
-      });
-      const response = saveClientRequiredData(formData);
-      return response;
-    },
+    mutationFn: (values) => saveClientRequiredData(values),
     onSuccess: async (data) => {
       toast.custom(
         () => (
