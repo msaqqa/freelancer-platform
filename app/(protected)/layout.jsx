@@ -6,53 +6,58 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
-  // const { data: user, isLoading, isError } = useAuth();
-  // const router = useRouter();
-  // const pathname = usePathname();
+  const { data: user, isLoading, isError } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  // useEffect(() => {
-  //   if (isLoading) return;
+  useEffect(() => {
+    if (isLoading) return;
 
-  //   if (!user || isError) {
-  //     router.push('/signin');
-  //   }
+    if (!user || isError) {
+      router.push('/signin');
+      return;
+    }
 
-  //   if (user?.save_data) {
-  //     if (user?.type === 'client') {
-  //       if (pathname.startsWith('/client')) {
-  //         router.push(pathname);
-  //         return;
-  //       } else {
-  //         router.push('/client');
-  //         return;
-  //       }
-  //     }
+    // حالة المستخدم الجديد: لا يوجد نوع حساب بعد
+    if (!user.type) {
+      if (!pathname.startsWith('/new-user/account-type')) {
+        router.push('/new-user/account-type');
+      }
+      return;
+    }
 
-  //     if (user?.type === 'freelancer') {
-  //       if (pathname.startsWith('/freelancer')) {
-  //         router.push(pathname);
-  //         return;
-  //       } else {
-  //         router.push('/freelancer');
-  //         return;
-  //       }
-  //     }
-  //   }
+    // حالة المستخدم الجديد: تم اختيار النوع لكن لم يملأ البيانات المطلوبة
+    if (user.type && !user.save_data) {
+      if (!pathname.startsWith('/new-user/required-data')) {
+        router.push('/new-user/required-data');
+      }
+      return;
+    }
 
-  //   if (user && !user?.save_data) {
-  //     if (user?.type) {
-  //       router.push('/new-user/required-data');
-  //       return;
-  //     } else {
-  //       router.push('/new-user/account-type');
-  //       return;
-  //     }
-  //   }
-  // }, [isLoading, user, router]);
+    // المستخدم قد انتهى من التسجيل بالكامل: نوجهه حسب نوعه
+    if (user.type && user.save_data) {
+      const userDashboard = `/${user.type}`;
+      
+      // إذا كان في الداشبورد الصحيح: لا نعيد توجيه
+      if (pathname.startsWith(userDashboard)) {
+        return;
+      }
 
-  // if (isLoading) {
-  //   return <ScreenLoader />;
-  // }
+      // إذا كان في مجلد new-user لكنه قد انتهى: نوجهه للداشبورد
+      if (pathname.startsWith('/new-user')) {
+        router.push(userDashboard);
+        return;
+      }
+
+      // أي مسار آخر: نوجهه للداشبورد الخاص بنوعه
+      router.push(userDashboard);
+      return;
+    }
+  }, [isLoading, user, isError, pathname, router]);
+
+  if (isLoading) {
+    return <ScreenLoader />;
+  }
 
   return children;
 }

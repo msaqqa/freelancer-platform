@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useTranslation } from 'next-i18next';
+import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
 import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
 import { getSigninSchema } from '@/app/(auth)/forms/signin-schema';

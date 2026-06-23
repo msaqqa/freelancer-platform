@@ -1,23 +1,21 @@
 'use client';
 
-// import { useEffect } from 'react';
-// import { notFound, useRouter, redirect } from 'next/navigation';
-// import { useAuth } from '@/hooks/auth/use-auth';
-// import { ScreenLoader } from '@/components/common/screen-loader';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { Layout } from '../../components/layouts/layout';
 
 export default function FreelancerLayout({ children }) {
-  // const { data: user, isLoading, isError } = useAuth();
-  // const router = useRouter();
+  const { data: user } = useAuth();
+  const router = useRouter();
 
-  // useEffect(() => {
-  //   if (!user || isError) redirect('/signin');
-  //   if (user?.type !== 'freelancer') notFound();
-  // }, [user, router]);
+  useEffect(() => {
+    if (!user) return;
 
-  // if (isLoading) {
-  //   return <ScreenLoader />;
-  // }
+    if (user.type !== 'freelancer') {
+      router.push(`/${user.type}`);
+    }
+  }, [user, router]);
 
   return (
     <Layout>

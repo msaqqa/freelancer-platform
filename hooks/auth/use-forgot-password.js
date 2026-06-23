@@ -9,15 +9,15 @@ function useForgetPassword() {
   const { t } = useTranslation('auth');
 
   const formSchema = z.object({
-    email: z.string().email({ message: 'Please enter a valid email address.' }),
+    email: z.string().email({ message: t('emailInvalid') }),
   });
 
   const form = useForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      mode: 'onBlur',
     },
+    mode: 'onBlur',
   });
 
   const onSubmit = (values) => {

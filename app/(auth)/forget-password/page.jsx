@@ -15,24 +15,11 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
-import useForgetPassword from '../../../hooks/auth/use-forgot-password';
+import useForgetPassword from '@/hooks/auth/use-forgot-password';
 
 export default function Page() {
   const { t, form, onSubmit, isProcessing, success, error } =
     useForgetPassword();
-
-  if (success) {
-    return (
-      <Alert>
-        <AlertIcon>
-          <Check />
-        </AlertIcon>
-        <AlertTitle>
-          Check your email to access the password reset link.
-        </AlertTitle>
-      </Alert>
-    );
-  }
 
   return (
     <Suspense>
@@ -62,7 +49,7 @@ export default function Page() {
               <AlertIcon>
                 <Check />
               </AlertIcon>
-              <AlertTitle>{success}</AlertTitle>
+              <AlertTitle>Check your email to access the password reset link.</AlertTitle>
             </Alert>
           )}
 
