@@ -12,8 +12,9 @@ export default function FreelancerLayout({ children }) {
   useEffect(() => {
     if (!user) return;
 
+    // Defense in depth: redirect if wrong user type
     if (user.type !== 'freelancer') {
-      router.push(`/${user.type}`);
+      router.replace(`/${user.type}`);
     }
   }, [user, router]);
 

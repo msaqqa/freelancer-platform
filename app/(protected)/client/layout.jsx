@@ -12,8 +12,9 @@ export default function ClientLayout({ children }) {
   useEffect(() => {
     if (!user) return;
 
+    // Defense in depth: redirect if wrong user type
     if (user.type !== 'client') {
-      router.push(`/${user.type}`);
+      router.replace(`/${user.type}`);
     }
   }, [user, router]);
 
