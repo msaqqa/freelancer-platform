@@ -1,4 +1,5 @@
 import { createClient } from '@/lib/supabase/client';
+import { getSiteUrl } from '@/lib/site-url';
 
 const supabase = createClient();
 
@@ -43,7 +44,7 @@ export const getGoogleOAuthUrl = async () => {
   return unwrap(
     await supabase.auth.signInWithOAuth({
       provider: 'google',
-      options: { redirectTo: `${window.location.origin}/auth/callback` },
+      options: { redirectTo: `${getSiteUrl()}/auth/callback` },
     }),
   );
 };
@@ -57,7 +58,7 @@ export const forgetPassword = async (payload) => {
   const email = typeof payload === 'string' ? payload : payload?.email;
   return unwrap(
     await supabase.auth.resetPasswordForEmail(email, {
-      redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+      redirectTo: `${getSiteUrl()}/auth/callback?next=/reset-password`,
     }),
   );
 };
