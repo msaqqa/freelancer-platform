@@ -1,9 +1,9 @@
 {
-    "postJob": "Post a Job",
-    "findTalent": "Find Talent",
-    "findService": "Find Service",
-    "findJobs": "Find Jobs",
-    "myDashboard": "My Dashboard",
+    "postJob": "نشر وظيفة",
+    "findTalent": "البحث عن مواهب",
+    "findService": "البحث عن خدمة",
+    "findJobs": "البحث عن وظائف",
+    "myDashboard": "لوحة التحكم الخاصة بي",
     
     "dashboards": "لوحات التحكم",
     "lightSidebar": "الشريط الجانبي الفاتح",

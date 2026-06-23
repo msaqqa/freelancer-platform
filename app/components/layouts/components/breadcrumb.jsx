@@ -8,11 +8,13 @@ import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { useMenu } from '@/hooks/use-menu';
+import { useMenuTranslation } from '@/hooks/use-menu-translation';
 
 export function Breadcrumb() {
   const { data: user } = useAuth();
-  const MENU_SIDEBAR =
+  const rawMenu =
     user?.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
+  const MENU_SIDEBAR = useMenuTranslation(rawMenu);
   const pathname = usePathname();
   const { getBreadcrumb, isActive } = useMenu(pathname);
   const items = getBreadcrumb(MENU_SIDEBAR);

@@ -7,6 +7,7 @@ import { CLIENT_MENU_SIDEBAR } from '@/config/client-menu.config';
 import { FREELANCER_MENU_SIDEBAR } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/auth/use-auth';
+import { useMenuTranslation } from '@/hooks/use-menu-translation';
 import {
   AccordionMenu,
   AccordionMenuGroup,
@@ -20,8 +21,9 @@ import { Badge } from '@/components/ui/badge';
 
 export function SidebarMenu() {
   const { data: user } = useAuth();
-  const MENU_SIDEBAR =
+  const rawMenu =
     user?.type === 'client' ? CLIENT_MENU_SIDEBAR : FREELANCER_MENU_SIDEBAR;
+  const MENU_SIDEBAR = useMenuTranslation(rawMenu);
   const pathname = usePathname();
 
   // Memoize matchPath to prevent unnecessary re-renders

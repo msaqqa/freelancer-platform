@@ -7,6 +7,7 @@ import { FREELANCER_MENU_MEGA } from '@/config/freelancer-menu.config';
 import { cn } from '@/lib/utils';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { useMenu } from '@/hooks/use-menu';
+import { useMenuTranslation } from '@/hooks/use-menu-translation';
 import {
   NavigationMenu,
   NavigationMenuItem,
@@ -16,8 +17,9 @@ import {
 
 export function MegaMenu() {
   const { data: user } = useAuth();
-  const MENU_MEGA =
+  const rawMenu =
     user?.type === 'client' ? CLIENT_MENU_MEGA : FREELANCER_MENU_MEGA;
+  const MENU_MEGA = useMenuTranslation(rawMenu);
   const pathname = usePathname();
   const { isActive, hasActiveChild } = useMenu(pathname);
   const homeItem = MENU_MEGA[0];
