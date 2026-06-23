@@ -14,43 +14,43 @@ export default function ProtectedLayout({ children }) {
     if (isLoading) return;
 
     if (!user || isError) {
-      router.push('/signin');
+      router.replace('/signin');
       return;
     }
 
-    // حالة المستخدم الجديد: لا يوجد نوع حساب بعد
+    // New user: no account type selected yet
     if (!user.type) {
       if (!pathname.startsWith('/new-user/account-type')) {
-        router.push('/new-user/account-type');
+        router.replace('/new-user/account-type');
       }
       return;
     }
 
-    // حالة المستخدم الجديد: تم اختيار النوع لكن لم يملأ البيانات المطلوبة
+    // New user: account type selected but required data not filled
     if (user.type && !user.save_data) {
       if (!pathname.startsWith('/new-user/required-data')) {
-        router.push('/new-user/required-data');
+        router.replace('/new-user/required-data');
       }
       return;
     }
 
-    // المستخدم قد انتهى من التسجيل بالكامل: نوجهه حسب نوعه
+    // Fully onboarded user: redirect to their dashboard
     if (user.type && user.save_data) {
       const userDashboard = `/${user.type}`;
       
-      // إذا كان في الداشبورد الصحيح: لا نعيد توجيه
+      // Already in correct dashboard: do nothing
       if (pathname.startsWith(userDashboard)) {
         return;
       }
 
-      // إذا كان في مجلد new-user لكنه قد انتهى: نوجهه للداشبورد
+      // In new-user flow but already done: go to dashboard
       if (pathname.startsWith('/new-user')) {
-        router.push(userDashboard);
+        router.replace(userDashboard);
         return;
       }
 
-      // أي مسار آخر: نوجهه للداشبورد الخاص بنوعه
-      router.push(userDashboard);
+      // Any other path: send to correct dashboard
+      router.replace(userDashboard);
       return;
     }
   }, [isLoading, user, isError, pathname, router]);
@@ -59,5 +59,11 @@ export default function ProtectedLayout({ children }) {
     return <ScreenLoader />;
   }
 
+  // Show nothing while redirecting (prevents flash of content)
+  if (!user || isError) {
+    return null;
+  }
+
+  // If we reach here, user is authenticated and in the correct place
   return children;
 }
