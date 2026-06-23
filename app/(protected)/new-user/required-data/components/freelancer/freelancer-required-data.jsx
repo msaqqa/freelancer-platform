@@ -2,8 +2,8 @@
 
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation } from '@tanstack/react-query';
+import { RiCheckboxCircleFill } from '@remixicon/react';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { FormProvider, useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -17,6 +17,7 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
   const { t } = useTranslation('requiredData');
   const fv = (key) => t(`freelancerValidation.${key}`);
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const freelancerDefaultData = {
     photo: null,
@@ -55,6 +56,8 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
           position: 'top-center',
         },
       );
+      // Invalidate user profile so layout sees save_data is true
+      await queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       // redirect to freelancer dashboard
       router.replace('/freelancer');
     },

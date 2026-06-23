@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { AvatarInput } from '@/partials/common/avatar-input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
-import { useMutation, useQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
@@ -37,6 +37,7 @@ import { ClientCompanyDataSchema } from '../../forms/client-company-data-schema'
 const ClientPersonalDetails = () => {
   const [bioChar, setBioCahr] = useState(0);
   const router = useRouter();
+  const queryClient = useQueryClient();
   const { t } = useTranslation('requiredData');
   const cv = (key) => t(`clientValidation.${key}`);
   const cpd = (key) => t(`clientPersonalDetails.${key}`);
@@ -86,6 +87,8 @@ const ClientPersonalDetails = () => {
           position: 'top-center',
         },
       );
+      // Invalidate user profile so layout sees save_data is true
+      await queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       // redirect to client main dashboard
       router.replace('/client');
     },
