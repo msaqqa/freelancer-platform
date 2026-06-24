@@ -6,12 +6,12 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 function NewUserlayout({ children }) {
-  const { data: user, isLoading, isError } = useAuth();
+  const { data: user, isLoading, isFetching, isError } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isFetching) return;
 
     // not signed in
     if (!user || isError) {

@@ -58,10 +58,11 @@ export function AuthSwitchers() {
           className="h-8 w-14 bg-slate-200 data-[state=checked]:bg-slate-800"
           size="lg"
           variant="primary"
+          thumbClassName="border border-border/10 bg-white dark:bg-slate-700"
         >
           <SwitchIndicator
             state={isDark ? 'on' : 'off'}
-            className="text-primary-foreground"
+            className="text-blue-500"
           >
             {isDark ? (
               <Moon className="w-4 h-4" aria-hidden="true" />

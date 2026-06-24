@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
@@ -36,6 +36,8 @@ function useSignin() {
     }
   }, [form]);
 
+  const queryClient = useQueryClient();
+
   const onSubmit = (values) => {
     mutation.mutate(values);
   };
@@ -52,9 +54,26 @@ function useSignin() {
         localStorage.removeItem('rememberMe');
       }
 
+      // Update user profile cache so protected routes can read the authenticated user immediately.
+      const profile = data?.profile;
+      const user = data?.user;
+
+      if (profile && user) {
+        queryClient.setQueryData(['user-profile'], {
+          data: {
+            ...profile,
+            email: user.email,
+            type: profile.user_type,
+            save_data: profile.profile_complete,
+          },
+        });
+      } else {
+        queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      }
+
       // Supabase manages the session cookie; just route by profile state.
-      const type = data?.profile?.user_type || null;
-      const requiredData = data?.profile?.profile_complete || null;
+      const type = profile?.user_type || null;
+      const requiredData = profile?.profile_complete || null;
       if (type === 'client' && requiredData) {
         router.push('/client');
       } else if (type === 'freelancer' && requiredData) {

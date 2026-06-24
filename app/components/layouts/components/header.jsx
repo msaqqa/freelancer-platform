@@ -16,8 +16,10 @@ import {
   Search,
   SquareChevronRight,
 } from 'lucide-react';
+import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
+import { useAuth } from '@/hooks/auth/use-auth';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { useScrollPosition } from '@/hooks/use-scroll-position';
 import { Button } from '@/components/ui/button';
@@ -34,9 +36,10 @@ import { Breadcrumb } from './breadcrumb';
 import { MegaMenu } from './mega-menu';
 import { MegaMenuMobile } from './mega-menu-mobile';
 import { SidebarMenu } from './sidebar-menu';
-import { useTheme } from 'next-themes';
 
 export function Header() {
+  const { data: user } = useAuth();
+  const logoHref = user?.type ? `/${user.type}` : '/';
   const [isSidebarSheetOpen, setIsSidebarSheetOpen] = useState(false);
   const [isMegaMenuSheetOpen, setIsMegaMenuSheetOpen] = useState(false);
   const { theme } = useTheme();
@@ -67,7 +70,7 @@ export function Header() {
       <Container className="flex justify-between items-stretch lg:gap-4">
         <div className="flex items-center gap-3">
           {/* Header Logo */}
-          <Link href="/" className="shrink-0">
+          <Link href={logoHref} className="shrink-0">
             <img
               src={toAbsoluteUrl(
                 isDark

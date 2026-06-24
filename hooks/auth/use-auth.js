@@ -8,7 +8,7 @@ export function useAuth() {
   const router = useRouter();
   const queryClient = useQueryClient();
 
-  const { data, isLoading, isError, refetch } = useQuery({
+  const { data, isLoading, isFetching, isError, refetch } = useQuery({
     queryKey: ['user-profile'],
     queryFn: getAuthUserData,
     retry: 1,
@@ -27,6 +27,7 @@ export function useAuth() {
   return {
     data: data?.data,
     isLoading,
+    isFetching,
     isError,
     refetch,
     signout,

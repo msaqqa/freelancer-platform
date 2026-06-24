@@ -6,12 +6,12 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
-  const { data: user, isLoading, isError } = useAuth();
+  const { data: user, isLoading, isFetching, isError } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isLoading) return;
+    if (isLoading || isFetching) return;
 
     if (!user || isError) {
       router.replace('/signin');
@@ -37,7 +37,7 @@ export default function ProtectedLayout({ children }) {
     // Fully onboarded user: redirect to their dashboard
     if (user.type && user.save_data) {
       const userDashboard = `/${user.type}`;
-      
+
       // Already in correct dashboard: do nothing
       if (pathname.startsWith(userDashboard)) {
         return;
@@ -55,7 +55,7 @@ export default function ProtectedLayout({ children }) {
     }
   }, [isLoading, user, isError, pathname, router]);
 
-  if (isLoading) {
+  if (isLoading || isFetching) {
     return <ScreenLoader />;
   }
 

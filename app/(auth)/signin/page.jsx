@@ -1,7 +1,10 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/hooks/auth/use-auth';
 import useSignin from '@/hooks/auth/use-signin';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -17,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import { Icons } from '@/components/common/icons';
+import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function Page() {
   const {
@@ -29,6 +33,25 @@ export default function Page() {
     onSubmit,
     handleGoogleSignin,
   } = useSignin();
+  const { data: user, isLoading, isFetching } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isLoading || isFetching) return;
+    if (!user) return;
+
+    if (user.type === 'client') {
+      router.replace('/client');
+    } else if (user.type === 'freelancer') {
+      router.replace('/freelancer');
+    } else if (user.type) {
+      router.replace('/new-user/account-type');
+    }
+  }, [user, isLoading, isFetching, router]);
+
+  if (isLoading || isFetching) {
+    return <ScreenLoader />;
+  }
 
   return (
     <Form {...form}>
