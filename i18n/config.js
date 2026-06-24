@@ -4,6 +4,7 @@ import commonAr from './locales/ar/common.json';
 import errorMessagesAr from './locales/ar/error-messages.json';
 import menuSidebarAr from './locales/ar/freelancer/menu-sidebar.json';
 import freelancerProfileAr from './locales/ar/freelancer/profile.json';
+import freelancerServicesAr from './locales/ar/freelancer/services.json';
 import requiredDataAr from './locales/ar/required-data.json';
 import validationAr from './locales/ar/validation.json';
 import authEn from './locales/en/auth.json';
@@ -11,6 +12,7 @@ import commonEn from './locales/en/common.json';
 import errorMessagesEn from './locales/en/error-messages.json';
 import menuSidebarEn from './locales/en/freelancer/menu-sidebar.json';
 import freelancerProfileEn from './locales/en/freelancer/profile.json';
+import freelancerServicesEn from './locales/en/freelancer/services.json';
 import requiredDataEn from './locales/en/required-data.json';
 import validationEn from './locales/en/validation.json';
 
