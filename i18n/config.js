@@ -1,18 +1,18 @@
 // src/config/languages.ts
-import authAr from '../public/locales/ar/auth.json';
-import commonAr from '../public/locales/ar/common.json';
-import errorMessagesAr from '../public/locales/ar/error-messages.json';
-import menuSidebarAr from '../public/locales/ar/freelancer/menu-sidebar.json';
-import freelancerProfileAr from '../public/locales/ar/freelancer/profile.json';
-import requiredDataAr from '../public/locales/ar/required-data.json';
-import validationAr from '../public/locales/ar/validation.json';
-import authEn from '../public/locales/en/auth.json';
-import commonEn from '../public/locales/en/common.json';
-import errorMessagesEn from '../public/locales/en/error-messages.json';
-import menuSidebarEn from '../public/locales/en/freelancer/menu-sidebar.json';
-import freelancerProfileEn from '../public/locales/en/freelancer/profile.json';
-import requiredDataEn from '../public/locales/en/required-data.json';
-import validationEn from '../public/locales/en/validation.json';
+import authAr from './locales/ar/auth.json';
+import commonAr from './locales/ar/common.json';
+import errorMessagesAr from './locales/ar/error-messages.json';
+import menuSidebarAr from './locales/ar/freelancer/menu-sidebar.json';
+import freelancerProfileAr from './locales/ar/freelancer/profile.json';
+import requiredDataAr from './locales/ar/required-data.json';
+import validationAr from './locales/ar/validation.json';
+import authEn from './locales/en/auth.json';
+import commonEn from './locales/en/common.json';
+import errorMessagesEn from './locales/en/error-messages.json';
+import menuSidebarEn from './locales/en/freelancer/menu-sidebar.json';
+import freelancerProfileEn from './locales/en/freelancer/profile.json';
+import requiredDataEn from './locales/en/required-data.json';
+import validationEn from './locales/en/validation.json';
 
 export const I18N_LANGUAGES = [
   {
@@ -37,6 +37,7 @@ export const I18N_RESOURCES = {
     auth: authEn,
     requiredData: requiredDataEn,
     freelancerProfile: freelancerProfileEn,
+    freelancerServices: freelancerServicesEn,
     menuSidebar: menuSidebarEn,
     validation: validationEn,
     errorMessages: errorMessagesEn,
@@ -46,6 +47,7 @@ export const I18N_RESOURCES = {
     auth: authAr,
     requiredData: requiredDataAr,
     freelancerProfile: freelancerProfileAr,
+    freelancerServices: freelancerServicesAr,
     menuSidebar: menuSidebarAr,
     validation: validationAr,
     errorMessages: errorMessagesAr,

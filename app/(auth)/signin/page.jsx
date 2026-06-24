@@ -112,7 +112,7 @@ export default function Page() {
                   onClick={() => setPasswordVisible(!passwordVisible)} // Toggle visibility
                   className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"
                   aria-label={
-                    passwordVisible ? 'Hide password' : 'Show password'
+                    passwordVisible ? t('hidePassword') : t('showPassword')
                   }
                 >
                   {passwordVisible ? (

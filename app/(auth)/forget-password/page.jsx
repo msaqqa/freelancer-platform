@@ -49,7 +49,7 @@ export default function Page() {
               <AlertIcon>
                 <Check />
               </AlertIcon>
-              <AlertTitle>Check your email to access the password reset link.</AlertTitle>
+              <AlertTitle>{t('checkEmailReset')}</AlertTitle>
             </Alert>
           )}
 

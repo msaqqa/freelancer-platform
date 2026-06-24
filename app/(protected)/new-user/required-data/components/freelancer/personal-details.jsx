@@ -73,8 +73,8 @@ const PersonalDetails = ({ setActiveSection }) => {
                 {t('photo')}
               </FormLabel>
               <div className="flex justify-between items-center flex-wrap grow gap-2.5">
-                <span className="text-sm text-secondary-foreground">
-                  800x800px JPG or PNG
+                  <span className="text-sm text-secondary-foreground">
+                  {t('photoDimensions')}
                 </span>
                 <div className="flex justify-between items-center gap-2.5">
                   <FormControl>
