@@ -13,6 +13,7 @@
 
     "personalDetailsTitle": "التفاصيل الشخصية",
     "photo": "الصورة",
+    "photoDimensions": "800x800px JPG أو PNG",
     "name": "الإسم",
     "nameHolder": "أدخل اسمك",
     "birthDate": "تاريخ الميلاد",

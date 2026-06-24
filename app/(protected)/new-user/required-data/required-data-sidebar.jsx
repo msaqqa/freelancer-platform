@@ -15,7 +15,7 @@ export function RequiredDataSidebar({
       target: 'account_type',
     },
     {
-      title: 'Personal Details',
+      title: t('sidebarPersonalDetails'),
       target: 'personal_details',
     },
   ];

@@ -126,9 +126,9 @@ const ClientPersonalDetails = () => {
                     {cpd('photo')}
                   </FormLabel>
                   <div className="flex justify-between items-center flex-wrap grow gap-2.5">
-                    <span className="text-sm text-secondary-foreground">
-                      800x800px JPG or PNG
-                    </span>
+                  <span className="text-sm text-secondary-foreground">
+                  {t('photoDimensions')}
+                </span>
                     <div className="flex justify-between items-center gap-2.5">
                       <FormControl>
                         <AvatarInput

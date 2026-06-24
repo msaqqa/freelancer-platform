@@ -120,8 +120,8 @@ export default function Page() {
                   className="absolute end-0 top-1/2 -translate-y-1/2 h-7 w-7 me-1.5 bg-transparent!"
                   aria-label={
                     passwordConfirmationVisible
-                      ? 'Hide password confirmation'
-                      : 'Show password confirmation'
+                      ? t('hidePasswordConfirm')
+                      : t('showPasswordConfirm')
                   }
                 >
                   {passwordConfirmationVisible ? (

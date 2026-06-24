@@ -1,0 +1,11 @@
+{
+    "title":"العنوان",
+    "industry":"الصناع",
+    "industryHolder":"تصميم، تطوير، كتابة",
+    "specialty":"التخصص",
+    "specialtyHolder":"اختر التخصص",
+    "tags" : "الوسوم",
+    "tagsHolder": "ساعد العملاء في العثور على مشروعك.",
+    "serviceAttributes":"سمات الخدمة",
+    "loading": "جار التحميل..."
+}

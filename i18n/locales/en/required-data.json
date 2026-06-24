@@ -13,6 +13,7 @@
 
     "personalDetailsTitle": "Personal Details",
     "photo": "Photo",
+    "photoDimensions": "800x800px JPG or PNG",
     "name": "Name",
     "nameHolder": "Enter your name",
     "birthDate": "Birth Date",
