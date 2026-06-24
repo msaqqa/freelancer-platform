@@ -17,7 +17,7 @@ export function AuthSwitchers() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <div className="absolute top-4 right-4 z-10 flex items-center gap-2">
+    <div className="flex items-center gap-2">
       {/* Language Switcher */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -55,7 +55,11 @@ export function AuthSwitchers() {
         onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
         className="p-2"
       >
-        {theme === 'dark' ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+        {theme === 'dark' ? (
+          <Sun className="w-4 h-4" />
+        ) : (
+          <Moon className="w-4 h-4" />
+        )}
       </Button>
     </div>
   );
