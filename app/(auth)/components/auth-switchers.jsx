@@ -11,7 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Switch, SwitchWrapper, SwitchIndicator } from '@/components/ui/switch';
+import { Switch, SwitchIndicator, SwitchWrapper } from '@/components/ui/switch';
 
 export function AuthSwitchers() {
   const { changeLanguage, language } = useLanguage();
@@ -51,13 +51,25 @@ export function AuthSwitchers() {
       </DropdownMenu>
 
       {/* Theme Switcher */}
-      <SwitchWrapper className="items-center gap-2">
-        <Sun className="w-4 h-4" />
+      <SwitchWrapper className="items-center">
         <Switch
           checked={isDark}
           onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-        />
-        <Moon className="w-4 h-4" />
+          className="h-8 w-14 bg-slate-200 data-[state=checked]:bg-slate-800"
+          size="lg"
+          variant="primary"
+        >
+          <SwitchIndicator
+            state={isDark ? 'on' : 'off'}
+            className="text-primary-foreground"
+          >
+            {isDark ? (
+              <Moon className="w-4 h-4" aria-hidden="true" />
+            ) : (
+              <Sun className="w-4 h-4" aria-hidden="true" />
+            )}
+          </SwitchIndicator>
+        </Switch>
       </SwitchWrapper>
     </div>
   );
