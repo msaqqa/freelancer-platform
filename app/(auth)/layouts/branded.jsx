@@ -1,6 +1,7 @@
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Card, CardContent } from '@/components/ui/card';
+import { AuthSwitchers } from '../components/auth-switchers';
 
 export function BrandedLayout({ children }) {
   const { t } = useTranslation('auth');
@@ -16,7 +17,9 @@ export function BrandedLayout({ children }) {
           }
         `}
       </style>
-      <div className="grid lg:grid-cols-2 grow">
+      <div className="grid lg:grid-cols-2 grow relative">
+        {/* Switchers */}
+        <AuthSwitchers />
         <div className="flex justify-center items-center p-8 lg:p-10 order-2 lg:order-1">
           <Card className="w-full max-w-[400px]">
             <CardContent className="p-6 min-h-[80vh] flex flex-col justify-evenly">
