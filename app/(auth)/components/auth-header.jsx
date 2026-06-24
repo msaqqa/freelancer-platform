@@ -14,17 +14,6 @@ export function AuthHeader() {
     <header className="py-6 border-b border-border/50 bg-background/50 backdrop-blur-sm sticky top-0 z-50">
       <Container className="flex items-center justify-between">
         <Link href="/" className="shrink-0 flex items-center gap-2">
-          {/* Small logo (icon) */}
-          <img
-            src={toAbsoluteUrl(
-              isDark
-                ? '/media/app/mini-logo-dark.svg'
-                : '/media/app/mini-logo.svg',
-            )}
-            className="h-10 w-10"
-            alt="logo icon"
-          />
-          {/* Large logo (text) */}
           <img
             src={toAbsoluteUrl(
               isDark

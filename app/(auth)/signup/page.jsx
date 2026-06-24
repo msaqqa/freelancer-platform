@@ -101,11 +101,13 @@ export default function Page() {
               <FormItem>
                 <FormLabel>{t('password')}</FormLabel>
                 <div className="relative">
-                  <Input
-                    placeholder={t('passwordHolder')}
-                    type={passwordVisible ? 'text' : 'password'}
-                    {...field}
-                  />
+                  <FormControl>
+                    <Input
+                      placeholder={t('passwordHolder')}
+                      type={passwordVisible ? 'text' : 'password'}
+                      {...field}
+                    />
+                  </FormControl>
 
                   <Button
                     type="button"
@@ -137,11 +139,13 @@ export default function Page() {
               <FormItem>
                 <FormLabel>{t('confirmPassword')}</FormLabel>
                 <div className="relative">
-                  <Input
-                    type={passwordConfirmationVisible ? 'text' : 'password'}
-                    {...field}
-                    placeholder={t('passwordHolder')}
-                  />
+                  <FormControl>
+                    <Input
+                      type={passwordConfirmationVisible ? 'text' : 'password'}
+                      {...field}
+                      placeholder={t('passwordHolder')}
+                    />
+                  </FormControl>
 
                   <Button
                     type="button"

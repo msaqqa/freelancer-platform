@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
-import { useTranslation } from 'react-i18next';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
 import { getSigninSchema } from '@/app/(auth)/forms/signin-schema';
 
@@ -15,14 +15,24 @@ function useSignin() {
   const form = useForm({
     resolver: zodResolver(getSigninSchema(t)),
     mode: 'onBlur',
+    defaultValues: {
+      email: '',
+      password: '',
+      rememberMe: false,
+    },
   });
 
-  // On mount, check if we have a saved email to pre-fill
+  // On mount, preload the saved email and set the Remember Me checkbox.
   useEffect(() => {
     const savedEmail = localStorage.getItem('rememberedEmail');
-    if (savedEmail) {
-      form.setValue('email', savedEmail);
-      form.setValue('rememberMe', true);
+    const savedRememberMe = localStorage.getItem('rememberMe') === 'true';
+
+    if (savedEmail || savedRememberMe) {
+      form.reset({
+        email: savedEmail ?? '',
+        password: '',
+        rememberMe: savedRememberMe,
+      });
     }
   }, [form]);
 
@@ -36,8 +46,10 @@ function useSignin() {
       // Handle "Remember Me": save email to localStorage if checked
       if (variables.rememberMe) {
         localStorage.setItem('rememberedEmail', variables.email);
+        localStorage.setItem('rememberMe', 'true');
       } else {
         localStorage.removeItem('rememberedEmail');
+        localStorage.removeItem('rememberMe');
       }
 
       // Supabase manages the session cookie; just route by profile state.

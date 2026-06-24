@@ -98,11 +98,13 @@ export default function Page() {
                 </Link>
               </div>
               <div className="relative">
-                <Input
-                  placeholder={t('passwordHolder')}
-                  type={passwordVisible ? 'text' : 'password'} // Toggle input type
-                  {...field}
-                />
+                <FormControl>
+                  <Input
+                    placeholder={t('passwordHolder')}
+                    type={passwordVisible ? 'text' : 'password'} // Toggle input type
+                    {...field}
+                  />
+                </FormControl>
 
                 <Button
                   type="button"
