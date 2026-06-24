@@ -22,7 +22,20 @@ export const metadata = {
   },
   description: 'Bight Gaza Freelancer Platform.',
   icons: {
-    icon: '/media/app/favicon.png',
+    icon: [
+      { url: '/media/app/favicon.ico', sizes: 'any' },
+      {
+        url: '/media/app/favicon-16x16.png',
+        sizes: '16x16',
+        type: 'image/png',
+      },
+      {
+        url: '/media/app/favicon-32x32.png',
+        sizes: '32x32',
+        type: 'image/png',
+      },
+    ],
+    apple: '/media/app/apple-touch-icon.png',
   },
 };
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
@@ -17,13 +17,29 @@ function useSignin() {
     mode: 'onBlur',
   });
 
+  // On mount, check if we have a saved email to pre-fill
+  useEffect(() => {
+    const savedEmail = localStorage.getItem('rememberedEmail');
+    if (savedEmail) {
+      form.setValue('email', savedEmail);
+      form.setValue('rememberMe', true);
+    }
+  }, [form]);
+
   const onSubmit = (values) => {
     mutation.mutate(values);
   };
 
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
-    onSuccess: (data) => {
+    onSuccess: (data, variables) => {
+      // Handle "Remember Me": save email to localStorage if checked
+      if (variables.rememberMe) {
+        localStorage.setItem('rememberedEmail', variables.email);
+      } else {
+        localStorage.removeItem('rememberedEmail');
+      }
+
       // Supabase manages the session cookie; just route by profile state.
       const type = data?.profile?.user_type || null;
       const requiredData = data?.profile?.profile_complete || null;

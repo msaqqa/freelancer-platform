@@ -11,13 +11,15 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
+import { Switch, SwitchWrapper, SwitchIndicator } from '@/components/ui/switch';
 
 export function AuthSwitchers() {
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const isDark = theme === 'dark';
 
   return (
-    <div className="flex items-center gap-2">
+    <div className="flex items-center gap-4">
       {/* Language Switcher */}
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -49,18 +51,14 @@ export function AuthSwitchers() {
       </DropdownMenu>
 
       {/* Theme Switcher */}
-      <Button
-        variant="ghost"
-        size="sm"
-        onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-        className="p-2"
-      >
-        {theme === 'dark' ? (
-          <Sun className="w-4 h-4" />
-        ) : (
-          <Moon className="w-4 h-4" />
-        )}
-      </Button>
+      <SwitchWrapper className="items-center gap-2">
+        <Sun className="w-4 h-4" />
+        <Switch
+          checked={isDark}
+          onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
+        />
+        <Moon className="w-4 h-4" />
+      </SwitchWrapper>
     </div>
   );
 }

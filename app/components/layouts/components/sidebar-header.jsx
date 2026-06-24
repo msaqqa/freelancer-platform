@@ -41,7 +41,7 @@ export function SidebarHeader() {
           />
 
           <img
-            src={toAbsoluteUrl('/media/app/mini-logo.svg')}
+            src={toAbsoluteUrl('/media/app/mini-logo-dark.svg')}
             className="small-logo h-[25px] max-w-none"
             alt="Mini Logo"
           />

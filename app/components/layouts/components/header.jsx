@@ -34,10 +34,13 @@ import { Breadcrumb } from './breadcrumb';
 import { MegaMenu } from './mega-menu';
 import { MegaMenuMobile } from './mega-menu-mobile';
 import { SidebarMenu } from './sidebar-menu';
+import { useTheme } from 'next-themes';
 
 export function Header() {
   const [isSidebarSheetOpen, setIsSidebarSheetOpen] = useState(false);
   const [isMegaMenuSheetOpen, setIsMegaMenuSheetOpen] = useState(false);
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
 
   const pathname = usePathname();
   const mobileMode = useIsMobile();
@@ -66,7 +69,11 @@ export function Header() {
           {/* Header Logo */}
           <Link href="/" className="shrink-0">
             <img
-              src={toAbsoluteUrl('/media/app/mini-logo.svg')}
+              src={toAbsoluteUrl(
+                isDark
+                  ? '/media/app/mini-logo-dark.svg'
+                  : '/media/app/mini-logo.svg',
+              )}
               className="h-[40px] w-full"
               alt="mini-logo"
             />

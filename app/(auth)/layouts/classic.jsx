@@ -1,8 +1,14 @@
+'use client';
+
 import Link from 'next/link';
+import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Card, CardContent } from '@/components/ui/card';
 
 export function ClassicLayout({ children }) {
+  const { theme } = useTheme();
+  const isDark = theme === 'dark';
+
   return (
     <>
       <style>
@@ -19,7 +25,11 @@ export function ClassicLayout({ children }) {
         <div className="m-5">
           <Link href="/">
             <img
-              src={toAbsoluteUrl('/media/app/mini-logo.svg')}
+              src={toAbsoluteUrl(
+                isDark
+                  ? '/media/app/mini-logo-dark.svg'
+                  : '/media/app/mini-logo.svg',
+              )}
               className="h-[35px] max-w-none"
               alt=""
             />
