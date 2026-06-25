@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/auth/use-auth';
 import useSignin from '@/hooks/auth/use-signin';
@@ -35,6 +35,19 @@ export default function Page() {
   } = useSignin();
   const { data: user, isLoading, isFetching } = useAuth();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const prefillEmail = searchParams.get('email') ?? '';
+  const existingAccount = searchParams.get('existing') === 'true';
+
+  useEffect(() => {
+    if (prefillEmail) {
+      form.reset({
+        email: prefillEmail,
+        password: '',
+        rememberMe: false,
+      });
+    }
+  }, [prefillEmail, form]);
 
   useEffect(() => {
     if (isLoading || isFetching) return;
@@ -82,6 +95,15 @@ export default function Page() {
             </span>
           </div>
         </div>
+
+        {existingAccount && (
+          <Alert variant="warning">
+            <AlertIcon>
+              <AlertCircle />
+            </AlertIcon>
+            <AlertTitle>{t('existingAccountConfirmed')}</AlertTitle>
+          </Alert>
+        )}
 
         {error && (
           <Alert variant="destructive">

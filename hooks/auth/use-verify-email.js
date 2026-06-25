@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { z } from 'zod';
@@ -59,15 +59,18 @@ function useVerifyEmail() {
     mode: 'onBlur',
   });
 
+  const queryClient = useQueryClient();
+
   const onSubmit = (values) => {
     mutation.mutate({ ...values, email });
   };
 
   const mutation = useMutation({
     mutationFn: verifyEmailOtp,
-    onSuccess: () => {
-      // verifyOtp establishes the Supabase session automatically.
-      router.push('/new-user/account-type');
+    onSuccess: async () => {
+      // Refresh the user profile cache to avoid stale redirect state.
+      await queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      router.replace('/new-user/account-type');
     },
   });
 

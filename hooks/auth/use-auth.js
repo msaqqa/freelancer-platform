@@ -12,8 +12,9 @@ export function useAuth() {
     queryKey: ['user-profile'],
     queryFn: getAuthUserData,
     retry: 1,
-    // Cache the user profile to avoid loading every time
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    refetchOnMount: 'always',
+    refetchOnWindowFocus: false,
+    staleTime: 0,
     gcTime: 1000 * 60 * 30, // 30 minutes
   });
 
