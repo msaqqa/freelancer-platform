@@ -11,6 +11,22 @@ import {
 } from '@/services/auth/auth';
 import { getSignupSchema } from '@/app/(auth)/forms/signup-schema';
 
+async function checkExistingUser(email) {
+  const response = await fetch(
+    `/api/auth/check-user?email=${encodeURIComponent(email)}`,
+    { cache: 'no-store' },
+  );
+
+  if (!response.ok) {
+    const body = await response
+      .json()
+      .catch(() => ({ error: response.statusText }));
+    throw new Error(body.error || 'Failed to verify existing user');
+  }
+
+  return response.json();
+}
+
 function useSignup() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
@@ -34,14 +50,24 @@ function useSignup() {
         return await signupWithCredentials(values);
       } catch (error) {
         const message = String(error?.message ?? '').toLowerCase();
-        const alreadyRegistered =
-          message.includes('already registered') ||
-          message.includes('already exists') ||
-          message.includes('user already registered') ||
-          message.includes('user already exists');
+        const alreadyRegistered = message.includes('user already registered');
 
         if (!alreadyRegistered) {
           throw error;
+        }
+
+        let existingUser;
+        try {
+          existingUser = await checkExistingUser(values.email);
+        } catch {
+          // If the check fails, fall back to the resend logic below.
+          existingUser = null;
+        }
+
+        if (existingUser?.exists && existingUser.confirmed) {
+          const confirmedError = new Error(t('existingAccountConfirmed'));
+          confirmedError.code = 'EXISTING_CONFIRMED';
+          throw confirmedError;
         }
 
         try {
@@ -51,13 +77,12 @@ function useSignup() {
           const resendMessage = String(
             resendError?.message ?? '',
           ).toLowerCase();
-          const alreadyConfirmed =
+          const resendAlreadyConfirmed =
+            resendMessage.includes('user already registered') ||
             resendMessage.includes('already confirmed') ||
-            resendMessage.includes('already verified') ||
-            resendMessage.includes('already registered') ||
-            resendMessage.includes('already exists');
+            resendMessage.includes('already verified');
 
-          if (alreadyConfirmed) {
+          if (resendAlreadyConfirmed) {
             const confirmedError = new Error(t('existingAccountConfirmed'));
             confirmedError.code = 'EXISTING_CONFIRMED';
             throw confirmedError;
