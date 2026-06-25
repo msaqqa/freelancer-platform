@@ -5,9 +5,3 @@ export const UserStatus = {
   INACTIVE: 'inactive',
   BLOCKED: 'blocked',
 };
-
-export const UserRole = {
-  ADMIN: 'admin',
-  MANAGER: 'manager',
-  MEMBER: 'member',
-};

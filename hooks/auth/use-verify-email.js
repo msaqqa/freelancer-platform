@@ -48,7 +48,7 @@ function useVerifyEmail() {
   };
 
   const formSchema = z.object({
-    otpCode: z.string().regex(/^\d{6}$/, 'Should be exactly 6 digits long'),
+    otpCode: z.string().regex(/^\d{8}$/, 'Should be exactly 8 digits long'),
   });
 
   const form = useForm({

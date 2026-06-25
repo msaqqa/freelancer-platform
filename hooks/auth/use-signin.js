@@ -45,6 +45,14 @@ function useSignin() {
   const mutation = useMutation({
     mutationFn: signinWithCredentials,
     onSuccess: (data, variables) => {
+      // If email is not confirmed, redirect to verify-email.
+      if (data.emailConfirmed === false) {
+        router.push(
+          `/verify-email?email=${encodeURIComponent(variables.email)}`,
+        );
+        return;
+      }
+
       // Handle "Remember Me": save email to localStorage if checked
       if (variables.rememberMe) {
         localStorage.setItem('rememberedEmail', variables.email);

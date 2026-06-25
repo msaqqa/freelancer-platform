@@ -1,5 +1,5 @@
-import { createClient } from '@/lib/supabase/client';
 import { getSiteUrl } from '@/lib/site-url';
+import { createClient } from '@/lib/supabase/client';
 
 const supabase = createClient();
 
@@ -29,6 +29,11 @@ export const signinWithCredentials = async (credentials) => {
     await supabase.auth.signInWithPassword({ email, password }),
   );
 
+  // Check if email is confirmed; if not, return confirmation status.
+  const emailConfirmed =
+    auth.user?.email_confirmed_at !== null &&
+    auth.user?.email_confirmed_at !== undefined;
+
   // Pull the profile so callers can route by user_type / completion state.
   const { data: profile } = await supabase
     .from('profiles')
@@ -36,7 +41,7 @@ export const signinWithCredentials = async (credentials) => {
     .eq('id', auth.user.id)
     .single();
 
-  return { ...auth, profile };
+  return { ...auth, profile, emailConfirmed };
 };
 
 // start Google OAuth via Supabase
@@ -48,10 +53,6 @@ export const getGoogleOAuthUrl = async () => {
     }),
   );
 };
-
-// Supabase handles the OAuth code exchange in the /callback route; kept as a
-// no-op so existing imports don't break.
-export const handleGoogleCallback = () => {};
 
 // user forgot password — sends a recovery email (OTP / link)
 export const forgetPassword = async (payload) => {
@@ -135,9 +136,7 @@ export const signoutUser = async () => {
 // The onboarding screen sends type 1 (client) or 2 (freelancer).
 export const submitAccountType = async (payload) => {
   const userType =
-    payload?.type === 1 || payload?.type === 'client'
-      ? 'client'
-      : 'freelancer';
+    payload?.type === 1 || payload?.type === 'client' ? 'client' : 'freelancer';
   const {
     data: { user },
   } = await supabase.auth.getUser();
