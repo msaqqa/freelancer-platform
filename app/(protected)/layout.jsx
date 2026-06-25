@@ -11,7 +11,7 @@ export default function ProtectedLayout({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isLoading || isFetching) return;
+    if (isLoading) return;
 
     if (!user || isError) {
       router.replace('/signin');
@@ -55,7 +55,7 @@ export default function ProtectedLayout({ children }) {
     }
   }, [isLoading, user, isError, pathname, router]);
 
-  if (isLoading || isFetching) {
+  if (isLoading) {
     return <ScreenLoader />;
   }
 

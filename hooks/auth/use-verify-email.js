@@ -11,8 +11,9 @@ function useVerifyEmail() {
   const { t } = useTranslation('auth');
   const router = useRouter();
   const searchParams = useSearchParams();
-  const emailParam = searchParams.get('email');
-  const email = decodeURIComponent(emailParam);
+  const emailParam = searchParams.get('email') ?? '';
+  const email = emailParam ? decodeURIComponent(emailParam) : '';
+  const resent = searchParams.get('resent') === 'true';
   const [timeLeft, setTimeLeft] = useState(300);
   const [isButtonDisabled, setIsButtonDisabled] = useState(true);
   const [timer, setTimer] = useState(null);
@@ -30,7 +31,7 @@ function useVerifyEmail() {
     }, 1000);
     setTimer(timerId);
     return () => clearInterval(timerId);
-  }, [timeLeft]);
+  }, []);
   const minutes = Math.floor(timeLeft / 60);
   const seconds = timeLeft % 60;
 
@@ -85,6 +86,7 @@ function useVerifyEmail() {
     isButtonDisabled,
     handleResetOtp,
     isResendLodaing: resendOtpMutation.isPending,
+    resent,
   };
 }
 

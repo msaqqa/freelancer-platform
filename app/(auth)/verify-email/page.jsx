@@ -1,7 +1,7 @@
 'use client';
 
 import { Suspense } from 'react';
-import { AlertCircle } from 'lucide-react';
+import { AlertCircle, Check } from 'lucide-react';
 import useVerifyEmail from '@/hooks/auth/use-verify-email';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -28,12 +28,23 @@ export default function Page() {
     isButtonDisabled,
     handleResetOtp,
     isResendLodaing,
+    resent,
   } = useVerifyEmail();
 
   return (
     <Suspense>
       <div className="w-full space-y-6">
         <h1 className="text-2x font-semibold">{t('verifyEmail')}</h1>
+
+        {resent && (
+          <Alert variant="success">
+            <AlertIcon>
+              <Check />
+            </AlertIcon>
+            <AlertTitle>{t('verificationCodeResent')}</AlertTitle>
+          </Alert>
+        )}
+
         {error && (
           <Alert variant="destructive">
             <AlertIcon>

@@ -36,7 +36,9 @@ function useSignup() {
         const message = String(error?.message ?? '').toLowerCase();
         const alreadyRegistered =
           message.includes('already registered') ||
-          message.includes('already exists');
+          message.includes('already exists') ||
+          message.includes('user already registered') ||
+          message.includes('user already exists');
 
         if (!alreadyRegistered) {
           throw error;
@@ -52,7 +54,8 @@ function useSignup() {
           const alreadyConfirmed =
             resendMessage.includes('already confirmed') ||
             resendMessage.includes('already verified') ||
-            resendMessage.includes('already registered');
+            resendMessage.includes('already registered') ||
+            resendMessage.includes('already exists');
 
           if (alreadyConfirmed) {
             const confirmedError = new Error(t('existingAccountConfirmed'));
@@ -66,7 +69,9 @@ function useSignup() {
     },
     onSuccess: () => {
       const email = form.getValues('email');
-      router.push(`/verify-email?email=${encodeURIComponent(email)}`);
+      router.push(
+        `/verify-email?email=${encodeURIComponent(email)}&resent=true`,
+      );
     },
     onError: (error, variables) => {
       if (error?.code === 'EXISTING_CONFIRMED') {

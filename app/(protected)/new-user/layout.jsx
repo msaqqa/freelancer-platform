@@ -11,7 +11,7 @@ function NewUserlayout({ children }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isLoading || isFetching) return;
+    if (isLoading) return;
 
     // not signed in
     if (!user || isError) {
@@ -39,6 +39,10 @@ function NewUserlayout({ children }) {
 
   if (isLoading) {
     return <ScreenLoader />;
+  }
+
+  if (!user || isError) {
+    return null;
   }
 
   return children;
