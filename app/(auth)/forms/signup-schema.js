@@ -20,9 +20,14 @@ export const getSignupSchema = (t) => {
         .min(1, {
           message: t('passwordConfirmationRequired'),
         }),
-      accept: z.boolean().refine((val) => val === true, {
-        message: t('acceptRequired'),
-      }),
+      accept: z
+        .boolean({
+          required_error: t('acceptRequired'),
+          invalid_type_error: t('acceptRequired'),
+        })
+        .refine((val) => val === true, {
+          message: t('acceptRequired'),
+        }),
     })
     .refine((data) => data.password === data.passwordConfirmation, {
       message: t('passwordsMismatch'),

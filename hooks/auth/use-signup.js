@@ -26,7 +26,9 @@ function useSignup() {
   const [passwordVisible, setPasswordVisible] = useState(false);
   const [passwordConfirmationVisible, setPasswordConfirmationVisible] =
     useState(false);
-  const [showRecaptcha, setShowRecaptcha] = useState(false);
+  // Email of an already-registered account; drives the inline "already
+  // registered, sign in instead" notice (the user navigates manually).
+  const [existingAccountEmail, setExistingAccountEmail] = useState(null);
   const router = useRouter();
   const { t } = useTranslation('auth');
 
@@ -40,6 +42,10 @@ function useSignup() {
   };
 
   const mutation = useMutation({
+    onMutate: () => {
+      // Clear any previous "already registered" notice before a new attempt.
+      setExistingAccountEmail(null);
+    },
     mutationFn: async (values) => {
       let data;
       try {
@@ -51,30 +57,24 @@ function useSignup() {
       }
 
       // Existing account (throw, or obfuscated empty-identities response).
-      // Route to signin with a notice; signin itself handles an unconfirmed
-      // account by resending the OTP and sending it on to verify-email.
       if (!data || isObfuscatedExistingUser(data)) {
-        const existingError = new Error(t('existingAccountConfirmed'));
-        existingError.code = 'EXISTING_ACCOUNT';
-        throw existingError;
+        return { existingAccount: true, email: values.email };
       }
 
       // Brand-new account → continue to verify-email.
       return { isNewUser: true };
     },
-    onSuccess: () => {
+    onSuccess: (result) => {
+      // Existing account → show an inline notice and let the user navigate.
+      if (result?.existingAccount) {
+        setExistingAccountEmail(result.email);
+        return;
+      }
+
       const email = form.getValues('email');
       router.push(
         `/verify-email?email=${encodeURIComponent(email)}&resent=true`,
       );
-    },
-    onError: (error, variables) => {
-      if (error?.code === 'EXISTING_ACCOUNT') {
-        const email = variables?.email;
-        router.push(
-          `/signin?email=${encodeURIComponent(email ?? '')}&existing=true`,
-        );
-      }
     },
   });
 
@@ -89,8 +89,7 @@ function useSignup() {
     setPasswordVisible,
     passwordConfirmationVisible,
     setPasswordConfirmationVisible,
-    showRecaptcha,
-    setShowRecaptcha,
+    existingAccountEmail,
     error: mutation.error,
     isProcessing: mutation.isPending,
     handleGoogleSignin,

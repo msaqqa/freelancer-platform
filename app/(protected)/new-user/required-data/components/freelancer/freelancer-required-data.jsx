@@ -76,9 +76,8 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
       skills: values?.skills.map((skill) => skill.id),
       sub_category_id: values?.subcategory,
       hourly_rate: values?.hourlyRate,
-      available_hire: 1,
+      available_hire: values?.availability ? 1 : 0,
     };
-    console.log('updataData', updataData);
     mutation.mutate(updataData);
   };
 

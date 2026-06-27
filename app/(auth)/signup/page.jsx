@@ -1,8 +1,10 @@
 'use client';
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import Link from 'next/link';
-import { AlertCircle, Check, Eye, EyeOff } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { useAuth } from '@/hooks/auth/use-auth';
 import useSignup from '@/hooks/auth/use-signup';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -18,6 +20,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { Spinner } from '@/components/ui/spinners';
 import { Icons } from '@/components/common/icons';
+import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function Page() {
   const {
@@ -27,15 +30,33 @@ export default function Page() {
     setPasswordVisible,
     passwordConfirmationVisible,
     setPasswordConfirmationVisible,
-    showRecaptcha,
-    setShowRecaptcha,
+    existingAccountEmail,
     error,
     isProcessing,
-    handleSubmit,
-    handleVerifiedSubmit,
     handleGoogleSignin,
     onSubmit,
   } = useSignup();
+  const { data: user, isLoading } = useAuth();
+  const router = useRouter();
+
+  // An already-authenticated user shouldn't see the signup form; send them to
+  // the right place (mirrors the signin page + ProtectedLayout routing).
+  useEffect(() => {
+    if (isLoading) return;
+    if (!user) return;
+
+    if (user.type && user.save_data) {
+      router.replace(`/${user.type}`);
+    } else if (user.type && !user.save_data) {
+      router.replace('/new-user/required-data');
+    } else {
+      router.replace('/new-user/account-type');
+    }
+  }, [user, isLoading, router]);
+
+  if (isLoading || user) {
+    return <ScreenLoader />;
+  }
 
   return (
     <Suspense>
@@ -77,6 +98,24 @@ export default function Page() {
                 <AlertCircle />
               </AlertIcon>
               <AlertTitle>{error.message}</AlertTitle>
+            </Alert>
+          )}
+
+          {existingAccountEmail && (
+            <Alert variant="warning" className="flex-col items-stretch gap-3">
+              <div className="flex items-center gap-2">
+                <AlertIcon>
+                  <AlertCircle />
+                </AlertIcon>
+                <AlertTitle>{t('existingAccountConfirmed')}</AlertTitle>
+              </div>
+              <Button type="button" variant="outline" asChild>
+                <Link
+                  href={`/signin?email=${encodeURIComponent(existingAccountEmail)}&existing=true`}
+                >
+                  {t('signin')}
+                </Link>
+              </Button>
             </Alert>
           )}
 

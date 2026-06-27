@@ -3,7 +3,8 @@
 import { useTranslation } from 'react-i18next';
 import { Container } from '@/components/common/container';
 
-export function AuthFooter() {
+// Lightweight footer shared by the auth and onboarding (new-user) flows.
+export function MinimalFooter() {
   const { t } = useTranslation('common');
   const currentYear = new Date().getFullYear();
 

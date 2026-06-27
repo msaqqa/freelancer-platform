@@ -33,7 +33,7 @@ export default function Page() {
     onSubmit,
     handleGoogleSignin,
   } = useSignin();
-  const { data: user, isLoading, isFetching } = useAuth();
+  const { data: user, isLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
   const prefillEmail = searchParams.get('email') ?? '';
@@ -51,7 +51,10 @@ export default function Page() {
   }, [prefillEmail, form]);
 
   useEffect(() => {
-    if (isLoading || isFetching) return;
+    // Route as soon as a user is in cache. Don't gate on isFetching: after
+    // login the cache is seeded and a background refetch may be in flight, and
+    // waiting for it would leave the page stuck on the loader.
+    if (isLoading) return;
     if (!user) return;
 
     // Mirror ProtectedLayout's routing so we never land on a page that
@@ -63,7 +66,7 @@ export default function Page() {
     } else {
       router.replace('/new-user/account-type');
     }
-  }, [user, isLoading, isFetching, router]);
+  }, [user, isLoading, router]);
 
   // Initial load: show the loader. Once authenticated, keep showing it while
   // the redirect effect runs so the form never flashes before navigating.
