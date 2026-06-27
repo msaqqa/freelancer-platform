@@ -4,11 +4,23 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import {
-  getGoogleOAuthUrl,
-  signupWithCredentials,
-} from '@/services/auth/auth';
+import { getGoogleOAuthUrl, signupWithCredentials } from '@/services/auth/auth';
 import { getSignupSchema } from '@/app/(auth)/forms/signup-schema';
+
+// Supabase signals an existing account in two ways depending on the project's
+// "prevent leaking existence" setting:
+//   - protection OFF: signUp throws "User already registered"
+//   - protection ON : signUp succeeds but returns user.identities === []
+function isExistingUserError(error) {
+  return String(error?.message ?? '')
+    .toLowerCase()
+    .includes('user already registered');
+}
+
+function isObfuscatedExistingUser(data) {
+  const identities = data?.user?.identities;
+  return Array.isArray(identities) && identities.length === 0;
+}
 
 function useSignup() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -29,23 +41,26 @@ function useSignup() {
 
   const mutation = useMutation({
     mutationFn: async (values) => {
+      let data;
       try {
-        return await signupWithCredentials(values);
+        data = await signupWithCredentials(values);
       } catch (error) {
-        const message = String(error?.message ?? '').toLowerCase();
-        const alreadyRegistered = message.includes('user already registered');
-
-        if (!alreadyRegistered) {
-          throw error;
-        }
-
-        // signUp only throws "already registered" for CONFIRMED accounts.
-        // Unconfirmed accounts get a success + auto-resend, so they never
-        // reach this branch. Route confirmed users to signin.
-        const confirmedError = new Error(t('existingAccountConfirmed'));
-        confirmedError.code = 'EXISTING_CONFIRMED';
-        throw confirmedError;
+        // protection OFF path: throw means the account already exists.
+        if (!isExistingUserError(error)) throw error;
+        data = null;
       }
+
+      // Existing account (throw, or obfuscated empty-identities response).
+      // Route to signin with a notice; signin itself handles an unconfirmed
+      // account by resending the OTP and sending it on to verify-email.
+      if (!data || isObfuscatedExistingUser(data)) {
+        const existingError = new Error(t('existingAccountConfirmed'));
+        existingError.code = 'EXISTING_ACCOUNT';
+        throw existingError;
+      }
+
+      // Brand-new account → continue to verify-email.
+      return { isNewUser: true };
     },
     onSuccess: () => {
       const email = form.getValues('email');
@@ -54,7 +69,7 @@ function useSignup() {
       );
     },
     onError: (error, variables) => {
-      if (error?.code === 'EXISTING_CONFIRMED') {
+      if (error?.code === 'EXISTING_ACCOUNT') {
         const email = variables?.email;
         router.push(
           `/signin?email=${encodeURIComponent(email ?? '')}&existing=true`,

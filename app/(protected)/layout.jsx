@@ -6,17 +6,21 @@ import { useAuth } from '@/hooks/auth/use-auth';
 import { ScreenLoader } from '@/components/common/screen-loader';
 
 export default function ProtectedLayout({ children }) {
-  const { data: user, isLoading, isFetching, isError } = useAuth();
+  const { data: user, isLoading, isError, isSuccess } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
 
   useEffect(() => {
-    if (isLoading) return;
+    // Wait while loading or on a transient error (network/DB blip). Bouncing
+    // to /signin on a temporary error is what caused the flash-to-signin.
+    if (isLoading || isError) return;
 
-    if (!user || isError) {
+    // Only treat as signed-out once the query has settled with no user.
+    if (isSuccess && !user) {
       router.replace('/signin');
       return;
     }
+    if (!user) return;
 
     // New user: no account type selected yet
     if (!user.type) {
@@ -53,14 +57,16 @@ export default function ProtectedLayout({ children }) {
       router.replace(userDashboard);
       return;
     }
-  }, [isLoading, user, isError, pathname, router]);
+  }, [isLoading, isError, isSuccess, user, pathname, router]);
 
-  if (isLoading) {
+  // Keep the loader on during load AND transient errors so we never flash the
+  // signin page or empty content between transitions.
+  if (isLoading || isError) {
     return <ScreenLoader />;
   }
 
-  // Show nothing while redirecting (prevents flash of content)
-  if (!user || isError) {
+  // Settled with no user → redirecting to signin; render nothing.
+  if (!user) {
     return null;
   }
 

@@ -5,10 +5,15 @@ export const getChangePasswordSchema = (t) => {
   return z
     .object({
       newPassword: getPasswordSchema(t),
-      confirmPassword: z.string(),
+      confirmPassword: z
+        .string({
+          required_error: t('passwordConfirmationRequired'),
+          invalid_type_error: t('passwordConfirmationRequired'),
+        })
+        .min(1, { message: t('passwordConfirmationRequired') }),
     })
     .refine((data) => data.newPassword === data.confirmPassword, {
-      message: 'Passwords do not match.',
+      message: t('passwordsMismatch'),
       path: ['confirmPassword'],
     });
 };

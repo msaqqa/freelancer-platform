@@ -5,13 +5,13 @@ import { Globe, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { useLanguage } from '@/providers/i18n-provider';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { Switch, SwitchIndicator, SwitchWrapper } from '@/components/ui/switch';
 
 export function AuthSwitchers() {
   const { changeLanguage, language } = useLanguage();
@@ -51,27 +51,42 @@ export function AuthSwitchers() {
       </DropdownMenu>
 
       {/* Theme Switcher */}
-      <SwitchWrapper className="items-center">
-        <Switch
-          checked={isDark}
-          onCheckedChange={(checked) => setTheme(checked ? 'dark' : 'light')}
-          className="h-8 w-14 bg-slate-200 data-[state=checked]:bg-slate-800"
-          size="lg"
-          variant="primary"
-          thumbClassName="border border-border/10 bg-white dark:bg-slate-700"
+      <div
+        role="radiogroup"
+        aria-label="Toggle theme"
+        className="inline-flex items-center gap-1 rounded-full bg-muted p-1"
+      >
+        <button
+          type="button"
+          role="radio"
+          aria-checked={!isDark}
+          aria-label="Light mode"
+          onClick={() => setTheme('light')}
+          className={cn(
+            'grid size-7 place-items-center rounded-full transition-colors',
+            !isDark
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
         >
-          <SwitchIndicator
-            state={isDark ? 'on' : 'off'}
-            className="text-blue-500"
-          >
-            {isDark ? (
-              <Moon className="w-4 h-4" aria-hidden="true" />
-            ) : (
-              <Sun className="w-4 h-4" aria-hidden="true" />
-            )}
-          </SwitchIndicator>
-        </Switch>
-      </SwitchWrapper>
+          <Sun className="w-4 h-4" aria-hidden="true" />
+        </button>
+        <button
+          type="button"
+          role="radio"
+          aria-checked={isDark}
+          aria-label="Dark mode"
+          onClick={() => setTheme('dark')}
+          className={cn(
+            'grid size-7 place-items-center rounded-full transition-colors',
+            isDark
+              ? 'bg-primary text-primary-foreground shadow-sm'
+              : 'text-muted-foreground hover:text-foreground',
+          )}
+        >
+          <Moon className="w-4 h-4" aria-hidden="true" />
+        </button>
+      </div>
     </div>
   );
 }

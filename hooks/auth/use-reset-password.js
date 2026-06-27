@@ -14,6 +14,11 @@ function useResetPassword() {
   // user lands here, so we only collect the new password.
   const form = useForm({
     resolver: zodResolver(getChangePasswordSchema(t)),
+    mode: 'onTouched',
+    defaultValues: {
+      newPassword: '',
+      confirmPassword: '',
+    },
   });
 
   const onSubmit = (values) => {

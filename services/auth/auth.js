@@ -93,20 +93,24 @@ export async function getAuthUserData() {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
+  // Use maybeSingle: a brand-new user's profile row may not exist yet (the DB
+  // trigger can lag the first read). single() would error on "no rows", which
+  // bubbles up as isError and bounces the user to /signin. maybeSingle returns
+  // null instead, so we treat it as "signed in, onboarding not started".
   const { data: profile, error } = await supabase
     .from('profiles')
     .select('*')
     .eq('id', user.id)
-    .single();
+    .maybeSingle();
   if (error) throw error;
 
   // Alias to the field names the existing UI reads (type / save_data).
   return {
     data: {
-      ...profile,
+      ...(profile ?? {}),
       email: user.email,
-      type: profile.user_type,
-      save_data: profile.profile_complete,
+      type: profile?.user_type ?? null,
+      save_data: profile?.profile_complete ?? null,
     },
   };
 }
