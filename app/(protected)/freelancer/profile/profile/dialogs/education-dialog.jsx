@@ -365,7 +365,7 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
                                 key={item.id}
                                 value={item?.id.toString()}
                               >
-                                {item.label}
+                                {item.name}
                               </SelectItem>
                             ))}
                         </SelectContent>

@@ -8,7 +8,7 @@ import { ProfileContent } from './profile/content';
 import { ServicesContent } from './services/content';
 import { WorkHistoryContent } from './work-history/content';
 
-const PageTabs = () => {
+const PageTabs = ({ user, isLoading }) => {
   return (
     <Tabs defaultValue="1" className="w-full">
       <TabsList
@@ -30,7 +30,7 @@ const PageTabs = () => {
       </TabsList>
 
       <TabsContent value="1">
-        <ProfileContent />
+        <ProfileContent user={user} isLoading={isLoading} />
       </TabsContent>
       <TabsContent value="2">
         <PortfolioContent />

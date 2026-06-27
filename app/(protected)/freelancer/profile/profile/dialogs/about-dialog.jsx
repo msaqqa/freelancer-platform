@@ -125,7 +125,10 @@ export const AboutDialog = ({ open, closeDialog, user }) => {
           position: 'top-center',
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({ queryKey: ['freelancer-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
   });

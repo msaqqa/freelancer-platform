@@ -67,7 +67,7 @@ export const AvatarDialog = ({ open, closeDialog, user }) => {
           position: 'top-center',
         },
       );
-      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({ queryKey: ['freelancer-profile'] });
       closeDialog();
     },
   });

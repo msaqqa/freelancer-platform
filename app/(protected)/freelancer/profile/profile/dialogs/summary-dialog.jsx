@@ -75,20 +75,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
 
   // Mutation for creating/updating summary
   const mutation = useMutation({
-    mutationFn: async (values) => {
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === 'images' && Array.isArray(values.images)) {
-          values.images.map((image) => {
-            formData.append('images[]', image);
-          });
-        } else if (key !== 'images') {
-          formData.append(key, values[key]);
-        }
-      });
-      const response = postFreelancerSummary(formData);
-      return response;
-    },
+    mutationFn: (values) => postFreelancerSummary(values),
     onSuccess: (data) => {
       toast.custom(
         () => (

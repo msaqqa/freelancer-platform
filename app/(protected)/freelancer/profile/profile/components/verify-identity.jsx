@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
@@ -11,21 +11,12 @@ const VerifyIdentity = ({ user }) => {
   const [openDialog, setOpenDialog] = useState(false);
   const { t } = useTranslation('freelancerProfile');
   const fp = (key) => t(`identity.${key}`);
-  const [isDisabled, setIsDisabled] = useState(false);
-  const status = user?.id_verified?.status;
-  const label = user?.id_verified?.label;
+  // Phone-OTP identity verification is not supported yet (no SMS provider).
+  // Keep the card visible but the action disabled until a replacement flow lands.
+  const isDisabled = true;
+  const label = fp('comingSoon');
 
-  useEffect(() => {
-    if (status == 0 || status == 1) {
-      setIsDisabled(true);
-    }
-  }, [user]);
-
-  const handleIdentityBtn = () => {
-    if (status == 2 || status == null) {
-      setOpenDialog(true);
-    }
-  };
+  const handleIdentityBtn = () => {};
   return (
     <Card className="shadow-none p-4">
       <div className="flex flex-col md:flex-row justify-between items-center gap-7">
