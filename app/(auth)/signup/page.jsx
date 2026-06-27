@@ -102,20 +102,11 @@ export default function Page() {
           )}
 
           {existingAccountEmail && (
-            <Alert variant="warning" className="flex-col items-stretch gap-3">
-              <div className="flex items-center gap-2">
-                <AlertIcon>
-                  <AlertCircle />
-                </AlertIcon>
-                <AlertTitle>{t('existingAccountConfirmed')}</AlertTitle>
-              </div>
-              <Button type="button" variant="outline" asChild>
-                <Link
-                  href={`/signin?email=${encodeURIComponent(existingAccountEmail)}&existing=true`}
-                >
-                  {t('signin')}
-                </Link>
-              </Button>
+            <Alert variant="warning">
+              <AlertIcon>
+                <AlertCircle />
+              </AlertIcon>
+              <AlertTitle>{t('existingAccountConfirmed')}</AlertTitle>
             </Alert>
           )}
 
