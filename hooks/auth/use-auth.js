@@ -12,16 +12,21 @@ export function useAuth() {
     queryKey: ['user-profile'],
     queryFn: getAuthUserData,
     retry: 1,
-    refetchOnMount: 'always',
+    // Honor staleTime so a freshly set cache (e.g. right after login) isn't
+    // refetched on the dashboard mount — that redundant fetch is what made
+    // the screen briefly flash a loader during the auth → dashboard handoff.
+    refetchOnMount: true,
     refetchOnWindowFocus: false,
-    staleTime: 0,
+    staleTime: 1000 * 60, // 1 minute
     gcTime: 1000 * 60 * 30, // 30 minutes
   });
 
   const signout = async () => {
     await signoutUser();
     queryClient.cancelQueries();
-    queryClient.removeQueries({ queryKey: ['user-profile'] });
+    // Wipe ALL cached data, not just the profile, so the next account that
+    // signs in never sees the previous user's cached pages/lists.
+    queryClient.clear();
     router.push('/signin');
   };
 

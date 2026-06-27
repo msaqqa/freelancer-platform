@@ -56,10 +56,14 @@ function FreelancerRequiredData({ activeSection, setActiveSection }) {
           position: 'top-center',
         },
       );
-      // Invalidate user profile so layout sees save_data is true
-      await queryClient.invalidateQueries({ queryKey: ['user-profile'] });
-      // redirect to freelancer dashboard
+      // Optimistically mark onboarding complete so the dashboard doesn't
+      // bounce back to required-data, then navigate immediately.
+      queryClient.setQueryData(['user-profile'], (prev) =>
+        prev ? { data: { ...prev.data, save_data: true } } : prev,
+      );
       router.replace('/freelancer');
+      // Reconcile fresh profile data in the background (no loader).
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
     },
   });
 

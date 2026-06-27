@@ -45,7 +45,7 @@ export default function Page() {
           )}
 
           {success && (
-            <Alert>
+            <Alert variant="success">
               <AlertIcon>
                 <Check />
               </AlertIcon>
@@ -72,14 +72,16 @@ export default function Page() {
             )}
           />
 
-          <div className="flex flex-col gap-2.5">
-            <Button type="submit" disabled={isProcessing}>
-              {isProcessing ? (
-                <Spinner className="size-4 animate-spin" />
-              ) : null}
-              {t('submit')}
-            </Button>
-          </div>
+          {!success && (
+            <div className="flex flex-col gap-2.5">
+              <Button type="submit" disabled={isProcessing}>
+                {isProcessing ? (
+                  <Spinner className="size-4 animate-spin" />
+                ) : null}
+                {t('submit')}
+              </Button>
+            </div>
+          )}
 
           <div className="space-y-3">
             <Button type="button" variant="outline" className="w-full" asChild>

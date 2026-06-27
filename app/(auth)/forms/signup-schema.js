@@ -5,13 +5,21 @@ export const getSignupSchema = (t) => {
   return z
     .object({
       email: z
-        .string()
-        .email({ message: t('emailInvalid') })
-        .min(1, { message: t('emailRequired') }),
+        .string({
+          required_error: t('emailRequired'),
+          invalid_type_error: t('emailRequired'),
+        })
+        .min(1, { message: t('emailRequired') })
+        .email({ message: t('emailInvalid') }),
       password: getPasswordSchema(t),
-      passwordConfirmation: z.string().min(1, {
-        message: t('passwordConfirmationRequired'),
-      }),
+      passwordConfirmation: z
+        .string({
+          required_error: t('passwordConfirmationRequired'),
+          invalid_type_error: t('passwordConfirmationRequired'),
+        })
+        .min(1, {
+          message: t('passwordConfirmationRequired'),
+        }),
       accept: z.boolean().refine((val) => val === true, {
         message: t('acceptRequired'),
       }),

@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { resetPassword } from '@/services/auth/auth';
+import { resetPassword, signoutUser } from '@/services/auth/auth';
 import { getChangePasswordSchema } from '@/app/(auth)/forms/change-password-schema';
 
 function useResetPassword() {
@@ -21,9 +21,13 @@ function useResetPassword() {
   };
 
   const mutation = useMutation({
-    mutationFn: resetPassword,
+    mutationFn: async (values) => {
+      await resetPassword(values);
+      // Drop the recovery session so the user must sign in fresh.
+      await signoutUser();
+    },
     onSuccess: () => {
-      router.push('/signin');
+      router.push('/signin?reset=success');
     },
   });
 

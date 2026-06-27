@@ -37,9 +37,20 @@ export default function AccountType() {
           position: 'top-center',
         },
       );
+
+      // Optimistically set the new type so the destination doesn't bounce
+      // (the layout reads it to decide routing), then navigate immediately.
+      const newType = data?.data?.user_type;
+      if (newType) {
+        queryClient.setQueryData(['user-profile'], (prev) =>
+          prev
+            ? { data: { ...prev.data, type: newType, user_type: newType } }
+            : prev,
+        );
+      }
+      router.replace('/new-user/required-data');
+      // Reconcile the rest of the profile in the background (no loader).
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
-      // redirect to required-data page
-      router.replace(`/new-user/required-data`);
     },
   });
 

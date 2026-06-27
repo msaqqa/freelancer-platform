@@ -4,7 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { getGoogleOAuthUrl, signinWithCredentials } from '@/services/auth/auth';
+import {
+  getGoogleOAuthUrl,
+  resendVerificationCode,
+  signinWithCredentials,
+} from '@/services/auth/auth';
 import { getSigninSchema } from '@/app/(auth)/forms/signin-schema';
 
 function useSignin() {
@@ -43,12 +47,31 @@ function useSignin() {
   };
 
   const mutation = useMutation({
-    mutationFn: signinWithCredentials,
+    mutationFn: async (values) => {
+      try {
+        return await signinWithCredentials(values);
+      } catch (error) {
+        const message = String(error?.message ?? '').toLowerCase();
+        const notConfirmed =
+          message.includes('email not confirmed') ||
+          message.includes('not confirmed');
+
+        if (!notConfirmed) throw error;
+
+        // Unconfirmed account: resend OTP, then route to verify-email.
+        try {
+          await resendVerificationCode(values.email);
+        } catch {
+          // ignore resend failure; verify-email page can resend manually.
+        }
+        return { needsVerification: true, email: values.email };
+      }
+    },
     onSuccess: (data, variables) => {
       // If email is not confirmed, redirect to verify-email.
-      if (data.emailConfirmed === false) {
+      if (data?.needsVerification || data?.emailConfirmed === false) {
         router.push(
-          `/verify-email?email=${encodeURIComponent(variables.email)}`,
+          `/verify-email?email=${encodeURIComponent(variables.email)}&resent=true`,
         );
         return;
       }
@@ -61,6 +84,11 @@ function useSignin() {
         localStorage.removeItem('rememberedEmail');
         localStorage.removeItem('rememberMe');
       }
+
+      // Account-switch safety: drop any cached data left over from a previous
+      // session before seeding the new user's profile, so the new account
+      // never reads the previous user's cached pages/lists.
+      queryClient.clear();
 
       // Update user profile cache so protected routes can read the authenticated user immediately.
       const profile = data?.profile;
@@ -79,18 +107,8 @@ function useSignin() {
         queryClient.invalidateQueries({ queryKey: ['user-profile'] });
       }
 
-      // Supabase manages the session cookie; just route by profile state.
-      const type = profile?.user_type || null;
-      const requiredData = profile?.profile_complete || null;
-      if (type === 'client' && requiredData) {
-        router.push('/client');
-      } else if (type === 'freelancer' && requiredData) {
-        router.push('/freelancer');
-      } else if (type && !requiredData) {
-        router.push('/new-user/required-data');
-      } else {
-        router.push('/new-user/account-type');
-      }
+      // Routing is handled by the redirect effect once the cache populates,
+      // keeping a single source of truth and avoiding a double navigation.
     },
   });
 

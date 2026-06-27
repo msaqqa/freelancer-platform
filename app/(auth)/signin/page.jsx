@@ -3,7 +3,7 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { AlertCircle, Eye, EyeOff } from 'lucide-react';
+import { AlertCircle, Check, Eye, EyeOff } from 'lucide-react';
 import { useAuth } from '@/hooks/auth/use-auth';
 import useSignin from '@/hooks/auth/use-signin';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -38,6 +38,7 @@ export default function Page() {
   const searchParams = useSearchParams();
   const prefillEmail = searchParams.get('email') ?? '';
   const existingAccount = searchParams.get('existing') === 'true';
+  const passwordReset = searchParams.get('reset') === 'success';
 
   useEffect(() => {
     if (prefillEmail) {
@@ -53,16 +54,23 @@ export default function Page() {
     if (isLoading || isFetching) return;
     if (!user) return;
 
-    if (user.type === 'client') {
-      router.replace('/client');
-    } else if (user.type === 'freelancer') {
-      router.replace('/freelancer');
-    } else if (user.type) {
+    // Mirror ProtectedLayout's routing so we never land on a page that
+    // immediately bounces again (which shows up as a flicker).
+    if (user.type && user.save_data) {
+      router.replace(`/${user.type}`);
+    } else if (user.type && !user.save_data) {
+      router.replace('/new-user/required-data');
+    } else {
       router.replace('/new-user/account-type');
     }
   }, [user, isLoading, isFetching, router]);
 
-  if (isLoading || isFetching) {
+  // Initial load: show the loader. Once authenticated, keep showing it while
+  // the redirect effect runs so the form never flashes before navigating.
+  if (isLoading) {
+    return <ScreenLoader />;
+  }
+  if (user) {
     return <ScreenLoader />;
   }
 
@@ -95,6 +103,15 @@ export default function Page() {
             </span>
           </div>
         </div>
+
+        {passwordReset && (
+          <Alert variant="success">
+            <AlertIcon>
+              <Check />
+            </AlertIcon>
+            <AlertTitle>{t('passwordResetSuccess')}</AlertTitle>
+          </Alert>
+        )}
 
         {existingAccount && (
           <Alert variant="warning">

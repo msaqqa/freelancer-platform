@@ -6,26 +6,9 @@ import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import {
   getGoogleOAuthUrl,
-  resendVerificationCode,
   signupWithCredentials,
 } from '@/services/auth/auth';
 import { getSignupSchema } from '@/app/(auth)/forms/signup-schema';
-
-async function checkExistingUser(email) {
-  const response = await fetch(
-    `/api/auth/check-user?email=${encodeURIComponent(email)}`,
-    { cache: 'no-store' },
-  );
-
-  if (!response.ok) {
-    const body = await response
-      .json()
-      .catch(() => ({ error: response.statusText }));
-    throw new Error(body.error || 'Failed to verify existing user');
-  }
-
-  return response.json();
-}
 
 function useSignup() {
   const [passwordVisible, setPasswordVisible] = useState(false);
@@ -56,40 +39,12 @@ function useSignup() {
           throw error;
         }
 
-        let existingUser;
-        try {
-          existingUser = await checkExistingUser(values.email);
-        } catch {
-          // If the check fails, fall back to the resend logic below.
-          existingUser = null;
-        }
-
-        if (existingUser?.exists && existingUser.confirmed) {
-          const confirmedError = new Error(t('existingAccountConfirmed'));
-          confirmedError.code = 'EXISTING_CONFIRMED';
-          throw confirmedError;
-        }
-
-        try {
-          await resendVerificationCode(values.email);
-          return { alreadyRegisteredUnconfirmed: true };
-        } catch (resendError) {
-          const resendMessage = String(
-            resendError?.message ?? '',
-          ).toLowerCase();
-          const resendAlreadyConfirmed =
-            resendMessage.includes('user already registered') ||
-            resendMessage.includes('already confirmed') ||
-            resendMessage.includes('already verified');
-
-          if (resendAlreadyConfirmed) {
-            const confirmedError = new Error(t('existingAccountConfirmed'));
-            confirmedError.code = 'EXISTING_CONFIRMED';
-            throw confirmedError;
-          }
-
-          throw resendError;
-        }
+        // signUp only throws "already registered" for CONFIRMED accounts.
+        // Unconfirmed accounts get a success + auto-resend, so they never
+        // reach this branch. Route confirmed users to signin.
+        const confirmedError = new Error(t('existingAccountConfirmed'));
+        confirmedError.code = 'EXISTING_CONFIRMED';
+        throw confirmedError;
       }
     },
     onSuccess: () => {
