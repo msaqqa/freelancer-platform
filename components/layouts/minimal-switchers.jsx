@@ -3,9 +3,9 @@
 import { I18N_LANGUAGES } from '@/i18n/config';
 import { Globe, Moon, Sun } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { cn } from '@/lib/utils';
 import { useLanguage } from '@/providers/i18n-provider';
 import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,7 +13,9 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 
-export function AuthSwitchers() {
+// Language + theme controls shared by the auth and onboarding (new-user)
+// minimal layouts.
+export function MinimalSwitchers() {
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
   const isDark = theme === 'dark';

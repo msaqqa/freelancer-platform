@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Card, CardContent } from '@/components/ui/card';
-import { AuthHeader } from '../components/auth-header';
-import { AuthFooter } from '../components/auth-footer';
+import { MinimalHeader } from '@/components/layouts/minimal-header';
+import { MinimalFooter } from '@/components/layouts/minimal-footer';
 
 export function BrandedLayout({ children }) {
   const { t } = useTranslation('auth');
@@ -19,7 +19,7 @@ export function BrandedLayout({ children }) {
         `}
       </style>
       
-      <AuthHeader />
+      <MinimalHeader />
 
       <main className="flex-grow flex items-center justify-center py-10">
         <div className="container grid lg:grid-cols-2 gap-10 items-center">
@@ -35,7 +35,7 @@ export function BrandedLayout({ children }) {
         </div>
       </main>
 
-      <AuthFooter />
+      <MinimalFooter />
     </div>
   );
 }

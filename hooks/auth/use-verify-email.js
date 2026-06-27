@@ -68,10 +68,20 @@ function useVerifyEmail() {
 
   const mutation = useMutation({
     mutationFn: verifyEmailOtp,
-    onSuccess: async () => {
-      // Refresh the user profile cache to avoid stale redirect state.
-      await queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+    onSuccess: (data) => {
+      // Prime the cache so the protected layout immediately sees an
+      // authenticated user (onboarding not started) instead of reading the
+      // stale logged-out state and bouncing to /signin for a frame.
+      queryClient.setQueryData(['user-profile'], {
+        data: {
+          email: data?.user?.email,
+          type: null,
+          save_data: null,
+        },
+      });
       router.replace('/new-user/account-type');
+      // Reconcile the real profile in the background (no loader, no bounce).
+      queryClient.invalidateQueries({ queryKey: ['user-profile'] });
     },
   });
 
