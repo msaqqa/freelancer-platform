@@ -7,9 +7,15 @@ const QueryProvider = ({ children }) => {
   const [queryClient] = useState(
     () =>
       new QueryClient({
-        staleTime: 5 * 60 * 1000,
-        refetchOnWindowFocus: true,
-        refetchOnMount: false,
+        // TanStack Query v5 reads these under defaultOptions.queries; passing
+        // them at the top level is silently ignored.
+        defaultOptions: {
+          queries: {
+            staleTime: 5 * 60 * 1000,
+            refetchOnWindowFocus: false,
+            refetchOnMount: false,
+          },
+        },
       }),
   );
 

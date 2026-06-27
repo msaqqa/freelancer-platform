@@ -45,7 +45,6 @@ const ClientPersonalDetails = () => {
   const handleBioChange = (e) => {
     const val = e.target.value;
     const charLength = val.length;
-    console.log('charLength', e.target.value);
     setBioCahr(charLength);
   };
 
@@ -99,7 +98,6 @@ const ClientPersonalDetails = () => {
   });
 
   const onSubmit = (values) => {
-    console.log('values', values);
     const updataData = {
       ...values,
       country_id: values?.country,
@@ -239,7 +237,7 @@ const ClientPersonalDetails = () => {
                         </SelectTrigger>
                         <SelectContent>
                           {isLoading && <SelectItem>{t('loading')}</SelectItem>}
-                          {countries.length &&
+                          {countries.length > 0 &&
                             countries.map((country) => (
                               <SelectItem
                                 key={country.id}

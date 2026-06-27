@@ -24,7 +24,7 @@ export async function GET(request) {
         .from('profiles')
         .select('user_type, profile_complete')
         .eq('id', user.id)
-        .single();
+        .maybeSingle();
 
       const type = profile?.user_type;
       const done = profile?.profile_complete;
