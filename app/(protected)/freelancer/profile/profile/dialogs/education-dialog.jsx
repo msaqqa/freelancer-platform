@@ -158,6 +158,9 @@ export const EducationDialog = ({ open, closeDialog, educationId }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-educations'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       educationId &&
         queryClient.invalidateQueries({
           queryKey: ['freelancer-educationById', educationId],

@@ -68,6 +68,9 @@ export const AvatarDialog = ({ open, closeDialog, user }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['freelancer-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
   });

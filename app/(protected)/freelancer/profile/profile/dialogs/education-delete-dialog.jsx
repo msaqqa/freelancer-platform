@@ -42,6 +42,9 @@ const EducationDeleteDialog = ({ open, closeDialog, educationId }) => {
       );
 
       queryClient.invalidateQueries({ queryKey: ['freelancer-educations'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       closeDialog();
     },
   });

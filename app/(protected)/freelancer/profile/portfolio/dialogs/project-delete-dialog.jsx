@@ -1,9 +1,9 @@
 'use client';
 
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { apiFetch } from '@/lib/api';
+import { deleteFreelancerPortfolio } from '@/services/freelancer/portfolio';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import {
@@ -21,23 +21,9 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
 
   // Define the mutation for deleting the project
   const mutation = useMutation({
-    mutationFn: async () => {
-      const response = await apiFetch(
-        `/api/user-management/projects/${project.id}`,
-        {
-          method: 'DELETE',
-        },
-      );
-
-      if (!response.ok) {
-        const { message } = await response.json();
-        throw new Error(message);
-      }
-
-      return response.json();
-    },
-    onSuccess: () => {
-      const message = 'project deleted successfully';
+    mutationFn: async () => deleteFreelancerPortfolio(project.id),
+    onSuccess: (data) => {
+      const message = data?.message ?? 'Project deleted successfully';
 
       toast.custom(
         () => (

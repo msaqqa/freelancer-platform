@@ -1,6 +1,6 @@
 'use client';
 
-import { toAbsoluteUrl } from '@/lib/helpers';
+import { formatDate } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -10,29 +10,9 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tags } from '../components';
 
-const ProjectViewDialog = ({ open, closeDialog }) => {
-  const project = {
-    title: 'E-commerce Landing Page - Cartique',
-    fields: [
-      { type: 'image', value: '/media/images/600x400/3.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-      { type: 'image', value: '/media/images/600x400/25.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-    ],
-    details: 'Posted Jun 10, 2025',
-    tags: [
-      { label: 'Web Design' },
-      { label: 'Code Review' },
-      { label: 'Figma' },
-      { label: 'Product Development' },
-      { label: 'Webflow' },
-      { label: 'AI' },
-      { label: 'noCode' },
-      { label: 'Management' },
-    ],
-  };
+const ProjectViewDialog = ({ open, closeDialog, project }) => {
+  const blocks = project?.content_blocks ?? [];
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
@@ -47,14 +27,15 @@ const ProjectViewDialog = ({ open, closeDialog }) => {
           <h2 className="text-lg text-foreground font-semibold mb-5">
             {project?.title}
           </h2>
-          {project?.fields.map((field) => (
-            <div key={field.id} className="relative mb-5">
+
+          {blocks.map((field, index) => (
+            <div key={index} className="relative mb-5">
               {field.type === 'text' ? (
                 <p className="text-sm text-foreground mb-5">{field?.value}</p>
               ) : (
                 <div className="bg-muted rounded-xl w-full h-[300px] overflow-hidden mb-5">
                   <img
-                    src={toAbsoluteUrl(field?.value)}
+                    src={field?.url}
                     alt="image"
                     className="w-full h-full object-cover rounded-lg"
                   />
@@ -62,16 +43,15 @@ const ProjectViewDialog = ({ open, closeDialog }) => {
               )}
             </div>
           ))}
-          <div className="flex flex-col gap-2.5 mb-5">
-            <span className="text-base font-semibold text-mono">Details</span>
-            <span className="text-sm font-normal text-foreground">
-              {project?.details}
-            </span>
-          </div>
-          <div className="flex flex-col gap-2.5">
-            <span className="text-base font-semibold text-mono">Tags</span>
-            <Tags tags={project?.tags} />
-          </div>
+
+          {project?.created_at && (
+            <div className="flex flex-col gap-2.5 mb-5">
+              <span className="text-base font-semibold text-mono">Details</span>
+              <span className="text-sm font-normal text-foreground">
+                Posted {formatDate(project.created_at)}
+              </span>
+            </div>
+          )}
         </ScrollArea>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>

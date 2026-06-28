@@ -6,43 +6,26 @@ import { EllipsisVertical } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import ServiceAddDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-add-dialog';
-import ServiceDeleteDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-delete-dialog';
-import ServiceViewDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-view-dialog';
+import ProjectAddDialog from '@/app/(protected)/freelancer/profile/portfolio/dialogs/project-add-dialog';
+import ProjectDeleteDialog from '@/app/(protected)/freelancer/profile/portfolio/dialogs/project-delete-dialog';
+import ProjectViewDialog from '@/app/(protected)/freelancer/profile/portfolio/dialogs/project-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
-const CardWork = ({ image, title }) => {
+const CardWork = ({ id, image, title, project }) => {
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const project = {
-    title: 'E-commerce Landing Page - Cartique',
-    fields: [
-      { type: 'image', value: '/media/images/600x400/3.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-      { type: 'image', value: '/media/images/600x400/25.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-    ],
-    details: 'Posted Jun 10, 2025',
-    tags: [
-      { label: 'Web Design' },
-      { label: 'Code Review' },
-      { label: 'Figma' },
-      { label: 'Product Development' },
-      { label: 'Webflow' },
-      { label: 'AI' },
-      { label: 'noCode' },
-      { label: 'Management' },
-    ],
-  };
+
+  // `image` may be a full URL (Supabase public URL) or a legacy filename.
+  const imageSrc =
+    typeof image === 'string' && /^(https?:|\/)/.test(image)
+      ? image
+      : toAbsoluteUrl(`/media/images/600x400/${image || '8.jpg'}`);
+
   return (
     <Card className="border-0 shadow-sm shadow-black/8">
       <div className="relative">
-        <img
-          src={toAbsoluteUrl(`/media/images/600x400/${image}`)}
-          className="w-full h-auto rounded-t-xl"
-          alt="image"
-        />
+        <img src={imageSrc} className="w-full h-auto rounded-t-xl" alt="image" />
         <div className="absolute top-2 end-2">
           <DropdownMenu8
             trigger={
@@ -65,18 +48,21 @@ const CardWork = ({ image, title }) => {
           {title}
         </Link>
       </div>
-      <ServiceViewDialog
+
+      <ProjectViewDialog
         open={openViewDialog}
         closeDialog={() => setOpenViewDialog(false)}
-      />
-      <ServiceAddDialog
-        open={openEditDialog}
-        closeDialog={() => setOpenEditDialog(false)}
         project={project}
       />
-      <ServiceDeleteDialog
+      <ProjectAddDialog
+        open={openEditDialog}
+        closeDialog={() => setOpenEditDialog(false)}
+        portfolioId={id}
+      />
+      <ProjectDeleteDialog
         open={openDeleteDialog}
         closeDialog={() => setOpenDeleteDialog(false)}
+        project={{ id }}
       />
     </Card>
   );

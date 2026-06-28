@@ -1,25 +1,41 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
 import { ImageInput } from '@/components/image-input';
+
+// Render a preview source as-is for blob/data/remote/absolute paths; only
+// legacy relative asset names get the media prefix.
+const previewSrc = (src) =>
+  typeof src === 'string' && /^(blob:|data:|https?:|\/)/.test(src)
+    ? src
+    : toAbsoluteUrl(src);
 
 export function MediaButton({
   title,
   description,
   instructions,
   variant,
+  value,
   onChange,
 }) {
   const [media, setMedia] = useState([]);
 
+  // Seed the preview from an existing value (e.g. a stored URL in edit mode).
+  // A File value means the user just picked a file — keep the local preview.
+  useEffect(() => {
+    if (typeof value === 'string' && value) {
+      setMedia([{ dataURL: value, file: value }]);
+    } else if (!value) {
+      setMedia([]);
+    }
+  }, [value]);
+
   const handleImageUpload = (selectedImage) => {
     setMedia(selectedImage);
-    if (selectedImage.length > 0) {
-      onChange(selectedImage[0].file);
-    }
+    onChange(selectedImage.length > 0 ? selectedImage[0].file : '');
   };
 
   return (
@@ -65,7 +81,7 @@ export function MediaButton({
                 className="relative bg-muted rounded-xl w-full h-[300px] overflow-hidden"
               >
                 <img
-                  src={toAbsoluteUrl(file.dataURL)}
+                  src={previewSrc(file.dataURL)}
                   alt={`Uploaded Image ${index}`}
                   className="w-full h-full object-cover rounded-lg"
                 />

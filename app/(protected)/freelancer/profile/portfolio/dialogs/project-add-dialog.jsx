@@ -8,6 +8,7 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, X } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import {
@@ -48,6 +49,40 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
 import { MediaButton } from '@/app/components/partials/common/media-button';
 
+// No empty text/image blocks allowed. First text + first image are mandatory
+// (they are the two default blocks), and any extra block must be filled too.
+const ProjectFieldsSchema = z.object({
+  projectFields: z
+    .array(
+      z
+        .object({
+          type: z.enum(['text', 'image']),
+          value: z.string().optional(),
+          file: z.any().optional(),
+        })
+        .superRefine((block, ctx) => {
+          if (block.type === 'text' && !block.value?.trim()) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Text is required',
+              path: ['value'],
+            });
+          }
+          if (block.type === 'image' && !block.file) {
+            ctx.addIssue({
+              code: z.ZodIssueCode.custom,
+              message: 'Image is required',
+              path: ['file'],
+            });
+          }
+        }),
+    )
+    .min(2),
+  title: z.string().optional(),
+  tags: z.any().optional(),
+  projectCover: z.any().optional(),
+});
+
 const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   const [step, setStep] = useState(1);
   const [coverImage, setCoverImage] = useState(null);
@@ -60,10 +95,22 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
     { id: 3, slug: 'test3' },
   ];
 
-  const handleNextStep = () => {
-    if (step < 3) {
-      setStep(step + 1);
+  // Step 1: content blocks (mandatory first text + image, + optional extras).
+  // Step 2: cover / title / tags.
+  const handleContinue = async () => {
+    if (step === 1) {
+      const valid = await form.trigger('projectFields');
+      if (!valid) return;
+
+      // Carry the first text into the title as an editable default.
+      const firstText = form.getValues('projectFields')?.[0]?.value;
+      if (firstText && !form.getValues('title')) {
+        form.setValue('title', firstText);
+      }
+      setStep(2);
+      return;
     }
+    form.handleSubmit(handleSubmit)();
   };
 
   const handleBackStep = () => {
@@ -74,12 +121,13 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   const { data: portfolioData, isLoading: portfolioLoading } = useQuery({
     queryKey: ['portfolioId', portfolioId],
     queryFn: () => getFreelancerPortfolioById(portfolioId),
+    enabled: !!portfolioId && open,
   });
   const portfolio = portfolioData?.data ?? {};
 
   // Form initialization with React Hook Form
   const form = useForm({
-    // resolver: zodResolver(),
+    resolver: zodResolver(ProjectFieldsSchema),
     defaultValues: {
       projectFields: [
         { type: 'text', value: '' },
@@ -92,17 +140,30 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
     mode: 'onSubmit',
   });
 
-  // Reset form values when dialog is opened
-  // useEffect(() => {
-  //   if (open) {
-  //     form.reset({
-  //       title: portfolio?.title,
-  //       projectFields: portfolio?.content_blocks,
-  //       tags: portfolio?.tags,
-  //       projectCover: portfolio?.main_image,
-  //     });
-  //   }
-  // }, [form, open, portfolio]);
+  // Prefill the form in edit mode once the portfolio has loaded. Image blocks
+  // keep their existing URL in `file` (the service re-saves URL strings as-is).
+  useEffect(() => {
+    if (!open || !portfolioId || !portfolio?.id) return;
+
+    const blocks = (portfolio.content_blocks ?? []).map((b) =>
+      b.type === 'image'
+        ? { type: 'image', file: b.url }
+        : { type: 'text', value: b.value },
+    );
+
+    form.reset({
+      projectFields: blocks.length
+        ? blocks
+        : [
+            { type: 'text', value: '' },
+            { type: 'image', file: '' },
+          ],
+      title: portfolio.title ?? '',
+      tags: [],
+      projectCover: portfolio.cover_url ?? null,
+    });
+    if (portfolio.cover_url) setCoverImage(portfolio.cover_url);
+  }, [form, open, portfolioId, portfolio?.id]);
 
   const { fields, append, remove } = useFieldArray({
     control: form.control,
@@ -124,32 +185,16 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   };
 
   const handleSubmit = (values) => {
-    const updateValues = {
-      ...values,
-      main_image: values.projectCover,
-    };
-    console.log('updateValues', values);
     mutation.mutate(values);
   };
 
-  // Define the mutation for deleting the project
+  // Create / update the portfolio. The service handles image uploads and maps
+  // the form values onto the `portfolios` table.
   const mutation = useMutation({
-    mutationFn: async (values) => {
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === 'projectFields' && Array.isArray(values.projectFields)) {
-          formData.append('content_blocks', values.projectFields);
-        } else if (key !== 'projectFields') {
-          formData.append(key, values[key]);
-        }
-      });
-
-      let response;
+    mutationFn: async (values) =>
       portfolioId
-        ? (response = await updateFreelancerPortfolio(portfolioId, formData))
-        : (response = await addFreelancerPortfolio(formData));
-      return response;
-    },
+        ? await updateFreelancerPortfolio(portfolioId, values)
+        : await addFreelancerPortfolio(values),
     onSuccess: (data) => {
       toast.custom(
         () => (
@@ -167,6 +212,10 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
       );
 
       queryClient.invalidateQueries({ queryKey: ['user-projects'] }); // Refetch projects list
+      setStep(1);
+      setCoverImage(null);
+      setSelectedTags([]);
+      form.reset();
       closeDialog();
     },
   });
@@ -180,12 +229,20 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   };
 
   const handleSetProjectCover = async (file) => {
-    const pathImage = URL.createObjectURL(file);
-    setCoverImage(pathImage);
-    form.setValue('projectCover', file);
+    if (file instanceof File) {
+      setCoverImage(URL.createObjectURL(file));
+      form.setValue('projectCover', file);
+    } else if (typeof file === 'string' && file) {
+      // Existing stored URL (edit mode).
+      setCoverImage(file);
+      form.setValue('projectCover', file);
+    } else {
+      setCoverImage(null);
+      form.setValue('projectCover', null);
+    }
   };
 
-  const stepStatus = step === 1 || step === 2;
+  const stepStatus = step === 1;
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
@@ -269,7 +326,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                         : null
                                     }
                                     variant={index === 1 ? 'primary' : 'mono'}
-                                    data={item?.value}
+                                    value={field.value}
                                     onChange={(val) => {
                                       field.onChange(val);
                                       index === 1 && handleSetProjectCover(val);
@@ -296,7 +353,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                     </div>
                   ))}
                   {/* Add button */}
-                  {step === 2 && (
+                  {step === 1 && (
                     <div className="flex justify-center items-center gap-2.5">
                       <div className="flex items-center space-x-px">
                         <div className="flex flex-col justify-center">
@@ -348,7 +405,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                   )}
                 </>
               )}
-              {step === 3 && (
+              {step === 2 && (
                 <div className="flex flex-wrap md:flex-nowrap gap-6 md:gap-10">
                   <div className="w-[40%]">
                     {/* Project Cover */}
@@ -360,7 +417,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                           <FormLabel>Thumbnail preview</FormLabel>
                           <div className="w-full md:w-[300px] h-[200] overflow-hidden shrink-0">
                             <img
-                              src={toAbsoluteUrl(coverImage)}
+                              src={coverImage || ''}
                               alt="Cover Image"
                               className="bg-muted w-full h-full object-cover rounded-lg"
                             />
@@ -533,8 +590,15 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
               Back
             </Button>
           )}
-          <Button type="submit" onClick={handleNextStep}>
-            Continue
+          <Button
+            type="button"
+            onClick={handleContinue}
+            disabled={mutation.status === 'pending'}
+          >
+            {mutation.status === 'pending' && (
+              <Spinner className="animate-spin" />
+            )}
+            {step === 2 ? 'Submit' : 'Continue'}
           </Button>
         </DialogFooter>
       </DialogContent>

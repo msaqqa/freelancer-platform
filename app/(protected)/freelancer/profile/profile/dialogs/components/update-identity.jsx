@@ -80,6 +80,9 @@ export const UpdateIdentity = ({ step, handleNextStep, handleBackStep, t }) => {
         },
       );
       queryClient.invalidateQueries({ queryKey: ['user-profile'] });
+      queryClient.invalidateQueries({
+        queryKey: ['freelancer-profile-complete'],
+      });
       handleNextStep();
     },
   });
