@@ -1,6 +1,6 @@
 'use client';
 
-import { Suspense, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { AlertCircle, Eye, EyeOff } from 'lucide-react';
@@ -59,8 +59,7 @@ export default function Page() {
   }
 
   return (
-    <Suspense>
-      <Form {...form}>
+    <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="block w-full space-y-5"
@@ -260,7 +259,6 @@ export default function Page() {
             </Link>
           </div>
         </form>
-      </Form>
-    </Suspense>
+    </Form>
   );
 }

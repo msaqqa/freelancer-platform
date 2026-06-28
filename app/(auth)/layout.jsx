@@ -1,7 +1,12 @@
 'use client';
 
+import { Suspense } from 'react';
 import { BrandedLayout } from './layouts/branded';
 
 export default function Layout({ children }) {
-  return <BrandedLayout>{children}</BrandedLayout>;
+  return (
+    <BrandedLayout>
+      <Suspense>{children}</Suspense>
+    </BrandedLayout>
+  );
 }

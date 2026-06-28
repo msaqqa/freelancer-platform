@@ -1,66 +1,135 @@
-# Metronic 9 | All-in-One Tailwind based HTML/React/Next.js Template for Modern Web Applications
+# Freelancer Platform
+
+A bilingual (Arabic / English) marketplace that connects **freelancers** with **clients**.
+Freelancers build a profile, list services and work history, and manage their account;
+clients browse, hire, and manage users. The UI is built on the Metronic 9 design system
+and is fully RTL/LTR aware.
+
+## Features
+
+- **Authentication** — email/password + Google OAuth, email verification, password reset (Supabase Auth).
+- **Onboarding** — account-type selection and required-data flow for new users.
+- **Freelancer profile** — services, work history, connections, and profile management.
+- **User management** — client-side admin screens (status, roles).
+- **i18n** — Arabic and English with automatic direction switching.
+- **Static pages** — e.g. localized Privacy Policy.
+
+## Tech Stack
+
+| Area | Tool |
+|------|------|
+| Framework | Next.js 15 (App Router, Turbopack) |
+| UI | React 19, Tailwind CSS 4, Radix UI, [ReUI](https://reui.io) (Metronic 9) |
+| Backend | Supabase (Postgres + Auth + Storage) |
+| Data fetching | TanStack Query, Axios |
+| Forms & validation | React Hook Form + Zod |
+| State | Zustand |
+| i18n | i18next / react-i18next |
+| File storage | S3-compatible (AWS SDK v3) |
+| Email | Nodemailer (SMTP) |
+| Charts / maps | ApexCharts, Recharts, Leaflet |
+
+## Prerequisites
+
+- Node.js 18.x or higher
+- npm (or yarn)
+- A Supabase project (cloud or local via the Supabase CLI)
 
 ## Getting Started
 
-The official [Metronic Next.js Documentation](https://docs.keenthemes.com/metronic-nextjs) will be released soon,
-alongside the stable Metronic release, expected within the next week.
+### 1. Install dependencies
 
-### Prerequisites
-
-- Node.js 16.x or higher
-- Npm or Yarn
-- Tailwind CSS 4.x
-- React 19.x
-- Next.js 15.3.x
-- PostgreSQL 17.4.x
-
-## ReUI Components
-
-Metronic now leverages [ReUI](https://reui.io), our open-source React component library.
-
-Star the [ReUI on GitHub](https://github.com/keenthemes/reui) to help us grow the project and stay updated on new features!
-
-### Installation
-
-To set up the project dependencies, including those required for React 19, use the `--force` flag to resolve any dependency conflicts:
+React 19 needs the `--force` flag to resolve peer-dependency conflicts:
 
 ```bash
 npm install --force
 ```
 
-### Database Deployment
+### 2. Configure environment
 
-This will create the necessary tables in database for user authorization and user management apps :
-
-```bash
-npx prisma db push
-```
-
-Once your schema is deployed, you need to generate the Prisma Client:
+Create a `.env.local` file in the project root:
 
 ```bash
-npx prisma generate
+# Supabase
+NEXT_PUBLIC_SUPABASE_URL=your-project-url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your-anon-key
+SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
+
+# App
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# S3-compatible storage
+STORAGE_ENDPOINT=
+STORAGE_REGION=
+STORAGE_BUCKET=
+STORAGE_ACCESS_KEY_ID=
+STORAGE_SECRET_ACCESS_KEY=
+STORAGE_CDN_URL=
+
+# Email (SMTP)
+SMTP_HOST=
+SMTP_PORT=
+SMTP_USER=
+SMTP_PASS=
+SMTP_SENDER=
+SMTP_FROM=
+
+# reCAPTCHA
+NEXT_PUBLIC_RECAPTCHA_SITE_KEY=
+RECAPTCHA_SECRET_KEY=
 ```
 
-### Development
+### 3. Apply database migrations
 
-Start the development server:
+SQL migrations live in [`supabase/migrations`](supabase/migrations). Apply them with the
+Supabase CLI:
+
+```bash
+supabase db push
+```
+
+### 4. Run the development server
 
 ```bash
 npm run dev
 ```
 
-### Setting Up the Demo Layout
+Open [http://localhost:3000](http://localhost:3000).
 
-Open `app/(protected)/layout.tsx` and change `Demo1Layout` to any demo, for example, `Demo5Layout` and you will switch entire app layout to the selected demo.
+## Scripts
 
-```bash
-<Demo5Layout>
-	{children}
-</Demo5Layout>
+| Command | Description |
+|---------|-------------|
+| `npm run dev` | Start the dev server (Turbopack) |
+| `npm run build` | Production build |
+| `npm run start` | Run the production build |
+| `npm run lint` | Lint with ESLint |
+| `npm run format` | Format with Prettier |
+
+## Project Structure
+
+```
+app/
+  (auth)/         Auth routes (signin, signup, verify-email, ...) + shared layout
+  (protected)/    Authenticated app (freelancer, client, new-user, account)
+  api/            Route handlers
+  components/     App-specific chrome (layout shell, partials)
+  privacy-policy/ Static localized page
+components/        Shared design system (ui, common, layouts, icons)
+i18n/             Locales (ar/en) and i18next config
+lib/              Supabase clients, S3, helpers
+services/         Data-access layer
+supabase/         Migrations and local config
+hooks/            Reusable hooks (auth, ...)
 ```
 
-### Reporting Issues
+## Internationalization
 
-If you encounter any issues or have suggestions for improvement, please contact us at [support@keenthemes.com](mailto:support@keenthemes.com).
-Include a detailed description of the issue or suggestion, and we will work to address it in the next stable release.
+Locale files live in [`i18n/locales/{ar,en}`](i18n/locales). To add a namespace, drop a
+JSON file under each locale and register it in [`i18n/config.js`](i18n/config.js). Direction
+(RTL/LTR) follows the selected language automatically.
+
+## Notes
+
+- The legacy Taqat REST API (`NEXT_PUBLIC_TAQAT_API_URL`) is being phased out in favor of
+  Supabase; some service modules may still reference it during the migration.

@@ -36,29 +36,12 @@ export default function Page() {
   const { data: user, isLoading } = useAuth();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const prefillEmail = searchParams.get('email') ?? '';
-  const existingAccount = searchParams.get('existing') === 'true';
   const passwordReset = searchParams.get('reset') === 'success';
 
   useEffect(() => {
-    if (prefillEmail) {
-      form.reset({
-        email: prefillEmail,
-        password: '',
-        rememberMe: false,
-      });
-    }
-  }, [prefillEmail, form]);
-
-  useEffect(() => {
-    // Route as soon as a user is in cache. Don't gate on isFetching: after
-    // login the cache is seeded and a background refetch may be in flight, and
-    // waiting for it would leave the page stuck on the loader.
     if (isLoading) return;
     if (!user) return;
 
-    // Mirror ProtectedLayout's routing so we never land on a page that
-    // immediately bounces again (which shows up as a flicker).
     if (user.type && user.save_data) {
       router.replace(`/${user.type}`);
     } else if (user.type && !user.save_data) {
@@ -68,12 +51,7 @@ export default function Page() {
     }
   }, [user, isLoading, router]);
 
-  // Initial load: show the loader. Once authenticated, keep showing it while
-  // the redirect effect runs so the form never flashes before navigating.
-  if (isLoading) {
-    return <ScreenLoader />;
-  }
-  if (user) {
+  if (isLoading || user) {
     return <ScreenLoader />;
   }
 
@@ -113,15 +91,6 @@ export default function Page() {
               <Check />
             </AlertIcon>
             <AlertTitle>{t('passwordResetSuccess')}</AlertTitle>
-          </Alert>
-        )}
-
-        {existingAccount && (
-          <Alert variant="warning">
-            <AlertIcon>
-              <AlertCircle />
-            </AlertIcon>
-            <AlertTitle>{t('existingAccountConfirmed')}</AlertTitle>
           </Alert>
         )}
 

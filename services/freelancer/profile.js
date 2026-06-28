@@ -366,21 +366,60 @@ export const getFreelancerProfileComplete = async () => {
       .maybeSingle(),
   ]);
 
-  const checks = [
-    !!profile?.avatar_url,
-    !!profile?.full_name,
-    !!profile?.country_id,
-    !!(about?.category_id && about?.subcategory_id),
-    !!about?.hourly_rate,
-    (skillsCount ?? 0) > 0,
-    (socialsCount ?? 0) > 0,
-    (eduCount ?? 0) > 0,
-    !!summary?.description,
+  // Each entry drives both the progress numbers and the checklist (Connections)
+  // shown inside the "Get verified badge" dialog.
+  const status = [
+    {
+      name: 'Profile photo',
+      completion_text: 'Upload a profile photo',
+      is_completed: !!profile?.avatar_url,
+    },
+    {
+      name: 'Full name',
+      completion_text: 'Add your full name',
+      is_completed: !!profile?.full_name,
+    },
+    {
+      name: 'Country',
+      completion_text: 'Select your country',
+      is_completed: !!profile?.country_id,
+    },
+    {
+      name: 'Specialty',
+      completion_text: 'Pick your industry and specialty',
+      is_completed: !!(about?.category_id && about?.subcategory_id),
+    },
+    {
+      name: 'Hourly rate',
+      completion_text: 'Set your hourly rate',
+      is_completed: !!about?.hourly_rate,
+    },
+    {
+      name: 'Skills',
+      completion_text: 'Add at least one skill',
+      is_completed: (skillsCount ?? 0) > 0,
+    },
+    {
+      name: 'Social links',
+      completion_text: 'Link at least one social account',
+      is_completed: (socialsCount ?? 0) > 0,
+    },
+    {
+      name: 'Education',
+      completion_text: 'Add your education',
+      is_completed: (eduCount ?? 0) > 0,
+    },
+    {
+      name: 'Summary',
+      completion_text: 'Write a short summary',
+      is_completed: !!summary?.description,
+    },
   ];
 
-  const total_items = checks.length;
-  const completed_items = checks.filter(Boolean).length;
+  const total_items = status.length;
+  const completed_items = status.filter((s) => s.is_completed).length;
   const percentage = Math.round((completed_items / total_items) * 100);
+  const completion_text = `${completed_items} of ${total_items} sections completed`;
 
   return {
     data: [
@@ -388,7 +427,9 @@ export const getFreelancerProfileComplete = async () => {
         completed_items,
         total_items,
         percentage,
-        completion_text: `${completed_items} of ${total_items} sections completed`,
+        completion_text,
+        completionText: completion_text,
+        status,
       },
     ],
   };

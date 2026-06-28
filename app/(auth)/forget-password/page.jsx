@@ -1,6 +1,5 @@
 'use client';
 
-import { Suspense } from 'react';
 import Link from 'next/link';
 import { AlertCircle, ArrowLeft, Check } from 'lucide-react';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -22,8 +21,7 @@ export default function Page() {
     useForgetPassword();
 
   return (
-    <Suspense>
-      <Form {...form}>
+    <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
           className="block w-full space-y-5"
@@ -91,7 +89,6 @@ export default function Page() {
             </Button>
           </div>
         </form>
-      </Form>
-    </Suspense>
+    </Form>
   );
 }

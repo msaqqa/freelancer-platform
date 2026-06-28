@@ -24,7 +24,7 @@ const Connections = ({ items }) => {
     </div>
   );
 
-  return <div className="">{items.map(renderItem)}</div>;
+  return <div className="">{(items ?? []).map(renderItem)}</div>;
 };
 
 export { Connections };

@@ -5,7 +5,6 @@ import { useIsMobile } from '@/hooks/use-mobile';
 import { useSettings } from '@/providers/settings-provider';
 import { Footer } from './components/footer';
 import { Header } from './components/header';
-import { Sidebar } from './components/sidebar';
 
 export function Layout({ children }) {
   const isMobile = useIsMobile();
