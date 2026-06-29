@@ -116,7 +116,7 @@ export const ServiceOverview = () => {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder="industryHolder" />
+                  <SelectValue placeholder={fs('industryHolder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categoriesLoading && (

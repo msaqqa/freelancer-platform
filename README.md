@@ -29,6 +29,23 @@ and is fully RTL/LTR aware.
 | Email | Nodemailer (SMTP) |
 | Charts / maps | ApexCharts, Recharts, Leaflet |
 
+## Architecture & Conventions
+
+- **JavaScript only** — no TypeScript anywhere.
+- **Services layer is mandatory.** The UI and React Query never talk to Supabase
+  directly; everything goes through `services/`.
+- **Hybrid data flow:**
+  - **Read:** UI → React Query → Service → Supabase
+  - **Write:** UI → React Query → Service → API Route (Next handler) → Supabase
+- The internal API is reached over **axios** (`services/api.js`). Its base URL is
+  `NEXT_PUBLIC_API_URL` (empty = same-origin `/api` route handlers), so the backend
+  can be swapped by changing the URL only. Some older modules still call Supabase
+  from the service directly while the Taqat → Supabase migration finishes.
+- **CRUD happens in modals**, built with React Hook Form + Zod.
+- **UI reuse priority:** existing project components → Metronic / ReUI → Radix UI.
+  Don't introduce new UI libraries.
+- **Two user types** — Freelancer and Client — each with its own flow.
+
 ## Prerequisites
 
 - Node.js 18.x or higher
@@ -57,6 +74,9 @@ SUPABASE_SERVICE_ROLE_KEY=your-service-role-key
 
 # App
 NEXT_PUBLIC_SITE_URL=http://localhost:3000
+
+# Internal API base for axios. Empty = same-origin Next.js route handlers (/api).
+NEXT_PUBLIC_API_URL=
 
 # S3-compatible storage
 STORAGE_ENDPOINT=

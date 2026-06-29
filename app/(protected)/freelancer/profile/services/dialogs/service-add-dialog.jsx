@@ -1,10 +1,12 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
+import { z } from 'zod';
 import {
   addFreelancerService,
   getFreelancerServiceById,
@@ -34,90 +36,79 @@ import Gallery from './components/gallery';
 
 const TOTAL_STEPS = 6;
 
+// Plain-text length inside the rich-text description.
+const textLength = (html) => {
+  if (typeof document === 'undefined' || !html) return 0;
+  const el = document.createElement('div');
+  el.innerHTML = html;
+  return (el.textContent || '').trim().length;
+};
+
+const notEmpty = (v) => String(v ?? '').trim() !== '';
+
+// Validation schema (skills optional). Field names match the step components.
+const ServiceSchema = z
+  .object({
+    service: z.string().trim().min(1, 'Service name is required'),
+    category: z.string().min(1, 'Industry is required'),
+    specialty: z.string().min(1, 'Specialty is required'),
+    'delivery-Days': z.any().refine(notEmpty, 'Delivery days is required'),
+    'Project price': z.any().refine(notEmpty, 'Project price is required'),
+    images: z.array(z.any()).min(1, 'Upload at least one image'),
+    requirements: z
+      .array(z.any())
+      .refine((arr) => arr?.some((r) => r?.requirementsDetails?.trim()), {
+        message: 'Add at least one requirement',
+        path: [0, 'requirementsDetails'],
+      }),
+    description: z
+      .any()
+      .refine(
+        (html) => textLength(html) >= 10,
+        'Description must be at least 10 characters',
+      ),
+    legalConfirm: z
+      .boolean()
+      .refine(
+        (v) => v === true,
+        'Please confirm your content is original or properly licensed',
+      ),
+    agreeTerms: z
+      .boolean()
+      .refine(
+        (v) => v === true,
+        'You must agree to the Terms of Use, User Agreement, and Privacy Policy',
+      ),
+    privacyAck: z
+      .boolean()
+      .refine(
+        (v) => v === true,
+        'Please acknowledge the privacy notice to continue',
+      ),
+  })
+  .passthrough();
+
+// Fields validated when leaving each step.
+const STEP_FIELDS = {
+  1: ['service', 'category', 'specialty'],
+  2: ['delivery-Days', 'Project price'],
+  3: ['images'],
+  4: ['requirements'],
+  5: ['description'],
+  6: ['legalConfirm', 'agreeTerms', 'privacyAck'],
+};
+
 const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
 
   const isLastStep = step === TOTAL_STEPS;
 
-  // Plain-text length inside the rich-text description.
-  const textLength = (html) => {
-    if (typeof document === 'undefined' || !html) return 0;
-    const el = document.createElement('div');
-    el.innerHTML = html;
-    return (el.textContent || '').trim().length;
-  };
-
-  // Required-field gate per step. Sets inline errors and blocks advancing.
-  const validateStep = (current) => {
-    const v = form.getValues();
-    form.clearErrors();
-    const missing = [];
-    const req = (name, ok, message) => {
-      if (!ok) {
-        form.setError(name, { type: 'manual', message });
-        missing.push(name);
-      }
-    };
-
-    if (current === 1) {
-      req('service', !!v.service?.trim(), 'Service name is required');
-      req('category', !!v.category, 'Industry is required');
-      req('specialty', !!v.specialty, 'Specialty is required');
-      // skills are optional
-    } else if (current === 2) {
-      req(
-        'delivery-Days',
-        !!String(v['delivery-Days'] ?? '').trim(),
-        'Delivery days is required',
-      );
-      req(
-        'Project price',
-        !!String(v['Project price'] ?? '').trim(),
-        'Project price is required',
-      );
-    } else if (current === 3) {
-      req(
-        'images',
-        Array.isArray(v.images) && v.images.length > 0,
-        'Upload at least one image',
-      );
-    } else if (current === 4) {
-      req(
-        'requirements.0.requirementsDetails',
-        Array.isArray(v.requirements) &&
-          v.requirements.some((r) => r?.requirementsDetails?.trim()),
-        'Add at least one requirement',
-      );
-    } else if (current === 5) {
-      req(
-        'description',
-        textLength(v.description) >= 10,
-        'Description must be at least 10 characters',
-      );
-    } else if (current === 6) {
-      req(
-        'legalConfirm',
-        v.legalConfirm === true,
-        'Please confirm your content is original or properly licensed',
-      );
-      req(
-        'agreeTerms',
-        v.agreeTerms === true,
-        'You must agree to the Terms of Use, User Agreement, and Privacy Policy',
-      );
-      req(
-        'privacyAck',
-        v.privacyAck === true,
-        'Please acknowledge the privacy notice to continue',
-      );
-    }
-
-    return missing.length === 0;
-  };
-
-  const handleContinue = () => {
-    if (!validateStep(step)) return;
+  // Validate the current step's fields (zod). Errors render under each field and
+  // clear automatically on edit (reValidateMode: onChange).
+  const handleContinue = async () => {
+    const valid = await form.trigger(STEP_FIELDS[step]);
+    if (!valid) return;
     if (isLastStep) {
       form.handleSubmit(handleSubmit)();
       return;
@@ -130,7 +121,7 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   };
 
   const form = useForm({
-    // resolver: zodResolver(),
+    resolver: zodResolver(ServiceSchema),
     defaultValues: {
       service: '',
       category: '',
@@ -149,14 +140,6 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
     },
     mode: 'onSubmit',
   });
-
-  // Clear a field's required error as soon as the user edits it.
-  useEffect(() => {
-    const subscription = form.watch((_values, { name }) => {
-      if (name) form.clearErrors(name);
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   // Fetch the service when editing.
   const { data: serviceData } = useQuery({
