@@ -64,11 +64,7 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
       req('service', !!v.service?.trim(), 'Service name is required');
       req('category', !!v.category, 'Industry is required');
       req('specialty', !!v.specialty, 'Specialty is required');
-      req(
-        'skills',
-        Array.isArray(v.skills) && v.skills.length > 0,
-        'Select at least one skill',
-      );
+      // skills are optional
     } else if (current === 2) {
       req(
         'delivery-Days',

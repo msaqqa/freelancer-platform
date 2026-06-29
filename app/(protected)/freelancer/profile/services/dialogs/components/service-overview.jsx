@@ -27,10 +27,14 @@ export const ServiceOverview = () => {
   const { t: fs } = useTranslation('services');
   const form = useFormContext();
 
+  // Lookups rarely change — cache them so re-selecting a category is instant.
+  const LOOKUP_STALE = 5 * 60 * 1000;
+
   // get categoriesData data from api
   const { data: categoriesData, isLoading: categoriesLoading } = useQuery({
     queryKey: ['categories'],
     queryFn: getCategories,
+    staleTime: LOOKUP_STALE,
   });
   const categories = categoriesData?.data ?? [];
 
@@ -40,6 +44,7 @@ export const ServiceOverview = () => {
       queryKey: ['subcategories', categoryId],
       queryFn: () => getSubcategories(categoryId),
       enabled: !!categoryId,
+      staleTime: LOOKUP_STALE,
     },
   );
   const subcategories = subcategoriesData?.data ?? [];
@@ -48,6 +53,7 @@ export const ServiceOverview = () => {
     queryKey: ['skills', categoryId],
     queryFn: () => getSkills(Number(categoryId)),
     enabled: !!categoryId,
+    staleTime: LOOKUP_STALE,
   });
   const skills = skillsData?.data ?? [];
 
