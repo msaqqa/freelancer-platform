@@ -28,7 +28,7 @@ const CardWork = ({ id, image, title, project }) => {
   const extraSkills = skills.length - visibleSkills.length;
 
   return (
-    <Card className="border-0 shadow-sm shadow-black/8">
+    <Card className="border border-border shadow-sm hover:shadow-md transition-shadow">
       <div className="relative">
         <img src={imageSrc} className="w-full h-auto rounded-t-xl" alt="image" />
         <div className="absolute top-2 end-2">

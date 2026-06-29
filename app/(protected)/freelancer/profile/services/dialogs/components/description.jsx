@@ -49,12 +49,13 @@ export const Description = () => {
                   placeholder="Write a short summary..."
                 />
               </FormControl>
-              <div className="flex justify-end pt-1.5">
-                <span className="text-xs text-muted-foreground">
+              {/* Error + counter share one line on sm+, stack on mobile. */}
+              <div className="flex flex-col gap-1 pt-1.5 sm:flex-row sm:items-center">
+                <FormMessage className="mt-0" />
+                <span className="text-xs text-muted-foreground ms-auto">
                   Min. {MIN_CHARS}, max. {MAX_CHARS} chars — {count}/{MAX_CHARS}
                 </span>
               </div>
-              <FormMessage />
             </FormItem>
           );
         }}

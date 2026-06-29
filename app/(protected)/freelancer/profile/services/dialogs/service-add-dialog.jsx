@@ -21,6 +21,7 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { Spinner } from '@/components/ui/spinners';
 import {
   Description,
   PriceScope,
@@ -36,6 +37,14 @@ const TOTAL_STEPS = 6;
 const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
+
+  // Clear a field's required error as soon as the user edits it.
+  useEffect(() => {
+    const subscription = form.watch((_values, { name }) => {
+      if (name) form.clearErrors(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   const isLastStep = step === TOTAL_STEPS;
 
@@ -99,9 +108,21 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
         'Description must be at least 10 characters',
       );
     } else if (current === 6) {
-      req('legalConfirm', v.legalConfirm === true, 'Required');
-      req('agreeTerms', v.agreeTerms === true, 'Required');
-      req('privacyAck', v.privacyAck === true, 'Required');
+      req(
+        'legalConfirm',
+        v.legalConfirm === true,
+        'Please confirm your content is original or properly licensed',
+      );
+      req(
+        'agreeTerms',
+        v.agreeTerms === true,
+        'You must agree to the Terms of Use, User Agreement, and Privacy Policy',
+      );
+      req(
+        'privacyAck',
+        v.privacyAck === true,
+        'Please acknowledge the privacy notice to continue',
+      );
     }
 
     return missing.length === 0;
@@ -261,6 +282,9 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
             onClick={handleContinue}
             disabled={mutation.status === 'pending'}
           >
+            {mutation.status === 'pending' && (
+              <Spinner className="animate-spin" />
+            )}
             {isLastStep ? 'Submit for Review' : 'Continue'}
           </Button>
         </DialogFooter>

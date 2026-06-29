@@ -57,7 +57,7 @@ const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
           </Button>
           <Button
             variant="destructive"
-            onClick={() => mutation.mutate()}
+            onClick={() => mutation.mutate(service.id)}
             disabled={mutation.status === 'pending'}
           >
             {mutation.status === 'pending' && (
