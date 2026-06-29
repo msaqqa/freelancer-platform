@@ -225,22 +225,22 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
-              <div className={step === 1 ? '' : 'hidden'}>
+              <div className={step === 1 ? 'space-y-5' : 'hidden'}>
                 <ServiceOverview />
               </div>
-              <div className={step === 2 ? '' : 'hidden'}>
+              <div className={step === 2 ? 'space-y-5' : 'hidden'}>
                 <PriceScope />
               </div>
-              <div className={step === 3 ? '' : 'hidden'}>
+              <div className={step === 3 ? 'space-y-5' : 'hidden'}>
                 <Gallery />
               </div>
-              <div className={step === 4 ? '' : 'hidden'}>
+              <div className={step === 4 ? 'space-y-5' : 'hidden'}>
                 <Process />
               </div>
-              <div className={step === 5 ? '' : 'hidden'}>
+              <div className={step === 5 ? 'space-y-5' : 'hidden'}>
                 <Description />
               </div>
-              <div className={step === 6 ? '' : 'hidden'}>
+              <div className={step === 6 ? 'space-y-5' : 'hidden'}>
                 <Review />
               </div>
             </form>

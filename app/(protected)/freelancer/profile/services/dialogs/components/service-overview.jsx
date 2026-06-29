@@ -74,7 +74,7 @@ export const ServiceOverview = () => {
         control={form.control}
         name="service"
         render={({ field }) => (
-          <FormItem className="w-full mb-5">
+          <FormItem className="w-full">
             <FormLabel>{fs('name')}</FormLabel>
             <FormControl>
               <Input

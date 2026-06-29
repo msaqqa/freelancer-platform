@@ -23,7 +23,7 @@ const Gallery = () => {
       <FormField
         control={form.control}
         name="images"
-        render={(field) => (
+        render={({ field }) => (
           <FormItem>
             <FormLabel className="mb-2">Project Images</FormLabel>
             <FormDescription className="mb-2">
