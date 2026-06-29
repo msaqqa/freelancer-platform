@@ -153,6 +153,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
         ? { type: 'image', file: b.url }
         : { type: 'text', value: b.value },
     );
+    const skillIds = (portfolio.skills ?? []).map((s) => s.id);
 
     form.reset({
       projectFields: blocks.length
@@ -162,10 +163,10 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
             { type: 'image', file: '' },
           ],
       title: portfolio.title ?? '',
-      skills: portfolio.skills ?? [],
+      skills: skillIds,
       projectCover: portfolio.cover_url ?? null,
     });
-    setSelectedSkills(portfolio.skills ?? []);
+    setSelectedSkills(skillIds);
     if (portfolio.cover_url) setCoverImage(portfolio.cover_url);
   }, [form, open, portfolioId, portfolio?.id]);
 

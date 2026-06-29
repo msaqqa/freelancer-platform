@@ -25,8 +25,34 @@ const mapPortfolio = (p) => ({
   description: p.description,
   content_blocks: p.content_blocks ?? [],
   images: p.images ?? [],
+  skills: (p.portfolio_skills ?? []).map((r) => r.skill).filter(Boolean),
   created_at: p.created_at,
 });
+
+// Join used everywhere a portfolio is read, so `skills` is always populated.
+const portfolioSelect = '*, portfolio_skills(skill:skills(id, name, name_ar))';
+
+// Replace a portfolio's skill set with the given skill ids.
+const syncSkills = async (portfolioId, skills) => {
+  const ids = (Array.isArray(skills) ? skills : [])
+    .map(Number)
+    .filter(Boolean);
+
+  fail(
+    await supabase
+      .from('portfolio_skills')
+      .delete()
+      .eq('portfolio_id', portfolioId),
+  );
+
+  if (ids.length) {
+    fail(
+      await supabase
+        .from('portfolio_skills')
+        .insert(ids.map((skill_id) => ({ portfolio_id: portfolioId, skill_id }))),
+    );
+  }
+};
 
 // Upload any File blocks once (dedupe by File reference so the cover, which is
 // usually the first image File, isn't uploaded twice) and turn the form's
@@ -74,9 +100,14 @@ const processValues = async (values) => {
 export async function addFreelancerPortfolio(values) {
   const user = await requireUser();
   const row = await processValues(values);
-  fail(
-    await supabase.from('portfolios').insert({ profile_id: user.id, ...row }),
-  );
+  const { data, error } = await supabase
+    .from('portfolios')
+    .insert({ profile_id: user.id, ...row })
+    .select('id')
+    .single();
+  if (error) throw error;
+
+  await syncSkills(data.id, values.skills);
   return { message: 'Project added successfully' };
 }
 
@@ -91,6 +122,8 @@ export async function updateFreelancerPortfolio(portfolioId, values) {
       .eq('id', portfolioId)
       .eq('profile_id', user.id),
   );
+
+  await syncSkills(portfolioId, values.skills);
   return { message: 'Project updated successfully' };
 }
 
@@ -99,7 +132,7 @@ export async function getFreelancerPortfolios() {
   const user = await requireUser();
   const { data, error } = await supabase
     .from('portfolios')
-    .select('*')
+    .select(portfolioSelect)
     .eq('profile_id', user.id)
     .order('created_at', { ascending: false });
   if (error) throw error;
@@ -112,7 +145,7 @@ export async function getFreelancerPortfolioById(portfolioId) {
   if (!portfolioId) return { data: null };
   const { data, error } = await supabase
     .from('portfolios')
-    .select('*')
+    .select(portfolioSelect)
     .eq('id', portfolioId)
     .maybeSingle();
   if (error) throw error;

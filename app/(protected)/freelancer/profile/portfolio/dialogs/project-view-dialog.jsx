@@ -1,6 +1,7 @@
 'use client';
 
 import { formatDate } from '@/lib/helpers';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -13,6 +14,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 
 const ProjectViewDialog = ({ open, closeDialog, project }) => {
   const blocks = project?.content_blocks ?? [];
+  const skills = project?.skills ?? [];
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
@@ -50,6 +52,19 @@ const ProjectViewDialog = ({ open, closeDialog, project }) => {
               <span className="text-sm font-normal text-foreground">
                 Posted {formatDate(project.created_at)}
               </span>
+            </div>
+          )}
+
+          {skills.length > 0 && (
+            <div className="flex flex-col gap-2.5 mb-5">
+              <span className="text-base font-semibold text-mono">Skills</span>
+              <div className="flex flex-wrap gap-1.5">
+                {skills.map((skill) => (
+                  <Badge key={skill.id} variant="secondary">
+                    {skill.name}
+                  </Badge>
+                ))}
+              </div>
             </div>
           )}
         </ScrollArea>
