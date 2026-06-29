@@ -16,6 +16,7 @@ import {
   getFreelancerPortfolioById,
   updateFreelancerPortfolio,
 } from '@/services/freelancer/portfolio';
+import { getSkills } from '@/services/general';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Badge, BadgeButton } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -87,13 +88,15 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   const [step, setStep] = useState(1);
   const [coverImage, setCoverImage] = useState(null);
   const queryClient = useQueryClient();
-  const [selectedTags, setSelectedTags] = useState([]);
+  const [selectedSkills, setSelectedSkills] = useState([]);
   const projectCoverRef = useRef(null);
-  const tagsList = [
-    { id: 1, slug: 'test1' },
-    { id: 2, slug: 'test2' },
-    { id: 3, slug: 'test3' },
-  ];
+
+  // Skill options come from the `skills` table.
+  const { data: skillsData } = useQuery({
+    queryKey: ['skills'],
+    queryFn: () => getSkills(),
+  });
+  const skillsList = skillsData?.data ?? [];
 
   // Step 1: content blocks (mandatory first text + image, + optional extras).
   // Step 2: cover / title / tags.
@@ -134,7 +137,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
         { type: 'image', file: '' },
       ],
       title: '',
-      tags: [],
+      skills: [],
       projectCover: null,
     },
     mode: 'onSubmit',
@@ -159,9 +162,10 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
             { type: 'image', file: '' },
           ],
       title: portfolio.title ?? '',
-      tags: [],
+      skills: portfolio.skills ?? [],
       projectCover: portfolio.cover_url ?? null,
     });
+    setSelectedSkills(portfolio.skills ?? []);
     if (portfolio.cover_url) setCoverImage(portfolio.cover_url);
   }, [form, open, portfolioId, portfolio?.id]);
 
@@ -212,20 +216,28 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
       );
 
       queryClient.invalidateQueries({ queryKey: ['user-projects'] }); // Refetch projects list
+      if (portfolioId) {
+        // Drop the stale edit cache so reopening shows the saved values.
+        queryClient.invalidateQueries({
+          queryKey: ['portfolioId', portfolioId],
+        });
+      }
       setStep(1);
       setCoverImage(null);
-      setSelectedTags([]);
+      setSelectedSkills([]);
       form.reset();
       closeDialog();
     },
   });
 
-  const toggletagselection = (permissionId) => {
-    setSelectedTags((prev) =>
-      prev.includes(permissionId)
-        ? prev.filter((id) => id !== permissionId)
-        : [...prev, permissionId],
-    );
+  const toggleSkillSelection = (skillId) => {
+    setSelectedSkills((prev) => {
+      const next = prev.includes(skillId)
+        ? prev.filter((id) => id !== skillId)
+        : [...prev, skillId];
+      form.setValue('skills', next);
+      return next;
+    });
   };
 
   const handleSetProjectCover = async (file) => {
@@ -275,7 +287,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                         <FormField
                           control={form.control}
                           name={`projectFields[${index}].value`}
-                          render={({ field }) => (
+                          render={({ field, fieldState }) => (
                             <FormItem>
                               <FormControl>
                                 <InputWrapper>
@@ -284,6 +296,11 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                     value={field.value}
                                     onChange={(e) => {
                                       field.onChange(e);
+                                      if (fieldState.error) {
+                                        form.trigger(
+                                          `projectFields.${index}.value`,
+                                        );
+                                      }
                                     }}
                                   />
                                   {index !== 0 && (
@@ -307,11 +324,12 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                           <FormField
                             control={form.control}
                             name={`projectFields[${index}].file`}
-                            render={({ field }) => (
+                            render={({ field, fieldState }) => (
                               <FormItem>
                                 <FormControl>
                                   <MediaButton
                                     title="Drop Your Files Here"
+                                    invalid={!!fieldState.error}
                                     description={
                                       index === 1
                                         ? 'Minimum 1600px width recommended. Max 10MB each'
@@ -330,6 +348,11 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                     onChange={(val) => {
                                       field.onChange(val);
                                       index === 1 && handleSetProjectCover(val);
+                                      if (fieldState.error) {
+                                        form.trigger(
+                                          `projectFields.${index}.file`,
+                                        );
+                                      }
                                     }}
                                   />
                                 </FormControl>
@@ -477,22 +500,22 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                     />
                     <FormField
                       control={form.control}
-                      name="tags"
+                      name="skills"
                       render={() => (
                         <FormItem className="w-full">
-                          <FormLabel>Tags</FormLabel>
+                          <FormLabel>Skills</FormLabel>
                           <div className="flex flex-wrap gap-1.5 text-2sm text-muted-foreground border border-input rounded-md px-3 py-3 min-h-[100px]">
-                            {selectedTags.length > 0 ? (
-                              selectedTags.map((permissionId) => {
-                                const permission = tagsList?.find(
-                                  (p) => p.id === permissionId,
+                            {selectedSkills.length > 0 ? (
+                              selectedSkills.map((skillId) => {
+                                const skill = skillsList?.find(
+                                  (s) => s.id === skillId,
                                 );
                                 return (
-                                  <Badge key={permissionId} variant="secondary">
-                                    {permission?.slug}
+                                  <Badge key={skillId} variant="secondary">
+                                    {skill?.name}
                                     <BadgeButton
                                       onClick={() =>
-                                        toggletagselection(permissionId)
+                                        toggleSkillSelection(skillId)
                                       }
                                     >
                                       <X />
@@ -511,7 +534,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                               <Popover>
                                 <PopoverTrigger asChild>
                                   <Button variant="outline" role="combobox">
-                                    Add tags
+                                    Add skills
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent
@@ -520,29 +543,27 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                   side="bottom"
                                 >
                                   <Command>
-                                    <CommandInput placeholder="Search tags..." />
+                                    <CommandInput placeholder="Search skills..." />
                                     <CommandList>
                                       <CommandEmpty>
-                                        No tags found.
+                                        No skills found.
                                       </CommandEmpty>
                                       <CommandGroup>
                                         <ScrollArea className="h-[200px]">
-                                          {tagsList?.map((permission) => (
+                                          {skillsList?.map((skill) => (
                                             <CommandItem
-                                              key={permission.id}
+                                              key={skill.id}
                                               onSelect={() =>
-                                                toggletagselection(
-                                                  permission.id,
-                                                )
+                                                toggleSkillSelection(skill.id)
                                               }
                                             >
                                               <span className="grow">
-                                                {permission.slug}
+                                                {skill.name}
                                               </span>
                                               <CommandCheck
                                                 className={cn(
-                                                  selectedTags.includes(
-                                                    permission.id,
+                                                  selectedSkills.includes(
+                                                    skill.id,
                                                   )
                                                     ? 'opacity-100'
                                                     : 'opacity-0',

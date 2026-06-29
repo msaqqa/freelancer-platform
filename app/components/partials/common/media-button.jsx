@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Trash2 } from 'lucide-react';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { ImageInput } from '@/components/image-input';
 
@@ -19,6 +20,7 @@ export function MediaButton({
   instructions,
   variant,
   value,
+  invalid,
   onChange,
 }) {
   const [media, setMedia] = useState([]);
@@ -43,7 +45,12 @@ export function MediaButton({
       {({ fileList, onImageUpload, onImageRemove }) => (
         <div className="bg-background">
           {fileList.length === 0 ? (
-            <div className="w-full h-[300px] flex flex-col justify-center items-center bg-muted text-foreground border-2 border-dashed border-input rounded-xl py-12">
+            <div
+              className={cn(
+                'w-full h-[300px] flex flex-col justify-center items-center bg-muted text-foreground border-2 border-dashed rounded-xl py-12',
+                invalid ? 'border-destructive' : 'border-input',
+              )}
+            >
               <div className="w-full flex flex-col gap-6">
                 <div className="flex flex-col gap-5 text-center">
                   {title && (
