@@ -80,7 +80,7 @@ const ProjectFieldsSchema = z.object({
     )
     .min(2),
   title: z.string().optional(),
-  tags: z.any().optional(),
+  skills: z.any().optional(),
   projectCover: z.any().optional(),
 });
 
