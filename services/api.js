@@ -47,10 +47,6 @@ const createAxiosInstance = (baseURL) => {
   return instance;
 };
 
-export const apiTaqat = createAxiosInstance(
-  process.env.NEXT_PUBLIC_TAQAT_API_URL,
-);
-
 // Internal API (Next.js Route Handlers backed by Supabase). Same-origin by
 // default, so the browser forwards the Supabase auth cookies automatically.
 // Swap NEXT_PUBLIC_API_URL to point at an external backend later — URL only.

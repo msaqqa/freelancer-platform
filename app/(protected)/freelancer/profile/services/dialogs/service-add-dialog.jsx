@@ -39,7 +39,76 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
 
   const isLastStep = step === TOTAL_STEPS;
 
+  // Plain-text length inside the rich-text description.
+  const textLength = (html) => {
+    if (typeof document === 'undefined' || !html) return 0;
+    const el = document.createElement('div');
+    el.innerHTML = html;
+    return (el.textContent || '').trim().length;
+  };
+
+  // Required-field gate per step. Sets inline errors and blocks advancing.
+  const validateStep = (current) => {
+    const v = form.getValues();
+    form.clearErrors();
+    const missing = [];
+    const req = (name, ok, message) => {
+      if (!ok) {
+        form.setError(name, { type: 'manual', message });
+        missing.push(name);
+      }
+    };
+
+    if (current === 1) {
+      req('service', !!v.service?.trim(), 'Service name is required');
+      req('category', !!v.category, 'Industry is required');
+      req('specialty', !!v.specialty, 'Specialty is required');
+      req(
+        'skills',
+        Array.isArray(v.skills) && v.skills.length > 0,
+        'Select at least one skill',
+      );
+    } else if (current === 2) {
+      req(
+        'delivery-Days',
+        !!String(v['delivery-Days'] ?? '').trim(),
+        'Delivery days is required',
+      );
+      req(
+        'Project price',
+        !!String(v['Project price'] ?? '').trim(),
+        'Project price is required',
+      );
+    } else if (current === 3) {
+      req(
+        'images',
+        Array.isArray(v.images) && v.images.length > 0,
+        'Upload at least one image',
+      );
+    } else if (current === 4) {
+      req(
+        'requirements.0.requirementsDetails',
+        Array.isArray(v.requirements) &&
+          v.requirements.some((r) => r?.requirementsDetails?.trim()),
+        'Add at least one requirement',
+      );
+    } else if (current === 5) {
+      req(
+        'description',
+        textLength(v.description) >= 10,
+        'Description must be at least 10 characters',
+      );
+    } else if (current === 6) {
+      req('legalConfirm', v.legalConfirm === true, 'Required');
+      req('agreeTerms', v.agreeTerms === true, 'Required');
+      req('privacyAck', v.privacyAck === true, 'Required');
+    }
+
+    return missing.length === 0;
+  };
+
   const handleContinue = () => {
+    if (!validateStep(step)) return;
     if (isLastStep) {
       form.handleSubmit(handleSubmit)();
       return;
@@ -54,8 +123,16 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   const form = useForm({
     // resolver: zodResolver(),
     defaultValues: {
+      service: '',
+      category: '',
+      specialty: '',
+      skills: [],
+      'delivery-Days': '',
+      'Project price': '',
       attributes: [],
       addOns: [],
+      images: [],
+      requirements: [],
       description: '',
       legalConfirm: false,
       agreeTerms: false,
@@ -142,16 +219,30 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
         <Steps currentStep={step - 1} />
         <ScrollArea className="grow pe-3 -me-3">
           <Form {...form}>
+            {/* All steps stay mounted (hidden when inactive) so every field
+                keeps its value across steps and is captured on submit. */}
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
-              {step === 1 && <ServiceOverview />}
-              {step === 2 && <PriceScope />}
-              {step === 3 && <Gallery />}
-              {step === 4 && <Process />}
-              {step === 5 && <Description />}
-              {step === 6 && <Review />}
+              <div className={step === 1 ? '' : 'hidden'}>
+                <ServiceOverview />
+              </div>
+              <div className={step === 2 ? '' : 'hidden'}>
+                <PriceScope />
+              </div>
+              <div className={step === 3 ? '' : 'hidden'}>
+                <Gallery />
+              </div>
+              <div className={step === 4 ? '' : 'hidden'}>
+                <Process />
+              </div>
+              <div className={step === 5 ? '' : 'hidden'}>
+                <Description />
+              </div>
+              <div className={step === 6 ? '' : 'hidden'}>
+                <Review />
+              </div>
             </form>
           </Form>
         </ScrollArea>

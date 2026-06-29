@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import { getCategories, getSkills } from '@/services/general';
+import { getCategories, getSkills, getSubcategories } from '@/services/general';
 import {
   FormControl,
   FormField,
@@ -58,7 +58,9 @@ export const ServiceOverview = () => {
 
   const handleCategoryChange = (val) => {
     setCategoryId(val);
-    form.setValue('subcategory', '');
+    // Reset dependent fields (specialty + skills are category-scoped).
+    form.setValue('specialty', '');
+    form.setValue('skills', []);
     form.trigger('category');
   };
 
