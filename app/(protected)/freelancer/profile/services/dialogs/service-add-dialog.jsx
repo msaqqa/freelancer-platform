@@ -38,14 +38,6 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
 
-  // Clear a field's required error as soon as the user edits it.
-  useEffect(() => {
-    const subscription = form.watch((_values, { name }) => {
-      if (name) form.clearErrors(name);
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
-
   const isLastStep = step === TOTAL_STEPS;
 
   // Plain-text length inside the rich-text description.
@@ -161,6 +153,14 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
     },
     mode: 'onSubmit',
   });
+
+  // Clear a field's required error as soon as the user edits it.
+  useEffect(() => {
+    const subscription = form.watch((_values, { name }) => {
+      if (name) form.clearErrors(name);
+    });
+    return () => subscription.unsubscribe();
+  }, [form]);
 
   // Fetch the service when editing.
   const { data: serviceData } = useQuery({
