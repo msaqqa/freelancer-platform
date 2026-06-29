@@ -85,7 +85,7 @@ const Process = () => {
               )}
             />
             {/* Checkboxes */}
-            <div className="flex flex-col gap-2">
+            <div className="flex flex-col md:flex-row gap-2.5">
               <FormField
                 control={form.control}
                 name={`requirements.${index}.allowAttachments`}
@@ -100,7 +100,7 @@ const Process = () => {
                       htmlFor={`attachments-${index}`}
                       className="text-sm text-muted-foreground"
                     >
-                      Allow client to upload attachments (optional)
+                      Free Text
                     </FormLabel>
                   </div>
                 )}
@@ -119,7 +119,7 @@ const Process = () => {
                       htmlFor={`require-${index}`}
                       className="text-sm text-muted-foreground"
                     >
-                      Client needs to answer before I can start working
+                      File Upload
                     </FormLabel>
                   </div>
                 )}

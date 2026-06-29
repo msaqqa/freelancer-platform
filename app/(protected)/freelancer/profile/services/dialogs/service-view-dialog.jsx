@@ -1,6 +1,6 @@
 'use client';
 
-import { toAbsoluteUrl } from '@/lib/helpers';
+import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -10,29 +10,10 @@ import {
   DialogTitle,
 } from '@/components/ui/dialog';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Tags } from '../components';
 
-const ServiceViewDialog = ({ open, closeDialog }) => {
-  const service = {
-    title: 'E-commerce Landing Page - Cartique',
-    fields: [
-      { type: 'image', value: '/media/images/600x400/3.jpg' },
-      { type: 'text', value: 'Available for the new service' },
-      { type: 'image', value: '/media/images/600x400/25.jpg' },
-      { type: 'text', value: 'Available for the new service' },
-    ],
-    details: 'Posted Jun 10, 2025',
-    tags: [
-      { label: 'Web Design' },
-      { label: 'Code Review' },
-      { label: 'Figma' },
-      { label: 'Product Development' },
-      { label: 'Webflow' },
-      { label: 'AI' },
-      { label: 'noCode' },
-      { label: 'Management' },
-    ],
-  };
+const ServiceViewDialog = ({ open, closeDialog, service }) => {
+  const images = service?.images ?? [];
+  const skills = service?.skills ?? [];
 
   return (
     <Dialog open={open} onOpenChange={closeDialog}>
@@ -47,31 +28,65 @@ const ServiceViewDialog = ({ open, closeDialog }) => {
           <h2 className="text-lg text-foreground font-semibold mb-5">
             {service?.title}
           </h2>
-          {service?.fields.map((field) => (
-            <div key={field.id} className="relative mb-5">
-              {field.type === 'text' ? (
-                <p className="text-sm text-foreground mb-5">{field?.value}</p>
-              ) : (
-                <div className="bg-muted rounded-xl w-full h-[300px] overflow-hidden mb-5">
-                  <img
-                    src={toAbsoluteUrl(field?.value)}
-                    alt="image"
-                    className="w-full h-full object-cover rounded-lg"
-                  />
-                </div>
-              )}
+
+          {images.map((url, index) => (
+            <div
+              key={index}
+              className="bg-muted rounded-xl w-full h-[300px] overflow-hidden mb-5"
+            >
+              <img
+                src={url}
+                alt="image"
+                className="w-full h-full object-cover rounded-lg"
+              />
             </div>
           ))}
-          <div className="flex flex-col gap-2.5 mb-5">
-            <span className="text-base font-semibold text-mono">Details</span>
-            <span className="text-sm font-normal text-foreground">
-              {service?.details}
-            </span>
+
+          {service?.description && (
+            <div className="flex flex-col gap-2.5 mb-5">
+              <span className="text-base font-semibold text-mono">
+                Description
+              </span>
+              <div
+                className="text-sm text-foreground prose-sm max-w-none"
+                dangerouslySetInnerHTML={{ __html: service.description }}
+              />
+            </div>
+          )}
+
+          <div className="flex flex-wrap gap-6 mb-5">
+            {service?.price != null && (
+              <div className="flex flex-col gap-1">
+                <span className="text-base font-semibold text-mono">Price</span>
+                <span className="text-sm text-foreground">
+                  ${service.price}
+                </span>
+              </div>
+            )}
+            {service?.delivery_days != null && (
+              <div className="flex flex-col gap-1">
+                <span className="text-base font-semibold text-mono">
+                  Delivery
+                </span>
+                <span className="text-sm text-foreground">
+                  {service.delivery_days} days
+                </span>
+              </div>
+            )}
           </div>
-          <div className="flex flex-col gap-2.5">
-            <span className="text-base font-semibold text-mono">Tags</span>
-            <Tags tags={service?.tags} />
-          </div>
+
+          {skills.length > 0 && (
+            <div className="flex flex-col gap-2.5">
+              <span className="text-base font-semibold text-mono">Skills</span>
+              <div className="flex flex-wrap gap-1.5">
+                {skills.map((skill) => (
+                  <Badge key={skill.id} variant="secondary">
+                    {skill.name}
+                  </Badge>
+                ))}
+              </div>
+            </div>
+          )}
         </ScrollArea>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>

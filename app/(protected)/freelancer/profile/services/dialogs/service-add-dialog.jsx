@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
@@ -22,77 +21,91 @@ import {
 } from '@/components/ui/dialog';
 import { Form } from '@/components/ui/form';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { Spinner } from '@/components/ui/spinners';
-import { PriceScope, Process, ProjectOverview, Steps } from './components';
+import {
+  Description,
+  PriceScope,
+  Process,
+  Review,
+  ServiceOverview,
+  Steps,
+} from './components';
 import Gallery from './components/gallery';
+
+const TOTAL_STEPS = 6;
 
 const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
 
-  const handleNextStep = () => {
-    if (step < 6) {
-      setStep(step + 1);
+  const isLastStep = step === TOTAL_STEPS;
+
+  const handleContinue = () => {
+    if (isLastStep) {
+      form.handleSubmit(handleSubmit)();
+      return;
     }
+    setStep(step + 1);
   };
 
   const handleBackStep = () => {
     setStep(step - 1);
   };
 
-  // get freelancer service from api
-  // const { data: serviceData, isLoading: serviceLoading } = useQuery({
-  //   queryKey: ['serviceId', serviceId],
-  //   queryFn: () => getFreelancerServiceById(serviceId),
-  // });
-  // const portfolio = serviceData?.data ?? {};
-
-  // Form initialization with React Hook Form
   const form = useForm({
     // resolver: zodResolver(),
     defaultValues: {
       attributes: [],
       addOns: [],
+      description: '',
+      legalConfirm: false,
+      agreeTerms: false,
+      privacyAck: false,
     },
     mode: 'onSubmit',
   });
 
-  // Reset form values when dialog is opened
-  // useEffect(() => {
-  //   if (open) {
-  //     form.reset({
-  //       title: portfolio?.title,
-  //       projectFields: portfolio?.content_blocks,
-  //       tags: portfolio?.tags,
-  //       projectCover: portfolio?.main_image,
-  //     });
-  //   }
-  // }, [form, open, portfolio]);
+  // Fetch the service when editing.
+  const { data: serviceData } = useQuery({
+    queryKey: ['serviceId', serviceId],
+    queryFn: () => getFreelancerServiceById(serviceId),
+    enabled: !!serviceId && open,
+  });
+  const service = serviceData?.data ?? null;
+
+  // Prefill the form in edit mode (reverse of the service-layer mapping).
+  useEffect(() => {
+    if (!open || !serviceId || !service?.id) return;
+
+    form.reset({
+      service: service.title ?? '',
+      description: service.description ?? '',
+      category: service.category_id ? String(service.category_id) : '',
+      specialty: service.subcategory_id ? String(service.subcategory_id) : '',
+      skills: service.skills ?? [],
+      'Project price': service.price ?? '',
+      'delivery-Days': service.delivery_days ?? '',
+      revisions: service.pricing?.revisions ?? '',
+      addOns: service.pricing?.addOns ?? [],
+      customAddOns: service.pricing?.customAddOns ?? [],
+      requirements: service.requirements ?? [],
+      images: service.images ?? [],
+      legalConfirm: false,
+      agreeTerms: false,
+      privacyAck: false,
+    });
+  }, [form, open, serviceId, service?.id]);
 
   const handleSubmit = (values) => {
-    // const updateValues = {};
-    console.log('updateValues', values);
     mutation.mutate(values);
   };
 
-  // Define the mutation for deleting the project
+  // Create / update the service. The service layer uploads gallery images and
+  // posts the payload to the API (Supabase-backed route handlers).
   const mutation = useMutation({
-    mutationFn: async (values) => {
-      const formData = new FormData();
-      Object.keys(values).forEach((key) => {
-        if (key === 'projectFields' && Array.isArray(values.projectFields)) {
-          formData.append('content_blocks', values.projectFields);
-        } else if (key !== 'projectFields') {
-          formData.append(key, values[key]);
-        }
-      });
-
-      let response;
+    mutationFn: async (values) =>
       serviceId
-        ? (response = await updateFreelancerService(serviceId, formData))
-        : (response = await addFreelancerService(formData));
-      return response;
-    },
+        ? await updateFreelancerService(serviceId, values)
+        : await addFreelancerService(values),
     onSuccess: (data) => {
       toast.custom(
         () => (
@@ -103,13 +116,17 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
             <AlertTitle>{data.message}</AlertTitle>
           </Alert>
         ),
-
         {
           position: 'top-center',
         },
       );
 
-      queryClient.invalidateQueries({ queryKey: ['user-projects'] }); // Refetch projects list
+      queryClient.invalidateQueries({ queryKey: ['freelancer-services'] });
+      if (serviceId) {
+        queryClient.invalidateQueries({ queryKey: ['serviceId', serviceId] });
+      }
+      setStep(1);
+      form.reset();
       closeDialog();
     },
   });
@@ -122,30 +139,19 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
             {serviceId ? 'Edit Service' : 'Add Service'}
           </DialogTitle>
         </DialogHeader>
-        <Steps currentStep={0} />
+        <Steps currentStep={step - 1} />
         <ScrollArea className="grow pe-3 -me-3">
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleSubmit)}
               className="space-y-6"
             >
-              {step === 1 && <ProjectOverview />}
-              {/* Add button */}
+              {step === 1 && <ServiceOverview />}
               {step === 2 && <PriceScope />}
               {step === 3 && <Gallery />}
               {step === 4 && <Process />}
-
-              {/* <div className="flex justify-end">
-                <Button
-                  disabled={mutation.status === 'pending'}
-                  className="text-end"
-                >
-                  {mutation.status === 'pending' && (
-                    <Spinner className="animate-spin" />
-                  )}
-                  Continue
-                </Button>
-              </div> */}
+              {step === 5 && <Description />}
+              {step === 6 && <Review />}
             </form>
           </Form>
         </ScrollArea>
@@ -159,8 +165,12 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
               Back
             </Button>
           )}
-          <Button type="submit" onClick={handleNextStep}>
-            Continue
+          <Button
+            type="button"
+            onClick={handleContinue}
+            disabled={mutation.status === 'pending'}
+          >
+            {isLastStep ? 'Submit for Review' : 'Continue'}
           </Button>
         </DialogFooter>
       </DialogContent>

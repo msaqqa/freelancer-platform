@@ -21,7 +21,7 @@ const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
 
   // Define the mutation for deleting the service
   const mutation = useMutation({
-    mutationFn: deleteFreelancerService,
+    mutationFn: () => deleteFreelancerService(service?.id),
     onSuccess: (data) => {
       toast.custom(
         () => (

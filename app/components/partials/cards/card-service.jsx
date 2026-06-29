@@ -11,36 +11,23 @@ import ServiceDeleteDialog from '@/app/(protected)/freelancer/profile/services/d
 import ServiceViewDialog from '@/app/(protected)/freelancer/profile/services/dialogs/service-view-dialog';
 import { DropdownMenu8 } from '../dropdown-menu/dropdown-menu-8';
 
-const CardService = ({ image, title }) => {
+const CardService = ({ id, image, title, service }) => {
   const [openViewDialog, setOpenViewDialog] = useState(false);
   const [openEditDialog, setOpenEditDialog] = useState(false);
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
-  const project = {
-    title: 'E-commerce Landing Page - Cartique',
-    fields: [
-      { type: 'image', value: '/media/images/600x400/3.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-      { type: 'image', value: '/media/images/600x400/25.jpg' },
-      { type: 'text', value: 'Available for the new project' },
-    ],
-    details: 'Posted Jun 10, 2025',
-    tags: [
-      { label: 'Web Design' },
-      { label: 'Code Review' },
-      { label: 'Figma' },
-      { label: 'Product Development' },
-      { label: 'Webflow' },
-      { label: 'AI' },
-      { label: 'noCode' },
-      { label: 'Management' },
-    ],
-  };
+
+  // `image` may be a full URL (Supabase) or a legacy filename.
+  const imageSrc =
+    typeof image === 'string' && /^(https?:|\/)/.test(image)
+      ? image
+      : toAbsoluteUrl(`/media/images/600x400/${image || '8.jpg'}`);
+
   return (
     <Card className="border-0 shadow-sm shadow-black/8">
       <div className="relative">
         <img
-          src={toAbsoluteUrl(`/media/images/600x400/${image}`)}
-          className="w-full h-auto rounded-t-xl"
+          src={imageSrc}
+          className="w-full h-48 object-cover rounded-t-xl"
           alt="image"
         />
         <div className="absolute top-2 end-2">
@@ -97,15 +84,17 @@ const CardService = ({ image, title }) => {
       <ServiceViewDialog
         open={openViewDialog}
         closeDialog={() => setOpenViewDialog(false)}
+        service={service}
       />
       <ServiceAddDialog
         open={openEditDialog}
         closeDialog={() => setOpenEditDialog(false)}
-        project={project}
+        serviceId={id}
       />
       <ServiceDeleteDialog
         open={openDeleteDialog}
         closeDialog={() => setOpenDeleteDialog(false)}
+        service={{ id }}
       />
     </Card>
   );

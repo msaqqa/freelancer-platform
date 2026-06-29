@@ -1,11 +1,10 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useFormContext } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { getCategories, getSkills } from '@/services/general';
-import { Checkbox } from '@/components/ui/checkbox';
 import {
   FormControl,
   FormField,
@@ -23,11 +22,9 @@ import {
 } from '@/components/ui/select';
 import MultiSelect from '@/components/common/multi-select';
 
-export const ProjectOverview = () => {
+export const ServiceOverview = () => {
   const [categoryId, setCategoryId] = useState(null);
   const { t: fs } = useTranslation('services');
-  const { t: tv } = useTranslation('validation');
-  // const fs = (key) => t(`services.${key}`);
   const form = useFormContext();
 
   // get categoriesData data from api
@@ -65,43 +62,21 @@ export const ProjectOverview = () => {
     form.trigger('category');
   };
 
-  const { fields } = useFieldArray({
-    name: 'attributes',
-  });
-
-  const dynamicAttributes = [
-    { id: 1, name: 'test-1' },
-    { id: 2, name: 'test-2' },
-    { id: 3, name: 'test-3' },
-  ];
-
-  useEffect(() => {
-    form.setValue(
-      'attributes',
-      dynamicAttributes.map((attr) => ({
-        id: attr.id,
-        value: false,
-      })),
-    );
-  }, []);
-
-  const attributes = form.watch('attributes');
-
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Project overview
+        Service Overview
       </p>
-      {/* Title Field */}
+      {/* Name Field */}
       <FormField
         control={form.control}
-        name="title"
+        name="service"
         render={({ field }) => (
           <FormItem className="w-full mb-5">
-            <FormLabel>{fs('title')}</FormLabel>
+            <FormLabel>{fs('name')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Project name or short description"
+                placeholder="Service name or short description"
                 value={field.value}
                 onChange={(e) => {
                   field.onChange(e);
@@ -151,10 +126,10 @@ export const ProjectOverview = () => {
           </FormItem>
         )}
       />
-      {/* Subcategory Field */}
+      {/* Specialty Field */}
       <FormField
         control={form.control}
-        name="subcategory"
+        name="specialty"
         render={({ field }) => (
           <FormItem>
             <FormLabel>{fs('specialty')}</FormLabel>
@@ -192,48 +167,13 @@ export const ProjectOverview = () => {
           </FormItem>
         )}
       />
-
-      {/* Service Attributes Field */}
-      <div className="flex flex-col gap-2.5">
-        <FormLabel className="mb-2">Attributes</FormLabel>
-        <div className="flex items-center flex-wrap space-x-3">
-          {fields.map((field, index) => (
-            <div key={field.id} className="flex items-center space-x-2">
-              <FormField
-                control={form.control}
-                name={`attributes.${index}.value`}
-                render={({ field }) => (
-                  <>
-                    <Checkbox
-                      id={`attribute-${index}`}
-                      checked={field.value}
-                      onCheckedChange={(checked) => field.onChange(!!checked)}
-                    />
-                    <FormLabel
-                      htmlFor={`attribute-${index}`}
-                      className="text-sm leading-none text-foreground"
-                    >
-                      {
-                        dynamicAttributes.find(
-                          (a) => a.id === attributes[index]?.id,
-                        )?.name
-                      }
-                    </FormLabel>
-                  </>
-                )}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tags Field */}
+      {/* Skills Field */}
       <FormField
         control={form.control}
-        name="tags"
+        name="skills"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{fs('tags')}</FormLabel>
+            <FormLabel>{fs('skills')}</FormLabel>
             <div className="flex flex-col flex-grow">
               <FormControl>
                 <MultiSelect
@@ -242,7 +182,7 @@ export const ProjectOverview = () => {
                   onChange={field.onChange}
                   getOptionLabel={(e) => e.name}
                   getOptionValue={(e) => e.id}
-                  placeholder={fs('tagsHolder')}
+                  placeholder={fs('skillsHolder')}
                   className=" min-h-[100px]"
                 />
               </FormControl>
