@@ -1,0 +1,44 @@
+{
+    "content": {
+        "title": "الخبرة العملية",
+        "addBtn": "إضافة خبرة",
+        "emptyTitle": "لا توجد خبرة عملية بعد",
+        "emptyDesc": "أضف خبرتك العملية لتُظهر للعملاء خلفيتك المهنية."
+    },
+    "dialog": {
+        "addTitle": "إضافة خبرة",
+        "editTitle": "تعديل الخبرة",
+        "titleLabel": "المسمى الوظيفي",
+        "titleHolder": "مثال: مطور React أول",
+        "companyLabel": "الشركة",
+        "companyHolder": "مثال: Google",
+        "locationLabel": "الموقع",
+        "locationHolder": "مثال: غزة، فلسطين",
+        "typeLabel": "نوع العمل",
+        "typeHolder": "اختر نوع العمل",
+        "startDateLabel": "تاريخ البدء",
+        "endDateLabel": "تاريخ الانتهاء",
+        "month": "الشهر",
+        "year": "السنة",
+        "currentlyWorking": "أعمل هنا حاليًا",
+        "descriptionLabel": "الوصف",
+        "descriptionHolder": "صِف دورك وإنجازاتك",
+        "deleteBtn": "حذف الخبرة"
+    },
+    "types": {
+        "on-site": "من المقر",
+        "remote": "عن بُعد",
+        "hybrid": "هجين"
+    },
+    "delete": {
+        "deleteTitle": "تأكيد الحذف",
+        "deleteDesc": "هل أنت متأكد أنك تريد حذف هذه الخبرة؟",
+        "deleteBtn": "حذف"
+    },
+    "present": "حتى الآن",
+    "cancelBtn": "إلغاء",
+    "saveBtn": "حفظ",
+    "edit": "تعديل",
+    "add": "إضافة",
+    "loading": "جار التحميل..."
+}

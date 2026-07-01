@@ -9,6 +9,7 @@
   "maxImages": "الحد الأقصى {{imagesLength}} صورة مسموح بها",
   "invalidURL": "رابط غير صالح",
   "titleRequired": "العنوان مطلوب",
+  "companyRequired": "الشركة مطلوبة",
   "textRequired": "النص مطلوب",
   "projectImageRequired": "الصورة مطلوبة",
   "linkRequired": "الرابط مطلوب",

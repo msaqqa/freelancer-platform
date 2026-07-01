@@ -9,6 +9,7 @@
     "maxImages": "Maximum {{imagesLength}} images allowed",
     "invalidURL": "Invalid URL",
     "titleRequired": "Title is required",
+    "companyRequired": "Company is required",
     "textRequired": "Text is required",
     "projectImageRequired": "Image is required",
     "linkRequired": "Link is required",

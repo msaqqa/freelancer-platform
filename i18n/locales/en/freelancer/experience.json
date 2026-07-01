@@ -1,0 +1,44 @@
+{
+    "content": {
+        "title": "Work Experience",
+        "addBtn": "Add Experience",
+        "emptyTitle": "No work experience yet",
+        "emptyDesc": "Add your work experience to show clients your professional background."
+    },
+    "dialog": {
+        "addTitle": "Add Experience",
+        "editTitle": "Edit Experience",
+        "titleLabel": "Job Title",
+        "titleHolder": "e.g. Senior React Developer",
+        "companyLabel": "Company",
+        "companyHolder": "e.g. Google",
+        "locationLabel": "Location",
+        "locationHolder": "e.g. Gaza, Palestine",
+        "typeLabel": "Employment Type",
+        "typeHolder": "Select employment type",
+        "startDateLabel": "Start Date",
+        "endDateLabel": "End Date",
+        "month": "Month",
+        "year": "Year",
+        "currentlyWorking": "I currently work here",
+        "descriptionLabel": "Description",
+        "descriptionHolder": "Describe your role and achievements",
+        "deleteBtn": "Delete Experience"
+    },
+    "types": {
+        "on-site": "On-site",
+        "remote": "Remote",
+        "hybrid": "Hybrid"
+    },
+    "delete": {
+        "deleteTitle": "Confirm Delete",
+        "deleteDesc": "Are you sure you want to delete this experience ?",
+        "deleteBtn": "Delete"
+    },
+    "present": "Present",
+    "cancelBtn": "Cancel",
+    "saveBtn": "Save",
+    "edit": "Edit",
+    "add": "Add",
+    "loading": "Loading..."
+}
