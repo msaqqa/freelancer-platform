@@ -3,19 +3,8 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { SearchDialog } from '@/partials/dialogs/search/search-dialog';
-import { AppsDropdownMenu } from '@/partials/topbar/apps-dropdown-menu';
-import { ChatSheet } from '@/partials/topbar/chat-sheet';
-import { NotificationsSheet } from '@/partials/topbar/notifications-sheet';
 import { UserDropdownMenu } from '@/partials/topbar/user-dropdown-menu';
-import {
-  Bell,
-  LayoutGrid,
-  Menu,
-  MessageCircleMore,
-  Search,
-  SquareChevronRight,
-} from 'lucide-react';
+import { Bell, Menu, Search } from 'lucide-react';
 import { useTheme } from 'next-themes';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
@@ -31,16 +20,13 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { Container } from '@/components/common/container';
-import { Breadcrumb } from './breadcrumb';
 import { MegaMenu } from './mega-menu';
-import { MegaMenuMobile } from './mega-menu-mobile';
 import { SidebarMenu } from './sidebar-menu';
 
 export function Header() {
   const { data: user } = useAuth();
   const logoHref = user?.type ? `/${user.type}` : '/';
   const [isSidebarSheetOpen, setIsSidebarSheetOpen] = useState(false);
-  const [isMegaMenuSheetOpen, setIsMegaMenuSheetOpen] = useState(false);
   const { theme } = useTheme();
   const isDark = theme === 'dark';
 
@@ -53,7 +39,6 @@ export function Header() {
   // Close sheet when route changes
   useEffect(() => {
     setIsSidebarSheetOpen(false);
-    setIsMegaMenuSheetOpen(false);
   }, [pathname]);
 
   return (
@@ -104,29 +89,13 @@ export function Header() {
             </Sheet>
           )}
 
-          {/* Main Content (MegaMenu or Breadcrumbs) */}
-          {pathname.startsWith('/account') ? (
-            <Breadcrumb />
-          ) : (
-            !mobileMode && <MegaMenu />
-          )}
+          {/* Main Content (desktop MegaMenu) */}
+          {!mobileMode && <MegaMenu />}
         </div>
 
         {/* HeaderTopbar */}
         <div className="flex items-center gap-3">
           {!mobileMode && (
-            // <SearchDialog
-            //   trigger={
-            //     <Button
-            //       variant="ghost"
-            //       mode="icon"
-            //       shape="circle"
-            //       className="size-9 hover:bg-primary/10 hover:[&_svg]:text-primary"
-            //     >
-            //       <Search className="size-4.5!" />
-            //     </Button>
-            //   }
-            // />
             <Button
               variant="ghost"
               mode="icon"
@@ -144,15 +113,6 @@ export function Header() {
             className="size-9 hover:bg-primary/10 hover:[&_svg]:text-primary"
           >
             <Bell className="size-4.5!" />
-          </Button>
-
-          <Button
-            variant="ghost"
-            mode="icon"
-            shape="circle"
-            className="size-9 hover:bg-primary/10 hover:[&_svg]:text-primary"
-          >
-            <MessageCircleMore className="size-4.5!" />
           </Button>
 
           <UserDropdownMenu
