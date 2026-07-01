@@ -2,6 +2,7 @@
 
 import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
+import { Card, CardContent } from '@/components/ui/card';
 
 const WorkHistoryContent = () => {
   const { t } = useTranslation('freelancerCommon');
@@ -12,25 +13,29 @@ const WorkHistoryContent = () => {
         {t('tabs.workHistory')}
       </h3>
 
-      <div className="flex flex-col items-center justify-center text-center py-10 gap-4">
-        <img
-          src={toAbsoluteUrl('/media/illustrations/2.svg')}
-          className="dark:hidden max-h-[230px]"
-          alt="work history"
-        />
-        <img
-          src={toAbsoluteUrl('/media/illustrations/2-dark.svg')}
-          className="light:hidden max-h-[230px]"
-          alt="work history"
-        />
+      <Card className="p-8 lg:p-12">
+        <CardContent>
+          <div className="flex flex-col items-center justify-center text-center py-5 gap-4">
+            <img
+              src={toAbsoluteUrl('/media/illustrations/2.svg')}
+              className="dark:hidden max-h-[230px]"
+              alt="work history"
+            />
+            <img
+              src={toAbsoluteUrl('/media/illustrations/2-dark.svg')}
+              className="light:hidden max-h-[230px]"
+              alt="work history"
+            />
 
-        <div className="text-lg font-semibold text-mono">
-          {t('workHistory.emptyTitle')}
-        </div>
-        <p className="text-sm text-secondary-foreground max-w-md">
-          {t('workHistory.emptyDesc')}
-        </p>
-      </div>
+            <div className="text-lg font-semibold text-mono">
+              {t('workHistory.emptyTitle')}
+            </div>
+            <p className="text-sm text-secondary-foreground max-w-md">
+              {t('workHistory.emptyDesc')}
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

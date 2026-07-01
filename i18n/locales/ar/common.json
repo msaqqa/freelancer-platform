@@ -9,5 +9,8 @@
     "myProfile": "ملفي الشخصي",
     "language": "اللغة",
     "darkMode": "الوضع الداكن",
-    "platformName": "منصة المستقلين"
+    "platformName": "منصة المستقلين",
+    "view": "عرض",
+    "edit": "تعديل",
+    "delete": "حذف"
 }

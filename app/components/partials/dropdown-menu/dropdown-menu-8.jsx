@@ -1,7 +1,10 @@
 'use client';
 
+'use client';
+
 import Link from 'next/link';
 import { FileText, Pencil, Trash2 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,6 +19,8 @@ export function DropdownMenu8({
   handleEdit,
   handleDlete,
 }) {
+  const { t } = useTranslation('common');
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>{trigger}</DropdownMenuTrigger>
@@ -23,20 +28,20 @@ export function DropdownMenu8({
         <DropdownMenuItem asChild>
           <Link href="#" onClick={handleView}>
             <FileText />
-            <span>View</span>
+            <span>{t('view')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuItem asChild>
           <Link href="#" onClick={handleEdit}>
             <Pencil />
-            <span>Edit</span>
+            <span>{t('edit')}</span>
           </Link>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
           <Link href="#" onClick={handleDlete}>
             <Trash2 />
-            <span>Delete</span>
+            <span>{t('delete')}</span>
           </Link>
         </DropdownMenuItem>
       </DropdownMenuContent>

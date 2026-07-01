@@ -6,13 +6,13 @@ import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getFreelancerExperiences } from '@/services/freelancer/experience';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent } from '@/components/ui/card';
 import { Empty } from '@/components/common/empty';
 import { ExperienceDialog } from './dialogs/experience-dialog';
 import { ExperienceCard, ExperienceSkeleton } from './components';
 
 export function ExperienceContent() {
-  const [openDialog, setOpenDialog] = useState(false);
-  const [experienceId, setExperienceId] = useState(undefined);
+  const [openAddDialog, setOpenAddDialog] = useState(false);
   const { t } = useTranslation('freelancerExperience');
 
   const { data, isLoading } = useQuery({
@@ -21,15 +21,7 @@ export function ExperienceContent() {
   });
   const items = data?.data ?? [];
 
-  const openAdd = () => {
-    setExperienceId(undefined);
-    setOpenDialog(true);
-  };
-
-  const openEdit = (id) => {
-    setExperienceId(id);
-    setOpenDialog(true);
-  };
+  const openAdd = () => setOpenAddDialog(true);
 
   return (
     <div className="flex flex-col items-stretch gap-5 lg:gap-7.5">
@@ -50,15 +42,17 @@ export function ExperienceContent() {
       {isLoading ? (
         <ExperienceSkeleton />
       ) : items.length > 0 ? (
-        <div className="flex flex-col gap-5 lg:gap-7.5">
-          {items.map((item) => (
-            <ExperienceCard
-              key={item.id}
-              item={item}
-              onEdit={() => openEdit(item.id)}
-            />
-          ))}
-        </div>
+        <Card>
+          <CardContent>
+            {items.map((item, index) => (
+              <ExperienceCard
+                key={item.id}
+                item={item}
+                isLast={index === items.length - 1}
+              />
+            ))}
+          </CardContent>
+        </Card>
       ) : (
         <Empty
           image="/media/icons/project-light.svg"
@@ -69,9 +63,8 @@ export function ExperienceContent() {
       )}
 
       <ExperienceDialog
-        open={openDialog}
-        closeDialog={() => setOpenDialog(false)}
-        experienceId={experienceId}
+        open={openAddDialog}
+        closeDialog={() => setOpenAddDialog(false)}
       />
     </div>
   );

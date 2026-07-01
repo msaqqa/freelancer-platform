@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
@@ -43,7 +43,6 @@ import {
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinners';
 import { Textarea } from '@/components/ui/textarea';
-import ExperienceDeleteDialog from './experience-delete-dialog';
 import { FreelancerExperienceSchema } from './forms';
 
 const EMPLOYMENT_TYPES = ['on-site', 'remote', 'hybrid'];
@@ -55,7 +54,6 @@ const splitDate = (date) => {
 };
 
 export const ExperienceDialog = ({ open, closeDialog, experienceId }) => {
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const { t } = useTranslation('freelancerExperience');
   const { t: tv } = useTranslation('validation');
   const queryClient = useQueryClient();
@@ -472,42 +470,21 @@ export const ExperienceDialog = ({ open, closeDialog, experienceId }) => {
                 )}
               />
 
-              <DialogFooter
-                className={`flex flex-col-reverse sm:flex-row justify-start ${experienceId ? 'sm:justify-between' : 'sm:justify-end'} pt-5 gap-2.5`}
-              >
-                {experienceId && (
-                  <Button
-                    variant="destructive"
-                    type="button"
-                    onClick={() => setOpenDeleteDialog(true)}
-                  >
-                    {t('dialog.deleteBtn')}
-                  </Button>
-                )}
-                <div className="flex flex-col-reverse sm:flex-row gap-2.5">
-                  <Button type="button" variant="outline" onClick={closeDialog}>
-                    {t('cancelBtn')}
-                  </Button>
-                  <Button
-                    type="submit"
-                    disabled={isLoading || !form.formState.isDirty}
-                  >
-                    {isLoading && <Spinner className="animate-spin" />}
-                    {t('saveBtn')}
-                  </Button>
-                </div>
+              <DialogFooter className="flex flex-col-reverse sm:flex-row justify-start sm:justify-end pt-5 gap-2.5">
+                <Button type="button" variant="outline" onClick={closeDialog}>
+                  {t('cancelBtn')}
+                </Button>
+                <Button
+                  type="submit"
+                  disabled={isLoading || !form.formState.isDirty}
+                >
+                  {isLoading && <Spinner className="animate-spin" />}
+                  {t('saveBtn')}
+                </Button>
               </DialogFooter>
             </form>
           </Form>
         </ScrollArea>
-        <ExperienceDeleteDialog
-          open={openDeleteDialog}
-          closeDialog={() => {
-            setOpenDeleteDialog(false);
-            closeDialog();
-          }}
-          experienceId={experienceId}
-        />
       </DialogContent>
     </Dialog>
   );

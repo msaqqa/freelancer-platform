@@ -9,5 +9,8 @@
     "myProfile": "My Profile",
     "language": "Language",
     "darkMode": "Dark Mode",
-    "platformName": "Freelancer Platform"
+    "platformName": "Freelancer Platform",
+    "view": "View",
+    "edit": "Edit",
+    "delete": "Delete"
 }

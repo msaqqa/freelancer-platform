@@ -30,6 +30,10 @@
         "remote": "عن بُعد",
         "hybrid": "هجين"
     },
+    "view": {
+        "viewTitle": "تفاصيل الخبرة",
+        "duration": "المدة"
+    },
     "delete": {
         "deleteTitle": "تأكيد الحذف",
         "deleteDesc": "هل أنت متأكد أنك تريد حذف هذه الخبرة؟",
