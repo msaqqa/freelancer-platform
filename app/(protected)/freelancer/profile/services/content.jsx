@@ -5,10 +5,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { getFreelancerServices } from '@/services/freelancer/services';
-import { CardService } from '@/partials/cards';
+import { CardService, CardsGridSkeleton } from '@/partials/cards';
 import { Button } from '@/components/ui/button';
 import { Empty } from '@/components/common/empty';
-import { Spinner } from '@/components/ui/spinners';
 import ServiceAddDialog from './dialogs/service-add-dialog';
 
 const ServicesContent = () => {
@@ -48,9 +47,7 @@ const ServicesContent = () => {
       </div>
 
       {isLoading ? (
-        <div className="flex justify-center py-10">
-          <Spinner className="size-6 animate-spin" />
-        </div>
+        <CardsGridSkeleton />
       ) : items.length > 0 ? (
         <div id="works_cards">
           <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-5 lg:gap-7.5">

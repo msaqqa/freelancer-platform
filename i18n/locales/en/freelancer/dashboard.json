@@ -1,0 +1,26 @@
+{
+    "welcome": {
+        "title": "Welcome back {{name}}",
+        "subtitle": "Track your progress here. To achieve your goal!"
+    },
+    "stats": {
+        "activeContracts": "Active Contracts",
+        "activeContractsHint": "No active contracts yet.",
+        "activeContractsLink": "View Active Jobs",
+        "pendingOffers": "Pending Offers",
+        "pendingOffersHint": "No open proposals.",
+        "pendingOffersLink": "View Pending Offers",
+        "openProposals": "Open Proposals",
+        "openProposalsHint": "Waiting for your decision.",
+        "openProposalsLink": "View Proposals",
+        "earnings": "Earnings",
+        "earningsPeriod": "(This month)",
+        "earningsHint": "From active & recent contracts",
+        "earningsLink": "View Earnings"
+    },
+    "pendingActions": {
+        "title": "Pending Actions",
+        "emptyTitle": "No pending actions",
+        "emptyDesc": "New job invitations and actions that need your attention will appear here."
+    }
+}

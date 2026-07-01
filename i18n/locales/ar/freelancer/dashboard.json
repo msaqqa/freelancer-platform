@@ -1,0 +1,26 @@
+{
+    "welcome": {
+        "title": "مرحبًا بعودتك {{name}}",
+        "subtitle": "تابع تقدمك هنا لتحقيق هدفك!"
+    },
+    "stats": {
+        "activeContracts": "العقود النشطة",
+        "activeContractsHint": "لا توجد عقود نشطة بعد.",
+        "activeContractsLink": "عرض الوظائف النشطة",
+        "pendingOffers": "العروض المعلقة",
+        "pendingOffersHint": "لا توجد عروض مفتوحة.",
+        "pendingOffersLink": "عرض العروض المعلقة",
+        "openProposals": "الطلبات المفتوحة",
+        "openProposalsHint": "بانتظار قرارك.",
+        "openProposalsLink": "عرض الطلبات",
+        "earnings": "الأرباح",
+        "earningsPeriod": "(هذا الشهر)",
+        "earningsHint": "من العقود النشطة والأخيرة",
+        "earningsLink": "عرض الأرباح"
+    },
+    "pendingActions": {
+        "title": "الإجراءات المعلقة",
+        "emptyTitle": "لا توجد إجراءات معلقة",
+        "emptyDesc": "ستظهر هنا دعوات العمل الجديدة والإجراءات التي تحتاج انتباهك."
+    }
+}

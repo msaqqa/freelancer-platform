@@ -3,6 +3,7 @@ import authAr from './locales/ar/auth.json';
 import commonAr from './locales/ar/common.json';
 import errorMessagesAr from './locales/ar/error-messages.json';
 import freelancerCommonAr from './locales/ar/freelancer/common.json';
+import freelancerDashboardAr from './locales/ar/freelancer/dashboard.json';
 import menuSidebarAr from './locales/ar/freelancer/menu-sidebar.json';
 import freelancerPortfolioAr from './locales/ar/freelancer/portfolio.json';
 import freelancerProfileAr from './locales/ar/freelancer/profile.json';
@@ -14,6 +15,7 @@ import authEn from './locales/en/auth.json';
 import commonEn from './locales/en/common.json';
 import errorMessagesEn from './locales/en/error-messages.json';
 import freelancerCommonEn from './locales/en/freelancer/common.json';
+import freelancerDashboardEn from './locales/en/freelancer/dashboard.json';
 import menuSidebarEn from './locales/en/freelancer/menu-sidebar.json';
 import freelancerPortfolioEn from './locales/en/freelancer/portfolio.json';
 import freelancerProfileEn from './locales/en/freelancer/profile.json';
@@ -46,6 +48,7 @@ export const I18N_RESOURCES = {
     requiredData: requiredDataEn,
     freelancerProfile: freelancerProfileEn,
     freelancerCommon: freelancerCommonEn,
+    freelancerDashboard: freelancerDashboardEn,
     portfolio: freelancerPortfolioEn,
     menuSidebar: menuSidebarEn,
     validation: validationEn,
@@ -59,6 +62,7 @@ export const I18N_RESOURCES = {
     requiredData: requiredDataAr,
     freelancerProfile: freelancerProfileAr,
     freelancerCommon: freelancerCommonAr,
+    freelancerDashboard: freelancerDashboardAr,
     portfolio: freelancerPortfolioAr,
     menuSidebar: menuSidebarAr,
     validation: validationAr,

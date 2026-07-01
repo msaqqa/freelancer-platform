@@ -29,3 +29,4 @@ export * from './card-work';
 export * from './card-work-row';
 export * from './card-service';
 export * from './card-portfolio';
+export * from './card-skeleton';
