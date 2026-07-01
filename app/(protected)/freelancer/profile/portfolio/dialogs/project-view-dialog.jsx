@@ -1,5 +1,6 @@
 'use client';
 
+import { useTranslation } from 'react-i18next';
 import { formatDate } from '@/lib/helpers';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
@@ -13,6 +14,7 @@ import {
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 const ProjectViewDialog = ({ open, closeDialog, project }) => {
+  const { t } = useTranslation('portfolio');
   const blocks = project?.content_blocks ?? [];
   const skills = project?.skills ?? [];
 
@@ -23,7 +25,7 @@ const ProjectViewDialog = ({ open, closeDialog, project }) => {
         className="w-full max-w-[800px] mx-auto"
       >
         <DialogHeader className="pb-5 border-b border-border">
-          <DialogTitle>View Project</DialogTitle>
+          <DialogTitle>{t('view.viewTitle')}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="grow pe-3 -me-3">
           <h2 className="text-lg text-foreground font-semibold mb-5">
@@ -48,16 +50,20 @@ const ProjectViewDialog = ({ open, closeDialog, project }) => {
 
           {project?.created_at && (
             <div className="flex flex-col gap-2.5 mb-5">
-              <span className="text-base font-semibold text-mono">Details</span>
+              <span className="text-base font-semibold text-mono">
+                {t('view.details')}
+              </span>
               <span className="text-sm font-normal text-foreground">
-                Posted {formatDate(project.created_at)}
+                {t('view.posted')} {formatDate(project.created_at)}
               </span>
             </div>
           )}
 
           {skills.length > 0 && (
             <div className="flex flex-col gap-2.5 mb-5">
-              <span className="text-base font-semibold text-mono">Skills</span>
+              <span className="text-base font-semibold text-mono">
+                {t('view.skills')}
+              </span>
               <div className="flex flex-wrap gap-1.5">
                 {skills.map((skill) => (
                   <Badge key={skill.id} variant="secondary">
@@ -70,7 +76,7 @@ const ProjectViewDialog = ({ open, closeDialog, project }) => {
         </ScrollArea>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>
-            Cancel
+            {t('cancelBtn')}
           </Button>
         </DialogFooter>
       </DialogContent>

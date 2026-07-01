@@ -9,6 +9,8 @@
   "maxImages": "الحد الأقصى {{imagesLength}} صورة مسموح بها",
   "invalidURL": "رابط غير صالح",
   "titleRequired": "العنوان مطلوب",
+  "textRequired": "النص مطلوب",
+  "projectImageRequired": "الصورة مطلوبة",
   "linkRequired": "الرابط مطلوب",
   "languageRequired": "اللغة مطلوبة",
   "levelRequired": "المستوى مطلوب",
@@ -46,5 +48,17 @@
 
   "mobileRequired": "رقم الهاتف المحمول مطلوب",
   "mobileLength": "لا يمكن أن يتجاوز رقم الهاتف 15 رقمًا",
-  "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط"
+  "mobileDigits": "يجب أن يحتوي رقم الهاتف على أرقام فقط",
+
+  "serviceNameRequired": "اسم الخدمة مطلوب",
+  "industryRequired": "المجال مطلوب",
+  "specialtyRequired": "التخصص مطلوب",
+  "deliveryDaysRequired": "أيام التسليم مطلوبة",
+  "projectPriceRequired": "سعر المشروع مطلوب",
+  "atLeastOneImage": "ارفع صورة واحدة على الأقل",
+  "atLeastOneRequirement": "أضف متطلبًا واحدًا على الأقل",
+  "descriptionMinChars": "يجب ألا يقل الوصف عن {{min}} حرفًا",
+  "legalConfirmRequired": "يرجى تأكيد أن المحتوى الخاص بك أصلي أو مرخّص بشكل صحيح",
+  "agreeTermsRequired": "يجب أن توافق على شروط الاستخدام واتفاقية المستخدم وسياسة الخصوصية",
+  "privacyAckRequired": "يرجى الإقرار بإشعار الخصوصية للمتابعة"
 }

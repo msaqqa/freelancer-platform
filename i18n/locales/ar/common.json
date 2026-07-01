@@ -5,5 +5,9 @@
     "privacy": "الخصوصية",
     "help": "مساعدة",
     "allRightsReserved": "جميع الحقوق محفوظة.",
-    "logout": "تسجيل الخروج"
+    "logout": "تسجيل الخروج",
+    "myProfile": "ملفي الشخصي",
+    "language": "اللغة",
+    "darkMode": "الوضع الداكن",
+    "platformName": "منصة المستقلين"
 }

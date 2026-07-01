@@ -73,11 +73,11 @@ export function Header() {
             <img
               src={toAbsoluteUrl(
                 isDark
-                  ? '/media/app/mini-logo-dark.svg'
-                  : '/media/app/mini-logo.svg',
+                  ? '/media/app/default-logo-dark.svg'
+                  : '/media/app/default-logo.svg',
               )}
               className="h-[40px] w-full"
-              alt="mini-logo"
+              alt="Logo Image"
             />
           </Link>
 

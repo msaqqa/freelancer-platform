@@ -2,6 +2,7 @@
 
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { deleteFreelancerService } from '@/services/freelancer/services';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -18,6 +19,7 @@ import { Spinner } from '@/components/ui/spinners';
 
 const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation('services');
 
   // Define the mutation for deleting the service
   const mutation = useMutation({
@@ -46,14 +48,12 @@ const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent close={false}>
         <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogTitle>{t('delete.deleteTitle')}</DialogTitle>
         </DialogHeader>
-        <DialogDescription>
-          Are you sure you want to delete the service ?
-        </DialogDescription>
+        <DialogDescription>{t('delete.deleteDesc')}</DialogDescription>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>
-            Cancel
+            {t('cancelBtn')}
           </Button>
           <Button
             variant="destructive"
@@ -63,7 +63,7 @@ const ServiceDeleteDialog = ({ open, closeDialog, service }) => {
             {mutation.status === 'pending' && (
               <Spinner className="animate-spin" />
             )}
-            Delete
+            {t('delete.deleteBtn')}
           </Button>
         </DialogFooter>
       </DialogContent>

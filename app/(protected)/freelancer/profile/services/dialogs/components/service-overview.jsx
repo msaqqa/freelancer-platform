@@ -73,7 +73,7 @@ export const ServiceOverview = () => {
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Service Overview
+        {fs('overview.title')}
       </p>
       {/* Name Field */}
       <FormField
@@ -81,10 +81,10 @@ export const ServiceOverview = () => {
         name="service"
         render={({ field }) => (
           <FormItem className="w-full">
-            <FormLabel>{fs('name')}</FormLabel>
+            <FormLabel>{fs('overview.nameLabel')}</FormLabel>
             <FormControl>
               <Input
-                placeholder="Service name or short description"
+                placeholder={fs('overview.nameHolder')}
                 value={field.value}
                 onChange={(e) => {
                   field.onChange(e);
@@ -101,7 +101,7 @@ export const ServiceOverview = () => {
         name="category"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{fs('industry')}</FormLabel>
+            <FormLabel>{fs('overview.industry')}</FormLabel>
             <FormControl>
               <Select
                 value={field.value}
@@ -116,7 +116,7 @@ export const ServiceOverview = () => {
                 }}
               >
                 <SelectTrigger>
-                  <SelectValue placeholder={fs('industryHolder')} />
+                  <SelectValue placeholder={fs('overview.industryHolder')} />
                 </SelectTrigger>
                 <SelectContent>
                   {categoriesLoading && (
@@ -140,7 +140,7 @@ export const ServiceOverview = () => {
         name="specialty"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{fs('specialty')}</FormLabel>
+            <FormLabel>{fs('overview.specialty')}</FormLabel>
             <div className="flex flex-col flex-grow">
               <FormControl>
                 <Select
@@ -156,7 +156,7 @@ export const ServiceOverview = () => {
                   }}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder={fs('specialtyHolder')} />
+                    <SelectValue placeholder={fs('overview.specialtyHolder')} />
                   </SelectTrigger>
                   <SelectContent>
                     {subcategoriesLoading && (
@@ -181,7 +181,7 @@ export const ServiceOverview = () => {
         name="skills"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>{fs('skills')}</FormLabel>
+            <FormLabel>{fs('overview.skills')}</FormLabel>
             <div className="flex flex-col flex-grow">
               <FormControl>
                 <MultiSelect
@@ -190,7 +190,7 @@ export const ServiceOverview = () => {
                   onChange={field.onChange}
                   getOptionLabel={(e) => e.name}
                   getOptionValue={(e) => e.id}
-                  placeholder={fs('skillsHolder')}
+                  placeholder={fs('overview.skillsHolder')}
                   className=" min-h-[100px]"
                 />
               </FormControl>

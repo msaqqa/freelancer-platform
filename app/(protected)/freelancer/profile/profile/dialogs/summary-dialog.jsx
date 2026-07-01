@@ -221,7 +221,7 @@ export const SummaryDialog = ({ open, closeDialog, summary }) => {
                           className="size-6 shrink-0"
                           alt="image"
                         />
-                        <Input placeholder="Enter YouTube URL" {...field} />
+                        <Input placeholder={fp('youtubeHolder')} {...field} />
                       </InputWrapper>
                     </FormControl>
                     <FormMessage />

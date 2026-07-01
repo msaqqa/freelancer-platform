@@ -1,6 +1,7 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
   FormControl,
   FormDescription,
@@ -13,11 +14,12 @@ import { GalleryInput } from '.';
 
 const Gallery = () => {
   const form = useFormContext();
+  const { t } = useTranslation('services');
 
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Requirements and steps
+        {t('gallery.title')}
       </p>
       {/* Gallery Photos */}
       <FormField
@@ -25,10 +27,9 @@ const Gallery = () => {
         name="images"
         render={({ field }) => (
           <FormItem>
-            <FormLabel className="mb-2">Project Images</FormLabel>
+            <FormLabel className="mb-2">{t('gallery.imagesLabel')}</FormLabel>
             <FormDescription className="mb-2">
-              Upload up to 20 images (.jpg or .png), up to 10MB each and less
-              than 4,000 pixels, in width or height.
+              {t('gallery.imagesDesc')}
             </FormDescription>
             <FormControl>
               <GalleryInput

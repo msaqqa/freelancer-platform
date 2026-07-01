@@ -2,6 +2,7 @@
 
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { deleteFreelancerPortfolio } from '@/services/freelancer/portfolio';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
@@ -18,12 +19,13 @@ import { Spinner } from '@/components/ui/spinners';
 
 const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
   const queryClient = useQueryClient();
+  const { t } = useTranslation('portfolio');
 
   // Define the mutation for deleting the project
   const mutation = useMutation({
     mutationFn: async () => deleteFreelancerPortfolio(project.id),
     onSuccess: (data) => {
-      const message = data?.message ?? 'Project deleted successfully';
+      const message = data?.message ?? t('delete.deleteSuccess');
 
       toast.custom(
         () => (
@@ -49,14 +51,12 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
     <Dialog open={open} onOpenChange={closeDialog}>
       <DialogContent close={false}>
         <DialogHeader>
-          <DialogTitle>Confirm Delete</DialogTitle>
+          <DialogTitle>{t('delete.deleteTitle')}</DialogTitle>
         </DialogHeader>
-        <DialogDescription>
-          Are you sure you want to delete the project ?
-        </DialogDescription>
+        <DialogDescription>{t('delete.deleteDesc')}</DialogDescription>
         <DialogFooter>
           <Button variant="outline" onClick={closeDialog}>
-            Cancel
+            {t('cancelBtn')}
           </Button>
           <Button
             variant="destructive"
@@ -66,7 +66,7 @@ const ProjectDeleteDialog = ({ open, closeDialog, project }) => {
             {mutation.status === 'pending' && (
               <Spinner className="animate-spin" />
             )}
-            Delete
+            {t('delete.deleteBtn')}
           </Button>
         </DialogFooter>
       </DialogContent>

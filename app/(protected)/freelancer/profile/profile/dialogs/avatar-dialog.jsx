@@ -6,6 +6,7 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
+import { cropImageToSquare } from '@/lib/helpers';
 import { updateFreelancerPhoto } from '@/services/freelancer/profile';
 import { Alert, AlertIcon, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
@@ -107,7 +108,14 @@ export const AvatarDialog = ({ open, closeDialog, user }) => {
                     <AvatarInput
                       defaultImg={user?.photo}
                       value={field.value}
-                      onChange={(val) => {
+                      onChange={async (val) => {
+                        if (val instanceof File) {
+                          try {
+                            val = await cropImageToSquare(val);
+                          } catch {
+                            // keep original file if crop fails
+                          }
+                        }
                         field.onChange(val);
                         form.trigger('photo');
                       }}

@@ -1,6 +1,7 @@
 'use client';
 
 import { useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import {
   FormControl,
   FormField,
@@ -23,11 +24,12 @@ const textLength = (html) => {
 
 export const Description = () => {
   const form = useFormContext();
+  const { t } = useTranslation('services');
 
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Service description
+        {t('description.title')}
       </p>
 
       <FormField
@@ -37,23 +39,26 @@ export const Description = () => {
           const count = textLength(field.value);
           return (
             <FormItem className="w-full">
-              <FormLabel>Service summary</FormLabel>
+              <FormLabel>{t('description.summaryLabel')}</FormLabel>
               <p className="text-sm text-muted-foreground -mt-1 mb-2">
-                Highlight what makes your service or project unique and valuable
-                to clients.
+                {t('description.summaryDesc')}
               </p>
               <FormControl>
                 <RichTextEditor
                   value={field.value}
                   onChange={field.onChange}
-                  placeholder="Write a short summary..."
+                  placeholder={t('description.summaryHolder')}
                 />
               </FormControl>
               {/* Error + counter share one line on sm+, stack on mobile. */}
               <div className="flex flex-col gap-1 pt-1.5 sm:flex-row sm:items-center">
                 <FormMessage className="mt-0" />
                 <span className="text-xs text-muted-foreground ms-auto">
-                  Min. {MIN_CHARS}, max. {MAX_CHARS} chars — {count}/{MAX_CHARS}
+                  {t('description.counter', {
+                    min: MIN_CHARS,
+                    max: MAX_CHARS,
+                    count,
+                  })}
                 </span>
               </div>
             </FormItem>

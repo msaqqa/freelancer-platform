@@ -15,6 +15,7 @@ import {
   Users,
 } from 'lucide-react';
 import { useTheme } from 'next-themes';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { useAuth } from '@/hooks/auth/use-auth';
 import { useLanguage } from '@/providers/i18n-provider';
@@ -39,6 +40,7 @@ export function UserDropdownMenu({ trigger }) {
   const { data: session, signout } = useAuth();
   const { changeLanguage, language } = useLanguage();
   const { theme, setTheme } = useTheme();
+  const { t } = useTranslation('common');
   const type = session?.type ?? 'freelancer';
 
   const handleLanguage = async (lang) => {
@@ -88,7 +90,7 @@ export function UserDropdownMenu({ trigger }) {
         <DropdownMenuItem asChild>
           <Link href={`/${type}/profile`} className="flex items-center gap-2">
             <User />
-            My Profile
+            {t('myProfile')}
           </Link>
         </DropdownMenuItem>
 
@@ -97,7 +99,7 @@ export function UserDropdownMenu({ trigger }) {
           <DropdownMenuSubTrigger className="flex items-center gap-2 [&_[data-slot=dropdown-menu-sub-trigger-indicator]]:hidden hover:[&_[data-slot=badge]]:border-input data-[state=open]:[&_[data-slot=badge]]:border-input">
             <Globe />
             <span className="flex items-center justify-between gap-2 grow relative">
-              Language
+              {t('language')}
               <Badge
                 appearance="stroke"
                 className="absolute end-0 top-1/2 -translate-y-1/2"
@@ -144,7 +146,7 @@ export function UserDropdownMenu({ trigger }) {
         >
           <Moon />
           <div className="flex items-center gap-2 justify-between grow">
-            Dark Mode
+            {t('darkMode')}
             <Switch
               size="sm"
               checked={theme === 'dark'}
@@ -159,7 +161,7 @@ export function UserDropdownMenu({ trigger }) {
             className="w-full"
             onClick={() => signout()}
           >
-            Logout
+            {t('logout')}
           </Button>
         </div>
       </DropdownMenuContent>

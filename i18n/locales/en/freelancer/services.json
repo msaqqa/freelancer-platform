@@ -1,10 +1,120 @@
 {
-  "name": "Service name or short description",
-  "industry": "Industry",
-  "industryHolder": "Design, Development, Writing",
-  "specialty": "Specialty",
-  "specialtyHolder": "Select Specialty",
-  "skills": "skills",
-  "skillsHolder": "Help clients find your project.",
-  "loading": "loading..."
+    "content": {
+        "services": "Services",
+        "addService": "Add Service",
+        "emptyTitle": "Service",
+        "emptyDesc": "Add a service to show clients what you offer, how you can help, and make booking you easy."
+    },
+    "dialog": {
+        "addTitle": "Add Service",
+        "editTitle": "Edit Service",
+        "submitBtn": "Submit for Review"
+    },
+    "steps": {
+        "overview": "Overview",
+        "pricing": "Pricing",
+        "gallery": "Gallery",
+        "process": "Process",
+        "description": "Description",
+        "review": "Review"
+    },
+    "overview": {
+        "title": "Service Overview",
+        "nameLabel": "Service Name",
+        "nameHolder": "Service name or short description",
+        "industry": "Industry",
+        "industryHolder": "Design, Development, Writing",
+        "specialty": "Specialty",
+        "specialtyHolder": "Select Specialty",
+        "skills": "Skills",
+        "skillsHolder": "Help clients find your project."
+    },
+    "pricing": {
+        "title": "Price & scope",
+        "deliveryLabel": "Delivery Days",
+        "deliveryHolder": "How many days to deliver the service?",
+        "revisionsLabel": "Revisions",
+        "revisionsHolder": "Set included revisions (e.g. 1, 2, or unlimited)",
+        "priceLabel": "Project price",
+        "priceHolder": "0.00",
+        "chooseAddons": "Choose add-ons",
+        "optional": "(optional)",
+        "addonContentUpload": "Content Upload",
+        "addonAdditionalRevision": "Additional Revision",
+        "addonResponsiveDesign": "Responsive Design",
+        "forExtra": "For an extra",
+        "additionalDays": "Additional days",
+        "customTitleLabel": "Title",
+        "customTitleHolder": "Project name or short description",
+        "removeBtn": "Remove",
+        "createCustomAddon": "Create custom add-on"
+    },
+    "gallery": {
+        "title": "Requirements and steps",
+        "imagesLabel": "Project Images",
+        "imagesDesc": "Upload up to 20 images (.jpg or .png), up to 10MB each and less than 4,000 pixels, in width or height."
+    },
+    "process": {
+        "title": "Requirements and steps",
+        "infoTitle": "Info you'll need from the client",
+        "infoDesc": "Request any details or files you’ll need from the client to begin the project. Clients can respond with text or attachments. Be sure to include at least one requirement.",
+        "requirementLabel": "Requirement",
+        "requirementHolder": "Add any details or files needed to start your project",
+        "freeText": "Free Text",
+        "fileUpload": "File Upload",
+        "addRequirement": "Add another requirement"
+    },
+    "description": {
+        "title": "Service description",
+        "summaryLabel": "Service summary",
+        "summaryDesc": "Highlight what makes your service or project unique and valuable to clients.",
+        "summaryHolder": "Write a short summary...",
+        "counter": "Min. {{min}}, max. {{max}} chars — {{count}}/{{max}}"
+    },
+    "review": {
+        "readyTitle": "Ready to Launch?",
+        "readyDesc": "Make sure everything is set before you go live. Just a few final checks!",
+        "legalTitle": "Legal Confirmation",
+        "legalText": "Please confirm that the content you're about to publish is either original or properly licensed, and that it aligns with our community guidelines.",
+        "termsTitle": "Terms & Policies",
+        "termsIntro": "I have read and agree to the",
+        "and": "and",
+        "termsOfUse": "Terms of Use",
+        "userAgreement": "User Agreement",
+        "privacyPolicy": "Privacy Policy",
+        "privacyTitle": "Privacy Notice",
+        "privacyText": "By submitting and activating this service, you agree that it will appear in public search results and may be visible even if your profile is set to private or restricted to registered users only."
+    },
+    "editor": {
+        "bold": "Bold",
+        "italic": "Italic",
+        "underline": "Underline",
+        "strikethrough": "Strikethrough",
+        "code": "Code",
+        "bulletList": "Bullet list",
+        "numberedList": "Numbered list",
+        "quote": "Quote",
+        "link": "Link",
+        "divider": "Divider",
+        "undo": "Undo",
+        "redo": "Redo",
+        "enterUrl": "Enter URL"
+    },
+    "view": {
+        "viewTitle": "View service",
+        "description": "Description",
+        "price": "Price",
+        "delivery": "Delivery",
+        "deliveryValue": "{{days}} days",
+        "skills": "Skills"
+    },
+    "delete": {
+        "deleteTitle": "Confirm Delete",
+        "deleteDesc": "Are you sure you want to delete the service ?",
+        "deleteBtn": "Delete"
+    },
+    "cancelBtn": "Cancel",
+    "backBtn": "Back",
+    "continueBtn": "Continue",
+    "loading": "loading..."
 }

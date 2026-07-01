@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getFreelancerServices } from '@/services/freelancer/services';
 import { CardService } from '@/partials/cards';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import ServiceAddDialog from './dialogs/service-add-dialog';
 
 const ServicesContent = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { t } = useTranslation('services');
 
   const { data, isLoading } = useQuery({
     queryKey: ['freelancer-services'],
@@ -33,14 +35,14 @@ const ServicesContent = () => {
     <div className="flex flex-col items-stretch gap-5 lg:gap-7.5">
       <div className="flex flex-wrap items-center gap-5 justify-between">
         <h3 className="text-lg text-mono font-semibold">
-          {items.length > 0 ? items.length : null} Services
+          {items.length > 0 ? items.length : null} {t('content.services')}
         </h3>
         <div className="flex items-center space-x-2.5">
           <Button mode="link" onClick={() => setOpenDialog(true)}>
             <span className="p-px border border-primary rounded-md">
               <Plus size={16} />
             </span>
-            Add Service
+            {t('content.addService')}
           </Button>
         </div>
       </div>
@@ -58,8 +60,8 @@ const ServicesContent = () => {
       ) : (
         <Empty
           image="/media/icons/services-light.svg"
-          title="Service"
-          decription="Add a service to show clients what you offer, how you can help, and make booking you easy."
+          title={t('content.emptyTitle')}
+          decription={t('content.emptyDesc')}
           openDialog={() => setOpenDialog(true)}
         />
       )}

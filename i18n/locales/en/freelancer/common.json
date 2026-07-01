@@ -1,0 +1,14 @@
+{
+    "shareBtn": "Share",
+    "tabs": {
+        "profile": "Profile",
+        "portfolio": "Portfolio",
+        "services": "Services",
+        "experience": "Experience",
+        "workHistory": "Work History"
+    },
+    "workHistory": {
+        "emptyTitle": "No work history yet.",
+        "emptyDesc": "Once the freelancer starts working on projects, their completed jobs and reviews will appear here."
+    }
+}

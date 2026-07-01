@@ -1,4 +1,7 @@
+'use client';
+
 import { Share } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { NavbarActions } from '@/app/components/partials/navbar/navbar';
@@ -9,6 +12,8 @@ import { ServicesContent } from './services/content';
 import { WorkHistoryContent } from './work-history/content';
 
 const PageTabs = ({ user, isLoading }) => {
+  const { t } = useTranslation('freelancerCommon');
+
   return (
     <Tabs defaultValue="1" className="w-full">
       <TabsList
@@ -16,15 +21,15 @@ const PageTabs = ({ user, isLoading }) => {
         variant="line"
       >
         <div className="flex items-center gap-5">
-          <TabsTrigger value="1">Profile</TabsTrigger>
-          <TabsTrigger value="2">Portfolio</TabsTrigger>
-          <TabsTrigger value="3">Services</TabsTrigger>
-          <TabsTrigger value="4">Experience</TabsTrigger>
-          <TabsTrigger value="5">Work History</TabsTrigger>
+          <TabsTrigger value="1">{t('tabs.profile')}</TabsTrigger>
+          <TabsTrigger value="2">{t('tabs.portfolio')}</TabsTrigger>
+          <TabsTrigger value="3">{t('tabs.services')}</TabsTrigger>
+          <TabsTrigger value="4">{t('tabs.experience')}</TabsTrigger>
+          <TabsTrigger value="5">{t('tabs.workHistory')}</TabsTrigger>
         </div>
         <NavbarActions>
           <Button className="mb-3 md:mb-0">
-            <Share /> Share
+            <Share /> {t('shareBtn')}
           </Button>
         </NavbarActions>
       </TabsList>

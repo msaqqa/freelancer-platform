@@ -3,6 +3,7 @@
 import React, { useEffect } from 'react';
 import { Plus } from 'lucide-react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { MONTH as months } from '@/config/dateConfig';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { Button } from '@/components/ui/button';
@@ -25,15 +26,16 @@ import {
 
 const PriceScope = () => {
   const form = useFormContext();
+  const { t } = useTranslation('services');
 
   const { fields } = useFieldArray({
     name: 'addOns',
   });
 
   const dynamicAddOns = [
-    { id: 1, name: 'Content Upload', price: '', days: '' },
-    { id: 2, name: 'Additional Revision', price: '' },
-    { id: 3, name: 'Responsive Design', price: '', days: '' },
+    { id: 1, name: t('pricing.addonContentUpload'), price: '', days: '' },
+    { id: 2, name: t('pricing.addonAdditionalRevision'), price: '' },
+    { id: 3, name: t('pricing.addonResponsiveDesign'), price: '', days: '' },
   ];
 
   useEffect(() => {
@@ -61,7 +63,7 @@ const PriceScope = () => {
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Price & scope
+        {t('pricing.title')}
       </p>
 
       <div className="flex flex-col md:flex-row gap-2.5">
@@ -71,10 +73,10 @@ const PriceScope = () => {
           name="delivery-Days"
           render={({ field }) => (
             <FormItem className="flex-1 w-full">
-              <FormLabel className="inline-block mb-2">Delivery Days</FormLabel>
+              <FormLabel className="inline-block mb-2">{t('pricing.deliveryLabel')}</FormLabel>
               <FormControl>
                 <Input
-                  placeholder="How many days to deliver the service?"
+                  placeholder={t('pricing.deliveryHolder')}
                   {...field}
                 />
               </FormControl>
@@ -89,7 +91,7 @@ const PriceScope = () => {
           name="revisions"
           render={({ field }) => (
             <FormItem className="flex-1 w-full">
-              <FormLabel className="inline-block mb-2">Revisions</FormLabel>
+              <FormLabel className="inline-block mb-2">{t('pricing.revisionsLabel')}</FormLabel>
               <FormControl>
                 <Select
                   value={field.value}
@@ -104,7 +106,7 @@ const PriceScope = () => {
                   }}
                 >
                   <SelectTrigger>
-                    <SelectValue placeholder="Set included revisions (e.g. 1, 2, or unlimited)" />
+                    <SelectValue placeholder={t('pricing.revisionsHolder')} />
                   </SelectTrigger>
                   <SelectContent className="max-h-50 overflow-y">
                     {months.map((item) => (
@@ -127,13 +129,13 @@ const PriceScope = () => {
         name="Project price"
         render={({ field }) => (
           <FormItem>
-            <FormLabel>Project price</FormLabel>
+            <FormLabel>{t('pricing.priceLabel')}</FormLabel>
             <FormControl>
               <InputWrapper>
                 <Input
                   type="text"
                   id="Project price"
-                  placeholder="0.00"
+                  placeholder={t('pricing.priceHolder')}
                   className="focus-visible:ring-0"
                   {...field}
                 />
@@ -152,8 +154,8 @@ const PriceScope = () => {
       {/* Add Ons Field */}
       <div className="flex flex-col gap-2.5">
         <FormLabel className="mb-2">
-          Choose add-ons{' '}
-          <small className="text-muted-foreground">(optional)</small>
+          {t('pricing.chooseAddons')}{' '}
+          <small className="text-muted-foreground">{t('pricing.optional')}</small>
         </FormLabel>
         <div className="flex flex-col space-y-3">
           {fields.map((field, index) => {
@@ -199,7 +201,7 @@ const PriceScope = () => {
                         name={`addOns.${index}.price`}
                         render={({ field }) => (
                           <FormItem className="flex-row items-center">
-                            <FormLabel>For an extra</FormLabel>
+                            <FormLabel>{t('pricing.forExtra')}</FormLabel>
                             <FormControl>
                               <Input
                                 {...field}
@@ -221,7 +223,7 @@ const PriceScope = () => {
                         name={`addOns.${index}.days`}
                         render={({ field }) => (
                           <FormItem className="flex-row items-center">
-                            <FormLabel>Additional days</FormLabel>
+                            <FormLabel>{t('pricing.additionalDays')}</FormLabel>
                             <FormControl>
                               <Input {...field} type="number" placeholder="0" />
                             </FormControl>
@@ -248,18 +250,18 @@ const PriceScope = () => {
             render={({ field }) => (
               <FormItem className="w-full mb-5">
                 <div className="flex justify-between items-center">
-                  <FormLabel>Title</FormLabel>
+                  <FormLabel>{t('pricing.customTitleLabel')}</FormLabel>
                   <Button
                     type="button"
                     variant="destructive"
                     onClick={() => removeCustom(index)}
                   >
-                    Remove
+                    {t('pricing.removeBtn')}
                   </Button>
                 </div>
                 <FormControl>
                   <Input
-                    placeholder="Project name or short description"
+                    placeholder={t('pricing.customTitleHolder')}
                     {...field}
                   />
                 </FormControl>
@@ -274,7 +276,7 @@ const PriceScope = () => {
               name={`customAddOns.${index}.price`}
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
-                  <FormLabel>For an extra</FormLabel>
+                  <FormLabel>{t('pricing.forExtra')}</FormLabel>
                   <FormControl>
                     <Input {...field} type="number" placeholder="0.0" />
                   </FormControl>
@@ -289,8 +291,8 @@ const PriceScope = () => {
               render={({ field }) => (
                 <FormItem className="w-full mb-5">
                   <FormLabel>
-                    Additional days{' '}
-                    <small className="text-muted-foreground">(optional)</small>
+                    {t('pricing.additionalDays')}{' '}
+                    <small className="text-muted-foreground">{t('pricing.optional')}</small>
                   </FormLabel>
                   <FormControl>
                     <Input {...field} type="number" placeholder="0" />
@@ -310,7 +312,7 @@ const PriceScope = () => {
         <span className="p-px border border-primary rounded-md">
           <Plus size={16} />
         </span>
-        Create custom add-on
+        {t('pricing.createCustomAddon')}
       </Button>
     </>
   );

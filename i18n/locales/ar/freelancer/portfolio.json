@@ -1,0 +1,45 @@
+{
+    "content": {
+        "projects": "المشاريع",
+        "addProject": "إضافة مشروع",
+        "emptyTitle": "المشاريع",
+        "emptyDesc": "بمجرد أن يضيف المستقل أعماله، ستظهر هنا."
+    },
+    "add": {
+        "addTitle": "إضافة مشروع",
+        "editTitle": "تعديل المشروع",
+        "intro": "أخبرنا المزيد عن مشروعك",
+        "textHolder": "أدخل النص",
+        "dropTitle": "أفلت ملفاتك هنا",
+        "coverDesc": "يوصى بعرض 1600 بكسل كحد أدنى. بحد أقصى 10 ميجابايت لكل ملف",
+        "instructionResolution": "صور عالية الدقة (png، jpg، gif)",
+        "instructionRights": "ارفع فقط الوسائط التي تملك حقوقها",
+        "addImage": "إضافة صورة",
+        "addText": "إضافة نص",
+        "thumbnail": "معاينة الصورة المصغرة",
+        "changeCover": "تغيير صورة الغلاف",
+        "titleLabel": "العنوان",
+        "titleHolder": "اسم المشروع أو وصف مختصر",
+        "skillsLabel": "المهارات",
+        "skillsEmpty": "ساعد العملاء في العثور على مشروعك.",
+        "addSkills": "إضافة مهارات",
+        "skillsSearchHolder": "ابحث عن المهارات...",
+        "skillsNotFound": "لا توجد مهارات.",
+        "submitBtn": "إرسال",
+        "continueBtn": "متابعة",
+        "backBtn": "رجوع"
+    },
+    "view": {
+        "viewTitle": "عرض المشروع",
+        "details": "التفاصيل",
+        "posted": "نُشر",
+        "skills": "المهارات"
+    },
+    "delete": {
+        "deleteTitle": "تأكيد الحذف",
+        "deleteDesc": "هل أنت متأكد أنك تريد حذف المشروع؟",
+        "deleteBtn": "حذف",
+        "deleteSuccess": "تم حذف المشروع بنجاح"
+    },
+    "cancelBtn": "إلغاء"
+}

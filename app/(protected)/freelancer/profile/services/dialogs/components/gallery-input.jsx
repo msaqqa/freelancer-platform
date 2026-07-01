@@ -72,7 +72,6 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                 src={toAbsoluteUrl('/media/icons/gallery-light.svg')}
                 alt="Add Image"
                 className="inline-block dark:hidden mx-auto mb-2"
-                MaxImages
               />
               <img
                 src={toAbsoluteUrl('/media/icons/gallery-dark.svg')}
@@ -80,10 +79,10 @@ export function GalleryInput({ multiple = false, onChange, imagesUrls = [] }) {
                 className="inline-block light:hidden mx-auto mb-2"
               />
               <div className="text-sm font-medium text-foreground mb-2">
-                Drag image here or
+                {t('dragImage')}
               </div>
               <div className="text-sm font-medium text-primary">
-                {t('AddPhoto')}
+                {t('addPhoto')}
               </div>
             </div>
 

@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { Plus } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { getFreelancerPortfolios } from '@/services/freelancer/portfolio';
 import { CardWork } from '@/partials/cards';
 import { Button } from '@/components/ui/button';
@@ -12,6 +13,7 @@ import ProjectAddDialog from './dialogs/project-add-dialog';
 
 const PortfolioContent = () => {
   const [openDialog, setOpenDialog] = useState(false);
+  const { t } = useTranslation('portfolio');
 
   const { data, isLoading } = useQuery({
     queryKey: ['user-projects'],
@@ -33,7 +35,7 @@ const PortfolioContent = () => {
     <div className="flex flex-col items-stretch gap-5 lg:gap-7.5">
       <div className="flex flex-wrap items-center gap-5 justify-between">
         <h3 className="text-lg text-mono font-semibold">
-          {items.length > 0 ? items.length : null} Projects
+          {items.length > 0 ? items.length : null} {t('content.projects')}
         </h3>
         <div className="flex items-center space-x-2.5">
           <div className="flex items-center">
@@ -41,7 +43,7 @@ const PortfolioContent = () => {
               <span className="p-px border border-primary rounded-md">
                 <Plus size={16} />
               </span>
-              Add Project
+              {t('content.addProject')}
             </Button>
           </div>
         </div>
@@ -60,8 +62,8 @@ const PortfolioContent = () => {
       ) : (
         <Empty
           image="/media/icons/project-light.svg"
-          title="Projects"
-          decription="Once the freelancer adds portfolio items, they will appear here."
+          title={t('content.emptyTitle')}
+          decription={t('content.emptyDesc')}
           openDialog={() => setOpenDialog(true)}
         />
       )}

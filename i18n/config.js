@@ -2,7 +2,9 @@
 import authAr from './locales/ar/auth.json';
 import commonAr from './locales/ar/common.json';
 import errorMessagesAr from './locales/ar/error-messages.json';
+import freelancerCommonAr from './locales/ar/freelancer/common.json';
 import menuSidebarAr from './locales/ar/freelancer/menu-sidebar.json';
+import freelancerPortfolioAr from './locales/ar/freelancer/portfolio.json';
 import freelancerProfileAr from './locales/ar/freelancer/profile.json';
 import freelancerServicesAr from './locales/ar/freelancer/services.json';
 import privacyPolicyAr from './locales/ar/privacy-policy.json';
@@ -11,7 +13,9 @@ import validationAr from './locales/ar/validation.json';
 import authEn from './locales/en/auth.json';
 import commonEn from './locales/en/common.json';
 import errorMessagesEn from './locales/en/error-messages.json';
+import freelancerCommonEn from './locales/en/freelancer/common.json';
 import menuSidebarEn from './locales/en/freelancer/menu-sidebar.json';
+import freelancerPortfolioEn from './locales/en/freelancer/portfolio.json';
 import freelancerProfileEn from './locales/en/freelancer/profile.json';
 import freelancerServicesEn from './locales/en/freelancer/services.json';
 import privacyPolicyEn from './locales/en/privacy-policy.json';
@@ -41,6 +45,8 @@ export const I18N_RESOURCES = {
     auth: authEn,
     requiredData: requiredDataEn,
     freelancerProfile: freelancerProfileEn,
+    freelancerCommon: freelancerCommonEn,
+    portfolio: freelancerPortfolioEn,
     menuSidebar: menuSidebarEn,
     validation: validationEn,
     errorMessages: errorMessagesEn,
@@ -52,6 +58,8 @@ export const I18N_RESOURCES = {
     auth: authAr,
     requiredData: requiredDataAr,
     freelancerProfile: freelancerProfileAr,
+    freelancerCommon: freelancerCommonAr,
+    portfolio: freelancerPortfolioAr,
     menuSidebar: menuSidebarAr,
     validation: validationAr,
     errorMessages: errorMessagesAr,

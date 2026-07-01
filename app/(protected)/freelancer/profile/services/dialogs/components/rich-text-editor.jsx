@@ -15,6 +15,7 @@ import {
   Underline,
   Undo2,
 } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { cn } from '@/lib/utils';
 
 // Lightweight contentEditable editor (no external dependency). Stores HTML and
@@ -40,6 +41,7 @@ const Divider = () => <span className="w-px h-5 bg-border mx-1" />;
 
 export function RichTextEditor({ value, onChange, placeholder }) {
   const ref = useRef(null);
+  const { t } = useTranslation('services');
 
   // Sync external value in only when the editor isn't being typed into.
   useEffect(() => {
@@ -57,61 +59,61 @@ export function RichTextEditor({ value, onChange, placeholder }) {
   };
 
   const addLink = () => {
-    const url = window.prompt('Enter URL');
+    const url = window.prompt(t('editor.enterUrl'));
     if (url) exec('createLink', url);
   };
 
   return (
     <div className="border border-input rounded-lg overflow-hidden bg-background">
       <div className="flex flex-wrap items-center gap-0.5 border-b border-input px-2 py-1.5">
-        <ToolbarButton icon={Bold} label="Bold" onClick={() => exec('bold')} />
+        <ToolbarButton icon={Bold} label={t('editor.bold')} onClick={() => exec('bold')} />
         <ToolbarButton
           icon={Italic}
-          label="Italic"
+          label={t('editor.italic')}
           onClick={() => exec('italic')}
         />
         <ToolbarButton
           icon={Underline}
-          label="Underline"
+          label={t('editor.underline')}
           onClick={() => exec('underline')}
         />
         <ToolbarButton
           icon={Strikethrough}
-          label="Strikethrough"
+          label={t('editor.strikethrough')}
           onClick={() => exec('strikeThrough')}
         />
         <Divider />
         <ToolbarButton
           icon={Code}
-          label="Code"
+          label={t('editor.code')}
           onClick={() => exec('formatBlock', 'pre')}
         />
         <Divider />
         <ToolbarButton
           icon={List}
-          label="Bullet list"
+          label={t('editor.bulletList')}
           onClick={() => exec('insertUnorderedList')}
         />
         <ToolbarButton
           icon={ListOrdered}
-          label="Numbered list"
+          label={t('editor.numberedList')}
           onClick={() => exec('insertOrderedList')}
         />
         <ToolbarButton
           icon={Quote}
-          label="Quote"
+          label={t('editor.quote')}
           onClick={() => exec('formatBlock', 'blockquote')}
         />
         <Divider />
-        <ToolbarButton icon={Link2} label="Link" onClick={addLink} />
+        <ToolbarButton icon={Link2} label={t('editor.link')} onClick={addLink} />
         <ToolbarButton
           icon={Minus}
-          label="Divider"
+          label={t('editor.divider')}
           onClick={() => exec('insertHorizontalRule')}
         />
         <Divider />
-        <ToolbarButton icon={Undo2} label="Undo" onClick={() => exec('undo')} />
-        <ToolbarButton icon={Redo2} label="Redo" onClick={() => exec('redo')} />
+        <ToolbarButton icon={Undo2} label={t('editor.undo')} onClick={() => exec('undo')} />
+        <ToolbarButton icon={Redo2} label={t('editor.redo')} onClick={() => exec('redo')} />
       </div>
 
       <div

@@ -5,8 +5,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import {
   addFreelancerService,
   getFreelancerServiceById,
@@ -33,60 +33,9 @@ import {
   Steps,
 } from './components';
 import Gallery from './components/gallery';
+import { ServiceSchema } from './forms';
 
 const TOTAL_STEPS = 6;
-
-// Plain-text length inside the rich-text description.
-const textLength = (html) => {
-  if (typeof document === 'undefined' || !html) return 0;
-  const el = document.createElement('div');
-  el.innerHTML = html;
-  return (el.textContent || '').trim().length;
-};
-
-const notEmpty = (v) => String(v ?? '').trim() !== '';
-
-// Validation schema (skills optional). Field names match the step components.
-const ServiceSchema = z
-  .object({
-    service: z.string().trim().min(1, 'Service name is required'),
-    category: z.string().min(1, 'Industry is required'),
-    specialty: z.string().min(1, 'Specialty is required'),
-    'delivery-Days': z.any().refine(notEmpty, 'Delivery days is required'),
-    'Project price': z.any().refine(notEmpty, 'Project price is required'),
-    images: z.array(z.any()).min(1, 'Upload at least one image'),
-    requirements: z
-      .array(z.any())
-      .refine((arr) => arr?.some((r) => r?.requirementsDetails?.trim()), {
-        message: 'Add at least one requirement',
-        path: [0, 'requirementsDetails'],
-      }),
-    description: z
-      .any()
-      .refine(
-        (html) => textLength(html) >= 10,
-        'Description must be at least 10 characters',
-      ),
-    legalConfirm: z
-      .boolean()
-      .refine(
-        (v) => v === true,
-        'Please confirm your content is original or properly licensed',
-      ),
-    agreeTerms: z
-      .boolean()
-      .refine(
-        (v) => v === true,
-        'You must agree to the Terms of Use, User Agreement, and Privacy Policy',
-      ),
-    privacyAck: z
-      .boolean()
-      .refine(
-        (v) => v === true,
-        'Please acknowledge the privacy notice to continue',
-      ),
-  })
-  .passthrough();
 
 // Fields validated when leaving each step.
 const STEP_FIELDS = {
@@ -99,6 +48,8 @@ const STEP_FIELDS = {
 };
 
 const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
+  const { t } = useTranslation('services');
+  const { t: tv } = useTranslation('validation');
   const [step, setStep] = useState(1);
   const queryClient = useQueryClient();
 
@@ -121,7 +72,7 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
   };
 
   const form = useForm({
-    resolver: zodResolver(ServiceSchema),
+    resolver: zodResolver(ServiceSchema(tv)),
     defaultValues: {
       service: '',
       category: '',
@@ -213,7 +164,7 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
       <DialogContent variant="fullscreen" className="w-full max-w-4xl mx-auto">
         <DialogHeader className="pb-5 border-b border-border">
           <DialogTitle>
-            {serviceId ? 'Edit Service' : 'Add Service'}
+            {serviceId ? t('dialog.editTitle') : t('dialog.addTitle')}
           </DialogTitle>
         </DialogHeader>
         <Steps currentStep={step - 1} />
@@ -249,11 +200,11 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
         <DialogFooter>
           {step === 1 ? (
             <Button variant="outline" onClick={closeDialog}>
-              Cancel
+              {t('cancelBtn')}
             </Button>
           ) : (
             <Button variant="outline" onClick={handleBackStep}>
-              Back
+              {t('backBtn')}
             </Button>
           )}
           <Button
@@ -264,7 +215,7 @@ const ServiceAddDialog = ({ open, closeDialog, serviceId }) => {
             {mutation.status === 'pending' && (
               <Spinner className="animate-spin" />
             )}
-            {isLastStep ? 'Submit for Review' : 'Continue'}
+            {isLastStep ? t('dialog.submitBtn') : t('continueBtn')}
           </Button>
         </DialogFooter>
       </DialogContent>

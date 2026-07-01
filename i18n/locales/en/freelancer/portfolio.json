@@ -1,0 +1,45 @@
+{
+    "content": {
+        "projects": "Projects",
+        "addProject": "Add Project",
+        "emptyTitle": "Projects",
+        "emptyDesc": "Once the freelancer adds portfolio items, they will appear here."
+    },
+    "add": {
+        "addTitle": "Add Portfolio",
+        "editTitle": "Edit Portfolio",
+        "intro": "Tell us more about your project",
+        "textHolder": "Enter Text URL",
+        "dropTitle": "Drop Your Files Here",
+        "coverDesc": "Minimum 1600px width recommended. Max 10MB each",
+        "instructionResolution": "High resolution images (png, jpg, gif)",
+        "instructionRights": "Only upload media you own the rights to",
+        "addImage": "Add Image",
+        "addText": "Add Text",
+        "thumbnail": "Thumbnail preview",
+        "changeCover": "Change the cover",
+        "titleLabel": "Title",
+        "titleHolder": "Project name or short description",
+        "skillsLabel": "Skills",
+        "skillsEmpty": "Help clients find your project.",
+        "addSkills": "Add skills",
+        "skillsSearchHolder": "Search skills...",
+        "skillsNotFound": "No skills found.",
+        "submitBtn": "Submit",
+        "continueBtn": "Continue",
+        "backBtn": "Back"
+    },
+    "view": {
+        "viewTitle": "View Project",
+        "details": "Details",
+        "posted": "Posted",
+        "skills": "Skills"
+    },
+    "delete": {
+        "deleteTitle": "Confirm Delete",
+        "deleteDesc": "Are you sure you want to delete the project ?",
+        "deleteBtn": "Delete",
+        "deleteSuccess": "Project deleted successfully"
+    },
+    "cancelBtn": "Cancel"
+}

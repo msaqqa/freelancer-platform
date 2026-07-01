@@ -1,17 +1,19 @@
 'use client';
 
 import { Fragment } from 'react/jsx-runtime';
+import { useTranslation } from 'react-i18next';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 
 export function Steps({ currentStep }) {
+  const { t } = useTranslation('services');
   const steps = [
-    { title: 'Overview' },
-    { title: 'Pricing' },
-    { title: 'Gallery' },
-    { title: 'Process' },
-    { title: 'Description' },
-    { title: 'Review' },
+    { key: 'overview', title: t('steps.overview') },
+    { key: 'pricing', title: t('steps.pricing') },
+    { key: 'gallery', title: t('steps.gallery') },
+    { key: 'process', title: t('steps.process') },
+    { key: 'description', title: t('steps.description') },
+    { key: 'review', title: t('steps.review') },
   ];
 
   return (
@@ -26,7 +28,7 @@ export function Steps({ currentStep }) {
             : 'pending';
 
         return (
-          <Fragment key={step.title}>
+          <Fragment key={step.key}>
             <div
               className={cn(
                 'text-2sm leading-none relative flex items-center gap-1.5 text-foreground',

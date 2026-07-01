@@ -3,12 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Popover } from '@radix-ui/react-popover';
-import { RiCheckboxCircleFill, RiErrorWarningFill } from '@remixicon/react';
+import { RiCheckboxCircleFill } from '@remixicon/react';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { Trash2, X } from 'lucide-react';
 import { useFieldArray, useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { z } from 'zod';
 import { toAbsoluteUrl } from '@/lib/helpers';
 import { cn } from '@/lib/utils';
 import {
@@ -49,42 +49,11 @@ import { PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Spinner } from '@/components/ui/spinners';
 import { MediaButton } from '@/app/components/partials/common/media-button';
-
-// No empty text/image blocks allowed. First text + first image are mandatory
-// (they are the two default blocks), and any extra block must be filled too.
-const ProjectFieldsSchema = z.object({
-  projectFields: z
-    .array(
-      z
-        .object({
-          type: z.enum(['text', 'image']),
-          value: z.string().optional(),
-          file: z.any().optional(),
-        })
-        .superRefine((block, ctx) => {
-          if (block.type === 'text' && !block.value?.trim()) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Text is required',
-              path: ['value'],
-            });
-          }
-          if (block.type === 'image' && !block.file) {
-            ctx.addIssue({
-              code: z.ZodIssueCode.custom,
-              message: 'Image is required',
-              path: ['file'],
-            });
-          }
-        }),
-    )
-    .min(2),
-  title: z.string().optional(),
-  skills: z.any().optional(),
-  projectCover: z.any().optional(),
-});
+import { ProjectFieldsSchema } from './forms';
 
 const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
+  const { t } = useTranslation('portfolio');
+  const { t: tv } = useTranslation('validation');
   const [step, setStep] = useState(1);
   const [coverImage, setCoverImage] = useState(null);
   const queryClient = useQueryClient();
@@ -99,7 +68,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   const skillsList = skillsData?.data ?? [];
 
   // Step 1: content blocks (mandatory first text + image, + optional extras).
-  // Step 2: cover / title / tags.
+  // Step 2: cover / title / skills.
   const handleContinue = async () => {
     if (step === 1) {
       const valid = await form.trigger('projectFields');
@@ -121,7 +90,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
   };
 
   // get getFreelancerPortfolioById data from api
-  const { data: portfolioData, isLoading: portfolioLoading } = useQuery({
+  const { data: portfolioData } = useQuery({
     queryKey: ['portfolioId', portfolioId],
     queryFn: () => getFreelancerPortfolioById(portfolioId),
     enabled: !!portfolioId && open,
@@ -130,7 +99,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
 
   // Form initialization with React Hook Form
   const form = useForm({
-    resolver: zodResolver(ProjectFieldsSchema),
+    resolver: zodResolver(ProjectFieldsSchema(tv)),
     defaultValues: {
       projectFields: [
         { type: 'text', value: '' },
@@ -265,7 +234,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
       >
         <DialogHeader className="pb-5 border-b border-border">
           <DialogTitle>
-            {portfolioId ? 'Edit Portfolio' : 'Add Portfolio'}
+            {portfolioId ? t('add.editTitle') : t('add.addTitle')}
           </DialogTitle>
         </DialogHeader>
         <ScrollArea className="grow pe-3 -me-3">
@@ -278,7 +247,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                 <>
                   {step === 1 && (
                     <p className="text-md text-foreground font-semibold text-center mb-5">
-                      Tell us more about your project
+                      {t('add.intro')}
                     </p>
                   )}
                   {/* Render fields */}
@@ -293,7 +262,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                               <FormControl>
                                 <InputWrapper>
                                   <Input
-                                    placeholder={`Enter Text URL`}
+                                    placeholder={t('add.textHolder')}
                                     value={field.value}
                                     onChange={(e) => {
                                       field.onChange(e);
@@ -329,18 +298,18 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                               <FormItem>
                                 <FormControl>
                                   <MediaButton
-                                    title="Drop Your Files Here"
+                                    title={t('add.dropTitle')}
                                     invalid={!!fieldState.error}
                                     description={
                                       index === 1
-                                        ? 'Minimum 1600px width recommended. Max 10MB each'
+                                        ? t('add.coverDesc')
                                         : null
                                     }
                                     instructions={
                                       index === 1
                                         ? [
-                                            'High resolution images (png, jpg, gif)',
-                                            'Only upload media you own the rights to',
+                                            t('add.instructionResolution'),
+                                            t('add.instructionRights'),
                                           ]
                                         : null
                                     }
@@ -399,7 +368,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                           onClick={() => handleAddField('image')}
                           className="text-secondary-foreground hover:text-foreground"
                         >
-                          <span>Add Image</span>
+                          <span>{t('add.addImage')}</span>
                         </Button>
                       </div>
                       <div className="flex items-center spaace-x-px">
@@ -422,7 +391,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                           onClick={() => handleAddField('text')}
                           className="text-secondary-foreground hover:text-foreground"
                         >
-                          <span>Add Text</span>
+                          <span>{t('add.addText')}</span>
                         </Button>
                       </div>
                     </div>
@@ -438,7 +407,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                       name="projectCover"
                       render={() => (
                         <FormItem>
-                          <FormLabel>Thumbnail preview</FormLabel>
+                          <FormLabel>{t('add.thumbnail')}</FormLabel>
                           <div className="w-full md:w-[300px] h-[200] overflow-hidden shrink-0">
                             <img
                               src={coverImage || ''}
@@ -459,7 +428,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                       projectCoverRef.current?.click()
                                     }
                                   >
-                                    Change the cover
+                                    {t('add.changeCover')}
                                   </Button>
                                 </div>
                                 <input
@@ -485,10 +454,10 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                       name="title"
                       render={({ field }) => (
                         <FormItem className="w-full mb-5">
-                          <FormLabel>Title</FormLabel>
+                          <FormLabel>{t('add.titleLabel')}</FormLabel>
                           <FormControl>
                             <Input
-                              placeholder="Project name or short description"
+                              placeholder={t('add.titleHolder')}
                               value={field.value}
                               onChange={(e) => {
                                 field.onChange(e);
@@ -504,7 +473,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                       name="skills"
                       render={() => (
                         <FormItem className="w-full">
-                          <FormLabel>Skills</FormLabel>
+                          <FormLabel>{t('add.skillsLabel')}</FormLabel>
                           <div className="flex flex-wrap gap-1.5 text-2sm text-muted-foreground border border-input rounded-md px-3 py-3 min-h-[100px]">
                             {selectedSkills.length > 0 ? (
                               selectedSkills.map((skillId) => {
@@ -526,7 +495,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                               })
                             ) : (
                               <span className="text-sm text-muted-foreground">
-                                Help clients find your project.
+                                {t('add.skillsEmpty')}
                               </span>
                             )}
                           </div>
@@ -535,7 +504,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                               <Popover>
                                 <PopoverTrigger asChild>
                                   <Button variant="outline" role="combobox">
-                                    Add skills
+                                    {t('add.addSkills')}
                                   </Button>
                                 </PopoverTrigger>
                                 <PopoverContent
@@ -544,10 +513,10 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                                   side="bottom"
                                 >
                                   <Command>
-                                    <CommandInput placeholder="Search skills..." />
+                                    <CommandInput placeholder={t('add.skillsSearchHolder')} />
                                     <CommandList>
                                       <CommandEmpty>
-                                        No skills found.
+                                        {t('add.skillsNotFound')}
                                       </CommandEmpty>
                                       <CommandGroup>
                                         <ScrollArea className="h-[200px]">
@@ -587,29 +556,17 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
                   </div>
                 </div>
               )}
-
-              {/* <div className="flex justify-end">
-                <Button
-                  disabled={mutation.status === 'pending'}
-                  className="text-end"
-                >
-                  {mutation.status === 'pending' && (
-                    <Spinner className="animate-spin" />
-                  )}
-                  Continue
-                </Button>
-              </div> */}
             </form>
           </Form>
         </ScrollArea>
         <DialogFooter>
           {step === 1 ? (
             <Button variant="outline" onClick={closeDialog}>
-              Cancel
+              {t('cancelBtn')}
             </Button>
           ) : (
             <Button variant="outline" onClick={handleBackStep}>
-              Back
+              {t('add.backBtn')}
             </Button>
           )}
           <Button
@@ -620,7 +577,7 @@ const ProjectAddDialog = ({ open, closeDialog, portfolioId }) => {
             {mutation.status === 'pending' && (
               <Spinner className="animate-spin" />
             )}
-            {step === 2 ? 'Submit' : 'Continue'}
+            {step === 2 ? t('add.submitBtn') : t('add.continueBtn')}
           </Button>
         </DialogFooter>
       </DialogContent>

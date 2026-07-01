@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Plus, Trash2 } from 'lucide-react';
 import { useFieldArray, useFormContext } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import {
@@ -17,6 +18,7 @@ import { Textarea } from '@/components/ui/textarea';
 const Process = () => {
   const [bioChar, setBioCahr] = useState(0);
   const form = useFormContext();
+  const { t } = useTranslation('services');
   const handleBioChange = (e) => {
     const val = e.target.value;
     const charLength = val.length;
@@ -44,14 +46,10 @@ const Process = () => {
   return (
     <>
       <p className="text-md text-foreground font-semibold mb-5">
-        Requirements and steps
+        {t('process.title')}
       </p>
-      <div>Info you'll need from the client</div>
-      <p>
-        Request any details or files you’ll need from the client to begin the
-        project. Clients can respond with text or attachments. Be sure to
-        include at least one requirement.
-      </p>
+      <div>{t('process.infoTitle')}</div>
+      <p>{t('process.infoDesc')}</p>
 
       <div className="flex flex-col gap-6">
         {requirementsFields.map((field, index) => (
@@ -62,7 +60,7 @@ const Process = () => {
               name={`requirements.${index}.requirementsDetails`}
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Requirement</FormLabel>
+                  <FormLabel>{t('process.requirementLabel')}</FormLabel>
                   <FormControl>
                     <div className="relative">
                       <Textarea
@@ -72,7 +70,7 @@ const Process = () => {
                           handleBioChange(val);
                           form.trigger('bio');
                         }}
-                        placeholder="Add any details or files needed to start your project"
+                        placeholder={t('process.requirementHolder')}
                         className="min-h-[120px] focus-visible:ring-0"
                       />
                       <span className="absolute end-5 bottom-3 text-sm text-muted-foreground/80">
@@ -100,7 +98,7 @@ const Process = () => {
                       htmlFor={`attachments-${index}`}
                       className="text-sm text-muted-foreground"
                     >
-                      Free Text
+                      {t('process.freeText')}
                     </FormLabel>
                   </div>
                 )}
@@ -119,7 +117,7 @@ const Process = () => {
                       htmlFor={`require-${index}`}
                       className="text-sm text-muted-foreground"
                     >
-                      File Upload
+                      {t('process.fileUpload')}
                     </FormLabel>
                   </div>
                 )}
@@ -155,7 +153,7 @@ const Process = () => {
           <span className="p-px border border-primary rounded-md">
             <Plus size={16} />
           </span>
-          Add another requirement
+          {t('process.addRequirement')}
         </Button>
       </div>
     </>

@@ -1,11 +1,120 @@
 {
-  "name": "اسم الخدمة او وصف قصير",
-  "industry": "الصناع",
-  "industryHolder": "تصميم، تطوير، كتابة",
-  "specialty": "التخصص",
-  "specialtyHolder": "اختر التخصص",
-  "skills": "المهارات",
-  "skillsHolder": "ساعد العملاء في العثور على خدمتك.",
-  "serviceAttributes": "سمات الخدمة",
-  "loading": "جار التحميل..."
+    "content": {
+        "services": "الخدمات",
+        "addService": "إضافة خدمة",
+        "emptyTitle": "خدمة",
+        "emptyDesc": "أضف خدمة لتُظهر للعملاء ما تقدّمه، وكيف يمكنك مساعدتهم، ولتسهّل حجزك."
+    },
+    "dialog": {
+        "addTitle": "إضافة خدمة",
+        "editTitle": "تعديل الخدمة",
+        "submitBtn": "إرسال للمراجعة"
+    },
+    "steps": {
+        "overview": "نظرة عامة",
+        "pricing": "التسعير",
+        "gallery": "المعرض",
+        "process": "الخطوات",
+        "description": "الوصف",
+        "review": "المراجعة"
+    },
+    "overview": {
+        "title": "نظرة عامة على الخدمة",
+        "nameLabel": "اسم الخدمة",
+        "nameHolder": "اسم الخدمة أو وصف قصير",
+        "industry": "المجال",
+        "industryHolder": "تصميم، تطوير، كتابة",
+        "specialty": "التخصص",
+        "specialtyHolder": "اختر التخصص",
+        "skills": "المهارات",
+        "skillsHolder": "ساعد العملاء في العثور على خدمتك."
+    },
+    "pricing": {
+        "title": "السعر والنطاق",
+        "deliveryLabel": "أيام التسليم",
+        "deliveryHolder": "كم عدد الأيام لتسليم الخدمة؟",
+        "revisionsLabel": "التعديلات",
+        "revisionsHolder": "حدد عدد التعديلات المشمولة (مثل 1، 2، أو غير محدود)",
+        "priceLabel": "سعر المشروع",
+        "priceHolder": "0.00",
+        "chooseAddons": "اختر الإضافات",
+        "optional": "(اختياري)",
+        "addonContentUpload": "رفع المحتوى",
+        "addonAdditionalRevision": "تعديل إضافي",
+        "addonResponsiveDesign": "تصميم متجاوب",
+        "forExtra": "مقابل إضافي",
+        "additionalDays": "أيام إضافية",
+        "customTitleLabel": "العنوان",
+        "customTitleHolder": "اسم المشروع أو وصف قصير",
+        "removeBtn": "إزالة",
+        "createCustomAddon": "إنشاء إضافة مخصصة"
+    },
+    "gallery": {
+        "title": "المتطلبات والخطوات",
+        "imagesLabel": "صور المشروع",
+        "imagesDesc": "ارفع حتى 20 صورة (‎.jpg أو ‎.png)، بحجم أقصى 10 ميجابايت لكل صورة وأقل من 4000 بكسل عرضًا أو ارتفاعًا."
+    },
+    "process": {
+        "title": "المتطلبات والخطوات",
+        "infoTitle": "المعلومات التي ستحتاجها من العميل",
+        "infoDesc": "اطلب أي تفاصيل أو ملفات تحتاجها من العميل لبدء المشروع. يمكن للعملاء الرد بنص أو مرفقات. تأكد من تضمين متطلب واحد على الأقل.",
+        "requirementLabel": "المتطلب",
+        "requirementHolder": "أضف أي تفاصيل أو ملفات لازمة لبدء مشروعك",
+        "freeText": "نص حر",
+        "fileUpload": "رفع ملف",
+        "addRequirement": "إضافة متطلب آخر"
+    },
+    "description": {
+        "title": "وصف الخدمة",
+        "summaryLabel": "ملخص الخدمة",
+        "summaryDesc": "أبرز ما يميّز خدمتك أو مشروعك ويجعله قيّمًا للعملاء.",
+        "summaryHolder": "اكتب ملخصًا قصيرًا...",
+        "counter": "الحد الأدنى {{min}}، الحد الأقصى {{max}} حرفًا — {{count}}/{{max}}"
+    },
+    "review": {
+        "readyTitle": "جاهز للإطلاق؟",
+        "readyDesc": "تأكد من ضبط كل شيء قبل النشر. بعض الفحوصات الأخيرة فقط!",
+        "legalTitle": "الإقرار القانوني",
+        "legalText": "يرجى تأكيد أن المحتوى الذي أنت على وشك نشره أصلي أو مرخّص بشكل صحيح، وأنه يتوافق مع إرشادات مجتمعنا.",
+        "termsTitle": "الشروط والسياسات",
+        "termsIntro": "لقد قرأت وأوافق على",
+        "and": "و",
+        "termsOfUse": "شروط الاستخدام",
+        "userAgreement": "اتفاقية المستخدم",
+        "privacyPolicy": "سياسة الخصوصية",
+        "privacyTitle": "إشعار الخصوصية",
+        "privacyText": "بإرسال هذه الخدمة وتفعيلها، فإنك توافق على أنها ستظهر في نتائج البحث العامة وقد تكون مرئية حتى لو كان ملفك الشخصي مضبوطًا على خاص أو مقتصرًا على المستخدمين المسجلين فقط."
+    },
+    "editor": {
+        "bold": "عريض",
+        "italic": "مائل",
+        "underline": "تسطير",
+        "strikethrough": "يتوسطه خط",
+        "code": "كود",
+        "bulletList": "قائمة نقطية",
+        "numberedList": "قائمة مرقمة",
+        "quote": "اقتباس",
+        "link": "رابط",
+        "divider": "فاصل",
+        "undo": "تراجع",
+        "redo": "إعادة",
+        "enterUrl": "أدخل الرابط"
+    },
+    "view": {
+        "viewTitle": "عرض الخدمة",
+        "description": "الوصف",
+        "price": "السعر",
+        "delivery": "التسليم",
+        "deliveryValue": "{{days}} يوم",
+        "skills": "المهارات"
+    },
+    "delete": {
+        "deleteTitle": "تأكيد الحذف",
+        "deleteDesc": "هل أنت متأكد أنك تريد حذف الخدمة؟",
+        "deleteBtn": "حذف"
+    },
+    "cancelBtn": "إلغاء",
+    "backBtn": "رجوع",
+    "continueBtn": "متابعة",
+    "loading": "جار التحميل..."
 }

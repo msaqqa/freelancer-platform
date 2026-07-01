@@ -83,7 +83,8 @@
         "viedoLinkLabel": "Video Introduction",
         "viedoLinkHolder": "Upload a short video to introduce yourself and stand out.",
         "viedoTitleLabel": "Introduction Video Title",
-        "viedoTitleHolder": "e.g. Get to Know Me, My Journey, Who I Am? (optional)"
+        "viedoTitleHolder": "e.g. Get to Know Me, My Journey, Who I Am? (optional)",
+        "youtubeHolder": "Enter YouTube URL"
     },
     "identity" : {
         "identityTitle": "Verify your identity to activate your profile",
@@ -98,6 +99,7 @@
         "stepMobileDesc":"What Mobile number would you like to use for verification?",
         "mobileLabel": "Mobile Number",
         "mobileHolder": "Enter Mobile Number",
+        "countryHolder": "Select Country",
         "closeBtn":"Close",
         "continueBtn":"Continue",
         "stepOtpTitle":"Enter the verification code",
@@ -149,5 +151,7 @@
     "maxImages": "Max 6 images",
     "imageType": "JPG or PNG, max size: 5MB",
     "edit": "Edit",
-    "add": "Add"
+    "add": "Add",
+    "dragImage": "Drag image here or",
+    "addPhoto": "Add Photo"
 }

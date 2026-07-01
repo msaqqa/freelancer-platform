@@ -115,7 +115,7 @@ export const SendOtp = ({ handleNextStep, closeDialog, setMobile, t }) => {
                           onValueChange={field.onChange}
                         >
                           <SelectTrigger className="border-0 focus-visible:outline-none focus-visible:ring-0">
-                            <SelectValue placeholder="Select Country" />
+                            <SelectValue placeholder={t('countryHolder')} />
                           </SelectTrigger>
                           <SelectContent className="max-h-60 overflow-y-auto">
                             {/* {countriesLoading && (

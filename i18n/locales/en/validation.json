@@ -9,6 +9,8 @@
     "maxImages": "Maximum {{imagesLength}} images allowed",
     "invalidURL": "Invalid URL",
     "titleRequired": "Title is required",
+    "textRequired": "Text is required",
+    "projectImageRequired": "Image is required",
     "linkRequired": "Link is required",
     "languageRequired": "Language is required",
     "levelRequired": "Level is required",
@@ -45,5 +47,17 @@
 
     "mobileRequired": "Mobile number is required",
     "mobileLength": "Phone number cannot be more than 15 digits",
-    "mobileDigits": "Phone number must contain only digits"
+    "mobileDigits": "Phone number must contain only digits",
+
+    "serviceNameRequired": "Service name is required",
+    "industryRequired": "Industry is required",
+    "specialtyRequired": "Specialty is required",
+    "deliveryDaysRequired": "Delivery days is required",
+    "projectPriceRequired": "Project price is required",
+    "atLeastOneImage": "Upload at least one image",
+    "atLeastOneRequirement": "Add at least one requirement",
+    "descriptionMinChars": "Description must be at least {{min}} characters",
+    "legalConfirmRequired": "Please confirm your content is original or properly licensed",
+    "agreeTermsRequired": "You must agree to the Terms of Use, User Agreement, and Privacy Policy",
+    "privacyAckRequired": "Please acknowledge the privacy notice to continue"
 }
